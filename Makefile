@@ -6,7 +6,7 @@
 #    By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/18 12:15:17 by cdefonte          #+#    #+#              #
-#    Updated: 2022/07/11 15:23:56 by Cyrielle         ###   ########.fr        #
+#    Updated: 2022/07/12 20:28:20 by cdefonte         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ LIBFT_DIR	=	libft/
 LIBX_DIR	=	minilibx_git/
 MLXFLAGS	=	-L$(LIBX_DIR) -lmlx -framework OpenGL -framework AppKit -lz
 ifeq ($(shell uname), Linux)
-LIBX_DIR	=	minilibx_linux/
+LIBX_DIR	=	MLX/
 MLXFLAGS	=	-L$(LIBX_DIR) -lmlx -lXext -lX11
 endif
 
