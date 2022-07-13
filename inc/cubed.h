@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/13 18:02:15 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/13 18:45:59 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,13 @@
 # include "mlx.h"
 
 # ifndef WALL_SIZE
-#  define WALL_SIZE 50
+#  define WALL_SIZE 128 // taille des images de wall
 # endif
+
+# ifndef VIEW_HEIGHT
+#  define VIEW_HEIGHT 64 // hauteur du point de vue (du player). En general 1/2 
+# endif
+
 typedef struct s_win
 {
 	void	*mlx_ptr;
