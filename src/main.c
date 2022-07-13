@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:07:19 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/13 13:05:46 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/13 16:15:24 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@ int	ft_set_maxsize_screen(t_win *win)
 
 	screen_width = 0;
 	screen_height = 0;
-	win->width = ft_strlen(win->map[0]);
-	win->height = ft_tabtablen(win->map);
+	win->width = ft_strlen(win->map[0]) * 10;
+	win->height = ft_tabtablen(win->map) * 10;
 	mlx_get_screen_size(win->mlx_ptr, &screen_width, &screen_height);
-	if (win->width > screen_width || win->height > screen_height)
+	if (win->width > screen_width -50 || win->height > screen_height - 50)
 		return (ft_putstr_fd("Map too big for this screen!\n", 2), -1);
 	return (0);
 }
@@ -88,6 +88,10 @@ int	main(int argc, char** argv)
 		printf("Window initialisation gone wrong\n");
 		return (1);
 	}
+	//mlx_key_hook(win.win_ptr, key_hook, &win);
+	mlx_hook(win.win_ptr, 17, 0, &ft_exit, &win);
+	mlx_loop(win.mlx_ptr);
+	ft_exit(&win);
 	printf("Tout vas bien\n");
 	return (0);
 }
