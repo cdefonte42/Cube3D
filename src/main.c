@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:07:19 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/13 16:15:24 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/13 18:02:09 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@ int	ft_set_maxsize_screen(t_win *win)
 
 	screen_width = 0;
 	screen_height = 0;
-	win->width = ft_strlen(win->map[0]) * 10;
-	win->height = ft_tabtablen(win->map) * 10;
+	win->width = ft_strlen(win->map[0]) * WALL_SIZE;
+	win->height = ft_tabtablen(win->map) * WALL_SIZE;
 	mlx_get_screen_size(win->mlx_ptr, &screen_width, &screen_height);
-	if (win->width > screen_width -50 || win->height > screen_height - 50)
+	if (win->width > screen_width - 50 || win->height > screen_height - 50)
 		return (ft_putstr_fd("Map too big for this screen!\n", 2), -1);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/13 13:07:14 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/13 18:02:15 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,9 @@
 # include "libft.h"
 # include "mlx.h"
 
+# ifndef WALL_SIZE
+#  define WALL_SIZE 50
+# endif
 typedef struct s_win
 {
 	void	*mlx_ptr;
