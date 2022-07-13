@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/11 14:35:02 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/13 13:07:14 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ typedef struct s_win
 	void	*win_ptr;
 	int		width;
 	int		height;
-	int		nb_mv;
 	char	*title;
 	char	**map;
 }				t_win;
@@ -51,5 +50,16 @@ typedef struct s_win
 #  define ESC					65307
 # endif
 
+/*____ PARSING ____ */
+int	ft_isok_len(char **map);
+int	ft_isok_char(char **map);
+int	ft_nb_line(char *filename);
+char	**ft_clean_map(int argc, char **argv);
+int	ft_check_walls(char **map);
+char	**ft_new_map(char *filename, int nb_line);
+char	**ft_remove_n(char **map);
+
+/*_____ UTILS __________*/
+void	ft_free_map(char **map);
 
 #endif
