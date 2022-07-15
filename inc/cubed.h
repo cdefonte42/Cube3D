@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/13 18:45:59 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/15 19:36:59 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,27 @@
 # include "mlx.h"
 
 # ifndef WALL_SIZE
-#  define WALL_SIZE 128 // taille des images de wall
+#  define WALL_SIZE 64 // taille des walls
 # endif
 
 # ifndef VIEW_HEIGHT
-#  define VIEW_HEIGHT 64 // hauteur du point de vue (du player). En general 1/2 
+#  define VIEW_HEIGHT 32 // hauteur du point de vue (du player). En general 1/2 
 # endif
+// DIR			(x, y)
+// NORTH	=	(0, -1);
+// SOUTH	=	(0, 1);
+// WEST		=	(-1, 0);
+// EAST		=	(1, 0);
+typedef enum e_dir {south, north, west, east} t_dir;
+typedef enum e_coord {x, y, z} t_coord;
+
+typedef struct	s_player
+{
+	unsigned int	x;		//position (grid unit) sur x; ex: si = 1, pixel pos = 1xgrid_size
+	unsigned int	y;		//position (grid unit) sur y;
+	int				dir[2];	//direction;
+	unsigned int	fov;	//field of view en °C;
+}				t_player;
 
 typedef struct s_win
 {

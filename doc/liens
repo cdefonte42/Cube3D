@@ -1,1 +1,6 @@
 https://guy-grave.developpez.com/tutoriels/jeux/doom-wolfenstein-raycasting/ // Pour etre plus opti, au lieu d'avoir une map representee par un tableau de char, ils disent que lq map est represente par des bits!! Mais u coup, si big map, comment on fait pour creer une variable sur x bites? 
+
+https://lodev.org/cgtutor/raycasting.html
+
+https://permadi.com/1996/05/ray-casting-tutorial-5/ // version originale
+http://zupi.free.fr/PTuto/index.php?ch=ptuto&p=ray	// VF

@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:07:19 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/13 18:02:09 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/15 19:37:27 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ int	ft_exit(t_win *win)
 		mlx_destroy_window(win->mlx_ptr, win->win_ptr);
 	if (win->mlx_ptr)
 	{
-		mlx_destroy_display(win->mlx_ptr);
-		mlx_loop_end(win->mlx_ptr);
+		//mlx_destroy_display(win->mlx_ptr);	//NON  DISPO SUR MAC
+		//mlx_loop_end(win->mlx_ptr);			//NON DISPO SUR MAC
 		free(win->mlx_ptr);
 	}
 	exit (0);
@@ -44,13 +44,13 @@ int	ft_set_maxsize_screen(t_win *win)
 	int	screen_width;
 	int	screen_height;
 
-	screen_width = 0;
-	screen_height = 0;
+	screen_width = 320;
+	screen_height = 200;
 	win->width = ft_strlen(win->map[0]) * WALL_SIZE;
 	win->height = ft_tabtablen(win->map) * WALL_SIZE;
-	mlx_get_screen_size(win->mlx_ptr, &screen_width, &screen_height);
-	if (win->width > screen_width - 50 || win->height > screen_height - 50)
-		return (ft_putstr_fd("Map too big for this screen!\n", 2), -1);
+	//mlx_get_screen_size(win->mlx_ptr, &screen_width, &screen_height);
+	//if (win->width > screen_width - 50 || win->height > screen_height - 50)
+		//return (ft_putstr_fd("Map too big for this screen!\n", 2), -1);
 	return (0);
 }
 
@@ -69,14 +69,41 @@ win->height, win->title);
 	return (0);
 }
 
+/* Appellee quand mlx_key_hook declenchee */
+int	key_hook(int keycode, void *param)
+{
+	t_win *win;
+
+	win = param;
+	if (keycode == ESC)
+		ft_exit(win);
+	return (0);
+}
+
+int		print_scene(t_win win, t_player player)
+{
+	(void)win;
+	(void)player;
+	return (0);
+}
+
 int	main(int argc, char** argv)
 {
-	t_win	win;
 	if (argc != 2)
 	{
 		printf("Need one *.cub map argument\n");
 		return (1);
 	}
+
+	t_player	player;
+	player.x = 5;
+	player.y = 9;
+	player.dir[x] = 0;
+	player.dir[y] = -1; // north
+	player.fov = 60;
+
+
+	t_win	win;
 	win.map = ft_clean_map(argc, argv);
 	if (win.map == NULL)
 	{
@@ -88,8 +115,9 @@ int	main(int argc, char** argv)
 		printf("Window initialisation gone wrong\n");
 		return (1);
 	}
-	//mlx_key_hook(win.win_ptr, key_hook, &win);
+	mlx_key_hook(win.win_ptr, key_hook, &win); // NON DISPO SUR MAC
 	mlx_hook(win.win_ptr, 17, 0, &ft_exit, &win);
+	print_scene(win, player);
 	mlx_loop(win.mlx_ptr);
 	ft_exit(&win);
 	printf("Tout vas bien\n");

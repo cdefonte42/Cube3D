@@ -6,7 +6,7 @@
 #    By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/18 12:15:17 by cdefonte          #+#    #+#              #
-#    Updated: 2022/07/13 15:48:09 by cdefonte         ###   ########.fr        #
+#    Updated: 2022/07/15 16:56:10 by Cyrielle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ SRC_DIR		=	src/
 OBJ_DIR		=	obj/
 INC_DIR		=	inc/
 LIBFT_DIR	=	libft/
-LIBX_DIR	=	minilibx_git/
+LIBX_DIR	=	minilibx_mac/
 MLXFLAGS	=	-L$(LIBX_DIR) -lmlx -framework OpenGL -framework AppKit -lz
 ifeq ($(shell uname), Linux)
 LIBX_DIR	=	mlx_linux/
