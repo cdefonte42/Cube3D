@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:07:19 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/16 15:02:46 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/16 17:40:54 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,40 +37,6 @@ int	ft_exit(t_win *win)
 	exit (0);
 }
 
-/* Check que la taille de l'ecran est suffisant pour la map donee
-Retourne 0 si OK, -1 si la hauteur ou la largeur est trop grande */
-int	ft_set_maxsize_screen(t_win *win)
-{
-	int	screen_width;
-	int	screen_height;
-
-	screen_width = SCREEN_W;
-	screen_height = SCREEN_H;
-//	win->width = ft_strlen(win->map[0]) * WALL_SIZE;
-//	win->height = ft_tabtablen(win->map) * WALL_SIZE;
-	win->width = SCREEN_W;
-	win->height = SCREEN_H;
-	//mlx_get_screen_size(win->mlx_ptr, &screen_width, &screen_height);
-	//if (win->width > screen_width - 50 || win->height > screen_height - 50)
-		//return (ft_putstr_fd("Map too big for this screen!\n", 2), -1);
-	return (0);
-}
-
-int	ft_init_win(t_win *win)
-{
-	win->title = "Cub3D";
-	win->mlx_ptr = mlx_init();
-	if (!(win->mlx_ptr))
-		return (ft_exit(win), -1);
-	if (ft_set_maxsize_screen(win) != 0)
-		return (-1);
-	win->win_ptr = mlx_new_window(win->mlx_ptr, win->width, \
-win->height, win->title);
-	if (!(win->win_ptr))
-		return (ft_exit(win), -1);
-	return (0);
-}
-
 /* Appellee quand mlx_key_hook declenchee */
 int	key_hook(int keycode, void *param)
 {
@@ -82,46 +48,39 @@ int	key_hook(int keycode, void *param)
 	return (0);
 }
 
-int	main(int argc, char** argv)
+int	main(void) //(int argc, char** argv)
 {
-	if (argc != 2)
-	{
-		printf("Need one *.cub map argument\n");
-		return (1);
-	}
-
+	/* ____ MLX INIT ___*/
 	t_win	win;
-	win.map = ft_clean_map(argc, argv);
-	if (win.map == NULL)
-	{
-		printf("Map initialisation gone wrong\n");
-		return (1);
-	}
-	if (ft_init_win(&win) == -1)
-	{
-		printf("Window initialisation gone wrong\n");
-		return (1);
-	}
+	win.map = NULL;
+	win.title = "Cub3D";
+	win.width = SCREEN_W;
+	win.height = SCREEN_H;
+	win.mlx_ptr = mlx_init();
+	win.win_ptr = mlx_new_window(win.mlx_ptr, win.width, win.height, win.title);
 
-	t_img	wall; // wall image
-	wall.ptr = mlx_xpm_file_to_image(win.mlx_ptr, "img/wall_128_128.xpm", &wall.width, &wall.height);
+	/*_____ WALL IMG LOAD _____*/
+	t_img	wall;
+	wall.ptr = mlx_xpm_file_to_image(win.mlx_ptr, "img/wall_64_64.xpm", &wall.width, &wall.height);
 	wall.data = mlx_get_data_addr(wall.ptr, &wall.bpp, &wall.size_line, &wall.endian);
 	printf("data size = %lu, bpp=%d, size_line=%d, endian=%d\n", sizeof(wall.data), wall.bpp, wall.size_line, wall.endian);
 
-	for (int x = 0; x < 256; ++x)
-		wall.data[x] = 0;
-	
-	/* Put image center screen */
-	mlx_put_image_to_window(win.mlx_ptr, win.win_ptr, wall.ptr, SCREEN_W / 2 - wall.width / 2 , SCREEN_H / 2 - wall.height/2);
+	/*_____ IMG CREATION _____*/
+	t_img	screen;
+	screen.ptr = mlx_new_image(win.win_ptr, SCREEN_W, SCREEN_H);
+	screen.data = mlx_get_data_addr(screen.ptr, &screen.bpp, &screen.size_line, &screen.endian);
+	printf("screen data size = %lu, bpp=%d, size_line=%d, endian=%d\n", sizeof(screen.data), screen.bpp, screen.size_line, screen.endian);
+	/* Afficher toutes les 4 lignes de l'image de wall : */
+//	unsigned int	y = 0;
+//	unsigned int	x = 0;
+//	unsigned int	tab_size = (unsigned int)win.width * (unsigned int)win.height * 4;
+//
 
-//	/*Put image top left screen */
-//	mlx_put_image_to_window(win.mlx_ptr, win.win_ptr, wall.ptr, 0, 0);
 
-
-	mlx_key_hook(win.win_ptr, key_hook, &win); // NON DISPO SUR MAC
+	mlx_put_image_to_window(win.mlx_ptr, win.win_ptr, screen.ptr, 0, 0);
+	mlx_key_hook(win.win_ptr, key_hook, &win);
 	mlx_hook(win.win_ptr, 17, 0, &ft_exit, &win);
 	mlx_loop(win.mlx_ptr);
 	ft_exit(&win);
-	printf("Tout vas bien\n");
 	return (0);
 }
