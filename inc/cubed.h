@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/15 19:36:59 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/15 20:12:41 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,13 @@
 # include <fcntl.h>
 # include "libft.h"
 # include "mlx.h"
+
+# ifndef SCREEN_W
+#  define SCREEN_W 320
+# endif
+# ifndef SCREEN_H
+#  define SCREEN_H 200
+# endif
 
 # ifndef WALL_SIZE
 #  define WALL_SIZE 64 // taille des walls

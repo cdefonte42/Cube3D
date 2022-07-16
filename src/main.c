@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:07:19 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/15 19:37:27 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/15 20:33:15 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,12 @@ int	ft_set_maxsize_screen(t_win *win)
 	int	screen_width;
 	int	screen_height;
 
-	screen_width = 320;
-	screen_height = 200;
-	win->width = ft_strlen(win->map[0]) * WALL_SIZE;
-	win->height = ft_tabtablen(win->map) * WALL_SIZE;
+	screen_width = SCREEN_W;
+	screen_height = SCREEN_H;
+//	win->width = ft_strlen(win->map[0]) * WALL_SIZE;
+//	win->height = ft_tabtablen(win->map) * WALL_SIZE;
+	win->width = SCREEN_W;
+	win->height = SCREEN_H;
 	//mlx_get_screen_size(win->mlx_ptr, &screen_width, &screen_height);
 	//if (win->width > screen_width - 50 || win->height > screen_height - 50)
 		//return (ft_putstr_fd("Map too big for this screen!\n", 2), -1);
@@ -115,6 +117,14 @@ int	main(int argc, char** argv)
 		printf("Window initialisation gone wrong\n");
 		return (1);
 	}
+
+	void	*wall;
+	int		wall_h;
+	int		wall_w;
+	wall = mlx_xpm_file_to_image(win.mlx_ptr, "img/wall_64_64.xpm", &wall_w, &wall_h);
+	mlx_put_image_to_window(win.mlx_ptr, win.win_ptr, wall, SCREEN_W / 2 - wall_w / 2 , SCREEN_H / 2 - wall_h/2);
+
+	mlx_put_image_to_window(win.mlx_ptr, win.win_ptr, wall, 0, 0);
 	mlx_key_hook(win.win_ptr, key_hook, &win); // NON DISPO SUR MAC
 	mlx_hook(win.win_ptr, 17, 0, &ft_exit, &win);
 	print_scene(win, player);
