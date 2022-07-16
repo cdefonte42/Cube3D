@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/15 20:12:41 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/16 12:31:54 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,17 @@ typedef struct	s_player
 	int				dir[2];	//direction;
 	unsigned int	fov;	//field of view en °C;
 }				t_player;
+
+typedef struct s_img
+{
+	void	*ptr;
+	char	*data;
+	int		width;
+	int		height;
+	int		bpp;		//bits per pixel also called the depth of the image
+	int		size_line;	//number of bytes used to store one line of the image in memor
+	int		endian;		// little == 0; big endian == 1;
+}				t_img;
 
 typedef struct s_win
 {
