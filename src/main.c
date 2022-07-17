@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:07:19 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/17 18:48:13 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/17 19:16:46 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,19 +84,29 @@ int	main(int argc, char** argv)
 	printf("screen data size = %lu, bpp=%d, size_line=%d, endian=%d\n", sizeof(screen.data), screen.bpp, screen.size_line, screen.endian);
 
 	/* Afficher toutes les 4 lignes de l'image de wall : */
-	unsigned int	x = 0;
-	unsigned int	y = 0;
 	unsigned int	i = 0;
-	while (i + x < (64 * 64))
+	unsigned int	wall_line = 0;
+	unsigned int	screen_line = 0;
+	unsigned int	width = 120; // width to draw;
+	unsigned int	height = 320; //height to draw;
+	while (i < (width * height)) // PAS opti fait la multiplication a chaque boule je sais
 	{
-		screen.data[i + y] = wall.data[i + x];
+		screen.data[(i % 64) + screen_line] = wall.data[(i % 64) + wall_line];
+		++i;
 		if (i % 64 == 0)
 		{
-			x += wall.size_line / 4;
-			y += screen.size_line / 4;
-			i = 0;
+			wall_line += (wall.size_line / 4);
+			if (wall_line > (64 * 64))
+			{
+				wall_line = 0;
+				screen_line = 0;
+			}
 		}
-		++i;
+		if (i % width == 0)
+		{
+			screen_line += screen.size_line / 4;
+			//if (screen_line > 
+		}
 	}
 
 	mlx_put_image_to_window(win.mlx_ptr, win.win_ptr, screen.ptr, 0, 0);
