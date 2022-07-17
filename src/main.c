@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:07:19 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/16 17:40:54 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/17 15:25:37 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ int	ft_exit(t_win *win)
 		mlx_destroy_window(win->mlx_ptr, win->win_ptr);
 	if (win->mlx_ptr)
 	{
-		//mlx_destroy_display(win->mlx_ptr);	//NON  DISPO SUR MAC
-		//mlx_loop_end(win->mlx_ptr);			//NON DISPO SUR MAC
+		mlx_destroy_display(win->mlx_ptr);	//NON  DISPO SUR MAC
+		mlx_loop_end(win->mlx_ptr);			//NON DISPO SUR MAC
 		free(win->mlx_ptr);
 	}
 	exit (0);
@@ -48,36 +48,60 @@ int	key_hook(int keycode, void *param)
 	return (0);
 }
 
-int	main(void) //(int argc, char** argv)
+int	main(int argc, char** argv)
 {
+	(void)argc;
+	(void)argv;
 	/* ____ MLX INIT ___*/
 	t_win	win;
 	win.map = NULL;
 	win.title = "Cub3D";
 	win.width = SCREEN_W;
 	win.height = SCREEN_H;
+	win.mlx_ptr = NULL;
+	win.win_ptr = NULL;
 	win.mlx_ptr = mlx_init();
+	if (!win.mlx_ptr)
+		return (printf("Error init mlx ptr\n"), ft_exit(&win), 1);
 	win.win_ptr = mlx_new_window(win.mlx_ptr, win.width, win.height, win.title);
+	if (!win.win_ptr)
+		return (printf("Error init win ptr\n"), ft_exit(&win), 1);
 
 	/*_____ WALL IMG LOAD _____*/
 	t_img	wall;
 	wall.ptr = mlx_xpm_file_to_image(win.mlx_ptr, "img/wall_64_64.xpm", &wall.width, &wall.height);
+	if (wall.ptr == NULL)
+		return (printf("Error occurs new image wall\n"), ft_exit(&win), 1);
 	wall.data = mlx_get_data_addr(wall.ptr, &wall.bpp, &wall.size_line, &wall.endian);
 	printf("data size = %lu, bpp=%d, size_line=%d, endian=%d\n", sizeof(wall.data), wall.bpp, wall.size_line, wall.endian);
 
 	/*_____ IMG CREATION _____*/
 	t_img	screen;
-	screen.ptr = mlx_new_image(win.win_ptr, SCREEN_W, SCREEN_H);
+	screen.ptr = mlx_new_image(win.mlx_ptr, SCREEN_W, SCREEN_H);
+	if (screen.ptr == NULL)
+		return (printf("Error occurs new image screen\n"), ft_exit(&win), 1);
 	screen.data = mlx_get_data_addr(screen.ptr, &screen.bpp, &screen.size_line, &screen.endian);
 	printf("screen data size = %lu, bpp=%d, size_line=%d, endian=%d\n", sizeof(screen.data), screen.bpp, screen.size_line, screen.endian);
+
 	/* Afficher toutes les 4 lignes de l'image de wall : */
-//	unsigned int	y = 0;
-//	unsigned int	x = 0;
-//	unsigned int	tab_size = (unsigned int)win.width * (unsigned int)win.height * 4;
-//
+	unsigned int	i = 0;
+	unsigned int	y = 0;
+	unsigned int	x = 0;
+	unsigned int	tab_size = (unsigned int)win.width * (unsigned int)win.height * 4;
+	(void)tab_size;
+	while (i < 16384)
+	{
+		screen.data[i + y] = wall.data[(i % (wall.size_line * 64))];
+		++i;
+		if (i % wall.size_line == 0)
+			y += screen.size_line;
+		if (i % wall.size_line == 0)
+			x += wall.size_line;
+	}
 
 
 	mlx_put_image_to_window(win.mlx_ptr, win.win_ptr, screen.ptr, 0, 0);
+
 	mlx_key_hook(win.win_ptr, key_hook, &win);
 	mlx_hook(win.win_ptr, 17, 0, &ft_exit, &win);
 	mlx_loop(win.mlx_ptr);
