@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:07:19 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/17 15:25:37 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/17 18:48:13 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	main(int argc, char** argv)
 	wall.ptr = mlx_xpm_file_to_image(win.mlx_ptr, "img/wall_64_64.xpm", &wall.width, &wall.height);
 	if (wall.ptr == NULL)
 		return (printf("Error occurs new image wall\n"), ft_exit(&win), 1);
-	wall.data = mlx_get_data_addr(wall.ptr, &wall.bpp, &wall.size_line, &wall.endian);
+	wall.data = (int *)mlx_get_data_addr(wall.ptr, &wall.bpp, &wall.size_line, &wall.endian);
 	printf("data size = %lu, bpp=%d, size_line=%d, endian=%d\n", sizeof(wall.data), wall.bpp, wall.size_line, wall.endian);
 
 	/*_____ IMG CREATION _____*/
@@ -80,25 +80,24 @@ int	main(int argc, char** argv)
 	screen.ptr = mlx_new_image(win.mlx_ptr, SCREEN_W, SCREEN_H);
 	if (screen.ptr == NULL)
 		return (printf("Error occurs new image screen\n"), ft_exit(&win), 1);
-	screen.data = mlx_get_data_addr(screen.ptr, &screen.bpp, &screen.size_line, &screen.endian);
+	screen.data = (int *)mlx_get_data_addr(screen.ptr, &screen.bpp, &screen.size_line, &screen.endian);
 	printf("screen data size = %lu, bpp=%d, size_line=%d, endian=%d\n", sizeof(screen.data), screen.bpp, screen.size_line, screen.endian);
 
 	/* Afficher toutes les 4 lignes de l'image de wall : */
-	unsigned int	i = 0;
-	unsigned int	y = 0;
 	unsigned int	x = 0;
-	unsigned int	tab_size = (unsigned int)win.width * (unsigned int)win.height * 4;
-	(void)tab_size;
-	while (i < 16384)
+	unsigned int	y = 0;
+	unsigned int	i = 0;
+	while (i + x < (64 * 64))
 	{
-		screen.data[i + y] = wall.data[(i % (wall.size_line * 64))];
+		screen.data[i + y] = wall.data[i + x];
+		if (i % 64 == 0)
+		{
+			x += wall.size_line / 4;
+			y += screen.size_line / 4;
+			i = 0;
+		}
 		++i;
-		if (i % wall.size_line == 0)
-			y += screen.size_line;
-		if (i % wall.size_line == 0)
-			x += wall.size_line;
 	}
-
 
 	mlx_put_image_to_window(win.mlx_ptr, win.win_ptr, screen.ptr, 0, 0);
 

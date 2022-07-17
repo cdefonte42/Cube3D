@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/16 12:31:54 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/17 18:32:43 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ typedef struct	s_player
 typedef struct s_img
 {
 	void	*ptr;
-	char	*data;
+	int		*data;
 	int		width;
 	int		height;
 	int		bpp;		//bits per pixel also called the depth of the image
