@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/18 15:19:39 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/18 16:12:21 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,37 +31,22 @@
 # ifndef VIEW_HEIGHT
 #  define VIEW_HEIGHT 32 // hauteur du point de vue (du player). En general 1/2 
 # endif
-// DIR			(x, y)
-// NORTH	=	(0, -1);
-// SOUTH	=	(0, 1);
-// WEST		=	(-1, 0);
-// EAST		=	(1, 0);
+// DIR			(x, y, z) in view et screen sys: (z vers ecran)	+------> x
+// NORTH	=	(0, 0, +1);										|
+// SOUTH	=	(0, 0, -1);										|
+// WEST		=	(-1, 0, 0);										|
+// EAST		=	(+1, 0, 0);										V y
 typedef enum e_dir {south, north, west, east} t_dir;
 typedef enum e_coord {x, y, z} t_coord;
-enum e_sys_ids {screen, view, pixels}; // nom des reperes; a rajouter si besoin d'un nouveau systeme;
+enum e_sys_ids {screen, view, pixels, grid}; // nom des reperes; a rajouter si besoin d'un nouveau systeme;
 
 typedef struct s_coord
 {
 	int				x;
 	int				y;
 	int				z;
-	enum e_sysids	sys_id;
-}				t_coord;
-
-typedef struct s_screen
-{
-	unsigned int	width;
-	unsigned int	height;
-	t_coord			center;
-}				t_screen;
-
-typedef struct	s_player
-{
-	unsigned int	x;		//position (grid unit) sur x; ex: si = 1, pixel pos = 1xgrid_size
-	unsigned int	y;		//position (grid unit) sur y;
-	int				dir[2];	//direction;
-	unsigned int	fov;	//field of view en RADIANS;
-}				t_player;
+	enum e_sysids	sys_id;		// identifie dans quel systeme de coordonnees les x,y et z sont exprimees;
+}				t_pos, t_dir;	// permet d'exprimer une position, ou un vecteur unitaire de direction;
 
 typedef struct s_img
 {
@@ -69,19 +54,29 @@ typedef struct s_img
 	int		*data;
 	unsigned int		width;
 	unsigned int		height;
-	int		bpp;		//bits per pixel also called the depth of the image
-	int		size_line;	//number of bytes used to store one line of the image in memor
+	int		bpp;		// bits per pixel also called the depth of the image
+	int		size_line;	// number of bytes used to store one line of the image in memor
 	int		endian;		// little == 0; big endian == 1;
-}				t_img;
+}				t_texture, t_screen;
+
+typedef struct s_player
+{
+	unsigned int	fov;			// player filed of view in RADIANS;
+	unsigned int	dist_screen;	// distance between screen and player view (fonction du FOV);
+	t_pos			pos;			// position du jouer, dans systeme de grid?;
+	t_dir			dir;			// orientation du joueur, N/S/W/E;
+}				t_player;
 
 typedef struct s_win
 {
-	void	*mlx_ptr;
-	void	*win_ptr;
-	int		width;
-	int		height;
-	char	*title;
-	char	**map;
+	void		*mlx_ptr;
+	void		*win_ptr;
+	int			width;
+	int			height;
+	t_screen	screen;		// de la taille de la win, image a remplir de pixels de texture selon calculs 
+	t_texture	*text;		// tableau d'au moins 4 texture (Nord, Sud, Est, Ouest);
+	char		*title;
+	char		**map;
 }				t_win;
 
 # if defined(__APPLE__) && defined(__MACH__)
