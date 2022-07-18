@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:07:19 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/18 09:26:19 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/18 15:09:18 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,22 @@ int	main(int argc, char** argv)
 	screen.data = (int *)mlx_get_data_addr(screen.ptr, &screen.bpp, &screen.size_line, &screen.endian);
 	printf("screen data size = %lu, bpp=%d, size_line=%d, endian=%d\n", sizeof(screen.data), screen.bpp, screen.size_line, screen.endian);
 
-	put_texture_origin(0, 0, &screen, &wall);
-	put_texture_origin(100, 100, &screen, &wall);
+	unsigned int	width = 192;
+	unsigned int	height = 192;
+	unsigned int	x = 0;
+	unsigned int	y = 0;
+	(void)height;
+	(void)width;
+	while (x < width)
+	{
+		y = 0;
+		while (y < height)
+		{
+			put_texture_origin(x, y, &screen, &wall);
+			y += 64;
+		}
+		x += 64;
+	}
 	mlx_put_image_to_window(win.mlx_ptr, win.win_ptr, screen.ptr, 0, 0);
 
 	mlx_key_hook(win.win_ptr, key_hook, &win);

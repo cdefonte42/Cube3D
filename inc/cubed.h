@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/18 09:13:27 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/18 15:19:39 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,29 @@
 // EAST		=	(1, 0);
 typedef enum e_dir {south, north, west, east} t_dir;
 typedef enum e_coord {x, y, z} t_coord;
+enum e_sys_ids {screen, view, pixels}; // nom des reperes; a rajouter si besoin d'un nouveau systeme;
+
+typedef struct s_coord
+{
+	int				x;
+	int				y;
+	int				z;
+	enum e_sysids	sys_id;
+}				t_coord;
+
+typedef struct s_screen
+{
+	unsigned int	width;
+	unsigned int	height;
+	t_coord			center;
+}				t_screen;
 
 typedef struct	s_player
 {
 	unsigned int	x;		//position (grid unit) sur x; ex: si = 1, pixel pos = 1xgrid_size
 	unsigned int	y;		//position (grid unit) sur y;
 	int				dir[2];	//direction;
-	unsigned int	fov;	//field of view en °C;
+	unsigned int	fov;	//field of view en RADIANS;
 }				t_player;
 
 typedef struct s_img
