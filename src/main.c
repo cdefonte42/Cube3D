@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:07:19 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/17 19:16:46 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/18 09:26:19 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,27 @@
 #include "libft.h"
 #include "mlx.h"
 #include <stdio.h>
+
+/* Print toute la texture sur le creen, a partir de l'origine (x,y) */
+void	put_texture_origin(unsigned int x, unsigned int y, t_img *screen, t_img *text)
+{
+	unsigned int	text_line = 0;
+	unsigned int	screen_line = 0;
+	unsigned int	i = 0;// x + y * (screen->size_line / 4);
+	unsigned int	nb_pixels_text;
+
+	nb_pixels_text = text->width * text->height;
+	while (i < nb_pixels_text)
+	{
+		screen->data[(i % text->width) + screen_line + (y * (screen->size_line / 4)) + x] = text->data[(i % text->width) + text_line];
+		++i;
+		if (i % text->width == 0)
+		{
+			text_line += (text->size_line / 4);
+			screen_line += screen->size_line / 4;
+		}
+	}
+}
 
 /*Appellee quand red cross clicked ou ESC press*/
 int	ft_exit(t_win *win)
@@ -69,7 +90,7 @@ int	main(int argc, char** argv)
 
 	/*_____ WALL IMG LOAD _____*/
 	t_img	wall;
-	wall.ptr = mlx_xpm_file_to_image(win.mlx_ptr, "img/wall_64_64.xpm", &wall.width, &wall.height);
+	wall.ptr = mlx_xpm_file_to_image(win.mlx_ptr, "img/wall_64_64.xpm", (int *)&wall.width, (int *)&wall.height);
 	if (wall.ptr == NULL)
 		return (printf("Error occurs new image wall\n"), ft_exit(&win), 1);
 	wall.data = (int *)mlx_get_data_addr(wall.ptr, &wall.bpp, &wall.size_line, &wall.endian);
@@ -83,32 +104,8 @@ int	main(int argc, char** argv)
 	screen.data = (int *)mlx_get_data_addr(screen.ptr, &screen.bpp, &screen.size_line, &screen.endian);
 	printf("screen data size = %lu, bpp=%d, size_line=%d, endian=%d\n", sizeof(screen.data), screen.bpp, screen.size_line, screen.endian);
 
-	/* Afficher toutes les 4 lignes de l'image de wall : */
-	unsigned int	i = 0;
-	unsigned int	wall_line = 0;
-	unsigned int	screen_line = 0;
-	unsigned int	width = 120; // width to draw;
-	unsigned int	height = 320; //height to draw;
-	while (i < (width * height)) // PAS opti fait la multiplication a chaque boule je sais
-	{
-		screen.data[(i % 64) + screen_line] = wall.data[(i % 64) + wall_line];
-		++i;
-		if (i % 64 == 0)
-		{
-			wall_line += (wall.size_line / 4);
-			if (wall_line > (64 * 64))
-			{
-				wall_line = 0;
-				screen_line = 0;
-			}
-		}
-		if (i % width == 0)
-		{
-			screen_line += screen.size_line / 4;
-			//if (screen_line > 
-		}
-	}
-
+	put_texture_origin(0, 0, &screen, &wall);
+	put_texture_origin(100, 100, &screen, &wall);
 	mlx_put_image_to_window(win.mlx_ptr, win.win_ptr, screen.ptr, 0, 0);
 
 	mlx_key_hook(win.win_ptr, key_hook, &win);

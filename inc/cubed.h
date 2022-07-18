@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/17 18:32:43 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/18 09:13:27 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ typedef struct s_img
 {
 	void	*ptr;
 	int		*data;
-	int		width;
-	int		height;
+	unsigned int		width;
+	unsigned int		height;
 	int		bpp;		//bits per pixel also called the depth of the image
 	int		size_line;	//number of bytes used to store one line of the image in memor
 	int		endian;		// little == 0; big endian == 1;
