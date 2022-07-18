@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/18 16:12:21 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/18 17:00:04 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,10 @@
 # include <fcntl.h>
 # include "libft.h"
 # include "mlx.h"
+
+# ifndef SCREEN_W
+#  define PI 3.142857
+# endif
 
 # ifndef SCREEN_W
 #  define SCREEN_W 320
@@ -31,13 +35,14 @@
 # ifndef VIEW_HEIGHT
 #  define VIEW_HEIGHT 32 // hauteur du point de vue (du player). En general 1/2 
 # endif
-// DIR			(x, y, z) in view et screen sys: (z vers ecran)	+------> x
-// NORTH	=	(0, 0, +1);										|
-// SOUTH	=	(0, 0, -1);										|
-// WEST		=	(-1, 0, 0);										|
-// EAST		=	(+1, 0, 0);										V y
-typedef enum e_dir {south, north, west, east} t_dir;
-typedef enum e_coord {x, y, z} t_coord;
+/*
+DIR			(x, y, z) in view et screen sys: (z vers ecran)	+------> x
+NORTH	=	(0, 0, +1);										|
+SOUTH	=	(0, 0, -1);										|
+WEST	=	(-1, 0, 0);										|
+EAST	=	(+1, 0, 0);										V y
+*/
+typedef enum e_orientation {south, north, west, east} t_orientation;
 enum e_sys_ids {screen, view, pixels, grid}; // nom des reperes; a rajouter si besoin d'un nouveau systeme;
 
 typedef struct s_coord
@@ -45,13 +50,13 @@ typedef struct s_coord
 	int				x;
 	int				y;
 	int				z;
-	enum e_sysids	sys_id;		// identifie dans quel systeme de coordonnees les x,y et z sont exprimees;
-}				t_pos, t_dir;	// permet d'exprimer une position, ou un vecteur unitaire de direction;
+	enum e_sys_ids	sid;		// identifie dans quel systeme de coordonnees les donnees sont exprimees;
+}				t_pos, t_dir;	// per;et d'exprimer soit une position, soit un vecteur unitaire dans un systeme donne
 
 typedef struct s_img
 {
 	void	*ptr;
-	int		*data;
+	int		*data;		// filled by mlx_get_data_addr(); !!! Casted en int * au lieu de char *. Contient les bits de pixels;
 	unsigned int		width;
 	unsigned int		height;
 	int		bpp;		// bits per pixel also called the depth of the image
@@ -61,23 +66,24 @@ typedef struct s_img
 
 typedef struct s_player
 {
-	unsigned int	fov;			// player filed of view in RADIANS;
+	double			fov;			// player filed of view in RADIANS;
 	unsigned int	dist_screen;	// distance between screen and player view (fonction du FOV);
 	t_pos			pos;			// position du jouer, dans systeme de grid?;
 	t_dir			dir;			// orientation du joueur, N/S/W/E;
 }				t_player;
 
-typedef struct s_win
+typedef struct s_game
 {
 	void		*mlx_ptr;
 	void		*win_ptr;
 	int			width;
 	int			height;
+	t_player	player;
 	t_screen	screen;		// de la taille de la win, image a remplir de pixels de texture selon calculs 
 	t_texture	*text;		// tableau d'au moins 4 texture (Nord, Sud, Est, Ouest);
 	char		*title;
 	char		**map;
-}				t_win;
+}				t_game;
 
 # if defined(__APPLE__) && defined(__MACH__)
 #  define L_ARW				123	

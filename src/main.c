@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:07:19 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/18 15:09:18 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/18 17:00:55 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,16 @@
 #include "mlx.h"
 #include <stdio.h>
 
-/* Print toute la texture sur le creen, a partir de l'origine (x,y) */
-void	put_texture_origin(unsigned int x, unsigned int y, t_img *screen, t_img *text)
+void	raytracing(t_game *game)
+{
+	
+}
+
+/* Print 1 fois tous les bits de la texture sur le screen, a une origine donnee (x,y) */
+// params a changer en t_wn*, et ajouter enum orientation pour choisir la bonne texture
+// changer x et y en t_pos pour les coordonnees d'origine
+// Attention ne check pas si on depasse le screen!!!
+void	put_texture_origin(unsigned int x, unsigned int y, t_screen *screen, t_texture *text)
 {
 	unsigned int	text_line = 0;
 	unsigned int	screen_line = 0;
@@ -36,24 +44,41 @@ void	put_texture_origin(unsigned int x, unsigned int y, t_img *screen, t_img *te
 	}
 }
 
+/* Permet de texturiser, avec une texture donee, le screen sur une width et une height; */
+void	put_sized_texture(unsigned int width, unsigned int height, t_screen *screen, t_texture *text)
+{
+	unsigned int	x = 0;
+	unsigned int	y = 0;
+	while (x < width)
+	{
+		y = 0;
+		while (y < height)
+		{
+			put_texture_origin(x, y, screen, text);
+			y += 64;
+		}
+		x += 64;
+	}
+}
+
 /*Appellee quand red cross clicked ou ESC press*/
-int	ft_exit(t_win *win)
+int	ft_exit(t_game *game)
 {
 	int	i;
 
 	i = 0;
-	while (win->map && win->map[i])
-		free(win->map[i++]);
-	if (win->map)
-		free(win->map);
+	while (game->map && game->map[i])
+		free(game->map[i++]);
+	if (game->map)
+		free(game->map);
 	i = 0;
-	if (win->win_ptr)
-		mlx_destroy_window(win->mlx_ptr, win->win_ptr);
-	if (win->mlx_ptr)
+	if (game->win_ptr)
+		mlx_destroy_window(game->mlx_ptr, game->win_ptr);
+	if (game->mlx_ptr)
 	{
-		mlx_destroy_display(win->mlx_ptr);	//NON  DISPO SUR MAC
-		mlx_loop_end(win->mlx_ptr);			//NON DISPO SUR MAC
-		free(win->mlx_ptr);
+		mlx_destroy_display(game->mlx_ptr);	//NON  DISPO SUR MAC
+		mlx_loop_end(game->mlx_ptr);			//NON DISPO SUR MAC
+		free(game->mlx_ptr);
 	}
 	exit (0);
 }
@@ -61,11 +86,11 @@ int	ft_exit(t_win *win)
 /* Appellee quand mlx_key_hook declenchee */
 int	key_hook(int keycode, void *param)
 {
-	t_win *win;
+	t_game *game;
 
-	win = param;
+	game = param;
 	if (keycode == ESC)
-		ft_exit(win);
+		ft_exit(game);
 	return (0);
 }
 
@@ -74,57 +99,45 @@ int	main(int argc, char** argv)
 	(void)argc;
 	(void)argv;
 	/* ____ MLX INIT ___*/
-	t_win	win;
-	win.map = NULL;
-	win.title = "Cub3D";
-	win.width = SCREEN_W;
-	win.height = SCREEN_H;
-	win.mlx_ptr = NULL;
-	win.win_ptr = NULL;
-	win.mlx_ptr = mlx_init();
-	if (!win.mlx_ptr)
-		return (printf("Error init mlx ptr\n"), ft_exit(&win), 1);
-	win.win_ptr = mlx_new_window(win.mlx_ptr, win.width, win.height, win.title);
-	if (!win.win_ptr)
-		return (printf("Error init win ptr\n"), ft_exit(&win), 1);
+	t_game	game;
+	game.map = NULL;
+	game.title = "Cub3D";
+	game.width = SCREEN_W;
+	game.height = SCREEN_H;
+	game.player.fov = 60.0 * PI / 180.0;
+	game.player.dist_screen = 60.0 * PI / 180.0;
+	game.mlx_ptr = mlx_init();
+	if (!game.mlx_ptr)
+		return (printf("Error init mlx ptr\n"), ft_exit(&game), 1);
+	game.win_ptr = mlx_new_window(game.mlx_ptr, game.width, game.height, game.title);
+	if (!game.win_ptr)
+		return (printf("Error init win ptr\n"), ft_exit(&game), 1);
 
-	/*_____ WALL IMG LOAD _____*/
-	t_img	wall;
-	wall.ptr = mlx_xpm_file_to_image(win.mlx_ptr, "img/wall_64_64.xpm", (int *)&wall.width, (int *)&wall.height);
+	/*_____ WALL texture LOAD _____*/
+	t_texture	wall;
+	wall.ptr = mlx_xpm_file_to_image(game.mlx_ptr, "img/wall_64_64.xpm", (int *)&wall.width, (int *)&wall.height);
 	if (wall.ptr == NULL)
-		return (printf("Error occurs new image wall\n"), ft_exit(&win), 1);
+		return (printf("Error occurs new image wall\n"), ft_exit(&game), 1);
 	wall.data = (int *)mlx_get_data_addr(wall.ptr, &wall.bpp, &wall.size_line, &wall.endian);
 	printf("data size = %lu, bpp=%d, size_line=%d, endian=%d\n", sizeof(wall.data), wall.bpp, wall.size_line, wall.endian);
 
-	/*_____ IMG CREATION _____*/
-	t_img	screen;
-	screen.ptr = mlx_new_image(win.mlx_ptr, SCREEN_W, SCREEN_H);
+	/*_____ IMG/SCREEN CREATION _____*/
+	t_screen	screen;
+	screen.ptr = mlx_new_image(game.mlx_ptr, SCREEN_W, SCREEN_H);
 	if (screen.ptr == NULL)
-		return (printf("Error occurs new image screen\n"), ft_exit(&win), 1);
+		return (printf("Error occurs new image screen\n"), ft_exit(&game), 1);
 	screen.data = (int *)mlx_get_data_addr(screen.ptr, &screen.bpp, &screen.size_line, &screen.endian);
+	game.screen = screen;
 	printf("screen data size = %lu, bpp=%d, size_line=%d, endian=%d\n", sizeof(screen.data), screen.bpp, screen.size_line, screen.endian);
 
-	unsigned int	width = 192;
-	unsigned int	height = 192;
-	unsigned int	x = 0;
-	unsigned int	y = 0;
-	(void)height;
-	(void)width;
-	while (x < width)
-	{
-		y = 0;
-		while (y < height)
-		{
-			put_texture_origin(x, y, &screen, &wall);
-			y += 64;
-		}
-		x += 64;
-	}
-	mlx_put_image_to_window(win.mlx_ptr, win.win_ptr, screen.ptr, 0, 0);
+	raytracing(&game);
+	/* Filling screen with texturized pixels */
+//	put_sized_texture(192, 192, &screen, &wall);
+//	mlx_put_image_to_window(game.mlx_ptr, game.win_ptr, screen.ptr, 0, 0);
 
-	mlx_key_hook(win.win_ptr, key_hook, &win);
-	mlx_hook(win.win_ptr, 17, 0, &ft_exit, &win);
-	mlx_loop(win.mlx_ptr);
-	ft_exit(&win);
+	mlx_key_hook(game.win_ptr, key_hook, &game);
+	mlx_hook(game.win_ptr, 17, 0, &ft_exit, &game);
+	mlx_loop(game.mlx_ptr);
+	ft_exit(&game);
 	return (0);
 }
