@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:07:19 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/19 15:57:29 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/19 18:22:57 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,6 @@ Od = vecteur directeur (du screen/plan de projection) = (last ray vector - first
 ray donne. */ 
 void	raytracing(t_game *game)
 {
-	t_pos	p_pos;
-	t_vec	H_next_line;	// vecteur appartenant au ray courant et ayant pour origine le player, permettant d'atteindre la prochaine ligne horizontale;
-	t_vec	V_next_line;
-
-	p_pos = game.player.pos;
-	H_next_line.x = p_pos.x 
-
 }
 
 int	main(int argc, char** argv)

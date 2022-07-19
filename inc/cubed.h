@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/19 15:57:35 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/19 18:19:01 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,12 @@ typedef struct s_coord
 	double				z;
 	enum e_sys_ids	sid;		// identifie dans quel systeme de coordonnees les donnees sont exprimees;
 }				t_pos, t_dir, t_vec;	// per;et d'exprimer soit une position, soit un vecteur de direction dans un systeme donne
+
+typedef struct s_ray
+{
+	t_dir	dir;
+	t_pos	hit_point;
+}				t_ray;
 
 typedef struct s_img
 {
