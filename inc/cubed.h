@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/18 17:00:04 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/19 15:57:35 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <fcntl.h>
 # include "libft.h"
 # include "mlx.h"
+# include <stdbool.h>
 
 # ifndef SCREEN_W
 #  define PI 3.142857
@@ -28,8 +29,8 @@
 #  define SCREEN_H 200
 # endif
 
-# ifndef WALL_SIZE
-#  define WALL_SIZE 64 // taille des walls
+# ifndef CUBE_SIZE
+#  define CUBE_SIZE 64
 # endif
 
 # ifndef VIEW_HEIGHT
@@ -43,15 +44,15 @@ WEST	=	(-1, 0, 0);										|
 EAST	=	(+1, 0, 0);										V y
 */
 typedef enum e_orientation {south, north, west, east} t_orientation;
-enum e_sys_ids {screen, view, pixels, grid}; // nom des reperes; a rajouter si besoin d'un nouveau systeme;
+enum e_sys_ids {screen, pixels, grid}; // nom des reperes; a rajouter si besoin d'un nouveau systeme;
 
 typedef struct s_coord
 {
-	int				x;
-	int				y;
-	int				z;
+	double				x;
+	double				y;
+	double				z;
 	enum e_sys_ids	sid;		// identifie dans quel systeme de coordonnees les donnees sont exprimees;
-}				t_pos, t_dir;	// per;et d'exprimer soit une position, soit un vecteur unitaire dans un systeme donne
+}				t_pos, t_dir, t_vec;	// per;et d'exprimer soit une position, soit un vecteur de direction dans un systeme donne
 
 typedef struct s_img
 {
@@ -67,8 +68,8 @@ typedef struct s_img
 typedef struct s_player
 {
 	double			fov;			// player filed of view in RADIANS;
-	unsigned int	dist_screen;	// distance between screen and player view (fonction du FOV);
-	t_pos			pos;			// position du jouer, dans systeme de grid?;
+	unsigned int	dist_screen;	// distance between screen and player view (fonction du FOV); En pixel unit du coup, sur z du screen ref
+	t_pos			pos;			// position du jouer, dans systeme de grid
 	t_dir			dir;			// orientation du joueur, N/S/W/E;
 }				t_player;
 
@@ -79,6 +80,7 @@ typedef struct s_game
 	int			width;
 	int			height;
 	t_player	player;
+	t_dir		plane;		// vecteur plan, ds le systeme grid
 	t_screen	screen;		// de la taille de la win, image a remplir de pixels de texture selon calculs 
 	t_texture	*text;		// tableau d'au moins 4 texture (Nord, Sud, Est, Ouest);
 	char		*title;
@@ -117,7 +119,16 @@ int	ft_check_walls(char **map);
 char	**ft_new_map(char *filename, int nb_line);
 char	**ft_remove_n(char **map);
 
+/*_____ MLX MANAGE __________*/
+int	key_hook(int keycode, void *param);
+int	init_mlx(t_game *game);
+
 /*_____ UTILS __________*/
 void	ft_free_map(char **map);
+int	ft_exit(t_game *game);
+
+/* ____ TEXTURE (tests)______*/
+void	put_texture_origin(unsigned int x, unsigned int y, t_screen *screen, t_texture *text);
+void	put_sized_texture(unsigned int width, unsigned int height, t_screen *screen, t_texture *text);
 
 #endif
