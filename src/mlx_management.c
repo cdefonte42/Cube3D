@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:32:55 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/20 15:30:45 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/20 16:51:30 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,14 @@ int	ft_exit(t_game *game)
 		return (0);
 	if (game->screen.ptr)
 		mlx_destroy_image(game->mlx_ptr, game->screen.ptr);
-	if (game->map_img.ptr)
-		mlx_destroy_image(game->mlx_ptr, game->map_img.ptr);
-	if (game->map)
-		ft_free_map(game->map);
+	if (game->map.img.ptr)
+		mlx_destroy_image(game->mlx_ptr, game->map.img.ptr);
+	if (game->map.tab)
+		ft_free_map(game->map.tab);
 	if (game->win_ptr)
 		mlx_destroy_window(game->mlx_ptr, game->win_ptr);
-	if (game->map_ptr)
-		mlx_destroy_window(game->mlx_ptr, game->map_ptr);
+	if (game->map.win)
+		mlx_destroy_window(game->mlx_ptr, game->map.win);
 	if (game->mlx_ptr)
 	{
 		//mlx_destroy_display(game->mlx_ptr);	//NON  DISPO SUR MAC

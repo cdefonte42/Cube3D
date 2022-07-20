@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/20 15:29:47 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/20 16:47:13 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,12 +85,19 @@ typedef struct s_player
 	double			rot;			// rotation par rapport au sys grid, en radian
 }				t_player;
 
+typedef struct s_map
+{
+	char		**tab;
+	int			width;
+	int			height;
+	void		*win;	// window pour afficher la grid avec les lignes et les rays
+	t_screen	img;	// image pour la window map representation
+}				t_map;
+
 typedef struct s_game
 {
 	void		*mlx_ptr;
 	void		*win_ptr;
-	void		*map_ptr;	// window pour afficher la grid avec les lignes et les rays
-	t_screen	map_img;	// image pour la window map representation
 	int			width;
 	int			height;
 	int			cube_size;
@@ -99,7 +106,7 @@ typedef struct s_game
 	t_screen	screen;		// de la taille de la win, image a remplir de pixels de texture selon calculs 
 	t_texture	*text;		// tableau d'au moins 4 texture (Nord, Sud, Est, Ouest);
 	char		*title;
-	char		**map;
+	t_map		map;
 }				t_game;
 
 # if defined(__APPLE__) && defined(__MACH__)
