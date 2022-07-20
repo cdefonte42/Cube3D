@@ -6,13 +6,33 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:07:19 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/20 12:45:42 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/20 15:30:54 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cubed.h"
 
-
+int	draw_map(t_game *game)
+{
+	int		map_Xsize = ft_strlen(game->map[0]) * game->cube_size;
+	int		map_Ysize = ft_tabtablen(game->map) * game->cube_size;
+	game->map_ptr = mlx_new_window(game->mlx_ptr, map_Xsize, map_Ysize,\
+	"Grid representation window");
+	if (!game->map_ptr)
+		return (-1);
+	game->map_img.ptr = mlx_new_image(game->mlx_ptr, map_Xsize, map_Ysize);
+	if (!game->map_img.ptr)
+		return (printf("draw_map: failed to init map img\n"), -1);
+	game->map_img.data = (int *)mlx_get_data_addr(game->map_img.ptr, &game->map_img.bpp, \
+	&game->map_img.size_line, &game->map_img.endian);
+	int *pixels = game->map_img.data;
+	for (int line = 0; line < 50; ++line)
+	{
+		for (int col = 0; col < map_Xsize; ++col)
+			pixels[col + line] = 0xFFFFFF;
+	}
+	return (0);
+}
 
 int	main(int argc, char** argv)
 {
@@ -21,6 +41,8 @@ int	main(int argc, char** argv)
 	/* ____ MLX INIT ___*/
 	t_game	game;
 	game.map = ft_clean_map(argc, argv);
+	game.screen.ptr = NULL;
+	game.map_img.ptr = NULL;
 	game.title = "Cub3D";
 	game.width = SCREEN_W;
 	game.height = SCREEN_H;

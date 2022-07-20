@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/20 13:20:31 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/20 15:29:47 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,8 @@ typedef struct s_game
 {
 	void		*mlx_ptr;
 	void		*win_ptr;
+	void		*map_ptr;	// window pour afficher la grid avec les lignes et les rays
+	t_screen	map_img;	// image pour la window map representation
 	int			width;
 	int			height;
 	int			cube_size;
@@ -135,10 +137,10 @@ char	**ft_remove_n(char **map);
 /*_____ MLX MANAGE __________*/
 int	key_hook(int keycode, void *param);
 int	init_mlx(t_game *game);
+int	ft_exit(t_game *game);
 
 /*_____ UTILS __________*/
 void	ft_free_map(char **map);
-int	ft_exit(t_game *game);
 
 /* ____ TEXTURE (tests)______*/
 void	put_texture_origin(unsigned int x, unsigned int y, t_screen *screen, t_texture *text);

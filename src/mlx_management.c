@@ -6,11 +6,36 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:32:55 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/19 15:37:57 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/20 15:30:45 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cubed.h"
+
+/*Appellee quand red cross clicked ou ESC press*/
+// Manque pas mal de destroy, notemment le tableau de texture 
+int	ft_exit(t_game *game)
+{
+	if (!game)
+		return (0);
+	if (game->screen.ptr)
+		mlx_destroy_image(game->mlx_ptr, game->screen.ptr);
+	if (game->map_img.ptr)
+		mlx_destroy_image(game->mlx_ptr, game->map_img.ptr);
+	if (game->map)
+		ft_free_map(game->map);
+	if (game->win_ptr)
+		mlx_destroy_window(game->mlx_ptr, game->win_ptr);
+	if (game->map_ptr)
+		mlx_destroy_window(game->mlx_ptr, game->map_ptr);
+	if (game->mlx_ptr)
+	{
+		//mlx_destroy_display(game->mlx_ptr);	//NON  DISPO SUR MAC
+		//mlx_loop_end(game->mlx_ptr);			//NON DISPO SUR MAC
+		free(game->mlx_ptr);
+	}
+	exit (0);
+}
 
 /* Appellee quand mlx_key_hook declenchee */
 int	key_hook(int keycode, void *param)
