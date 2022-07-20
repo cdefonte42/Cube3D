@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:07:19 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/20 22:33:44 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/20 22:58:03 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,8 +149,8 @@ int	main(int argc, char** argv)
 	game.player.pos.y = 2.5;
 	game.player.pos.z = 0.0;
 	game.player.dir.sid = map;
-	game.player.dir.x = 0.5;
-	game.player.dir.y = 0.2; // North
+	game.player.dir.x = -0.5; // ATTENTION compris entre -1 et 1!!!
+	game.player.dir.y = 0.8; // North
 	game.player.dir.z = 0.0;
 
 	if (init_mlx(&game) == -1)
