@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:07:19 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/20 20:46:39 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/20 22:33:44 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,15 @@ void	draw_player(t_game *game)
 	}
 }
 
+//void	draw_line(t_game *game)
+//{
+//	int	nb_ray = game->width;
+//	t_ray	ray;
+//
+//	ray.increment = tan(game->player.fov / 2) / (game->width / 2);
+//	
+//}
+
 int	draw_map(t_game *game)
 {
 	int		nb_pixelX = game->map.width * game->cube_size + 1;
@@ -134,14 +143,14 @@ int	main(int argc, char** argv)
 	game.height = SCREEN_H;
 	game.cube_size = 64.0;
 	game.player.fov = (60.0 * PI) / 180.0;
-	game.player.dist_screen = game.width / tan(game.player.fov);
+	game.player.dist_screen = (game.width / 2) / tan(game.player.fov / 2);
 	game.player.pos.sid = map;
-	game.player.pos.x = 1.5; //exprime en map unit, soit *64 pour pixels
-	game.player.pos.y = 1.5;
+	game.player.pos.x = 6.5; //exprime en map unit, soit *64 pour pixels
+	game.player.pos.y = 2.5;
 	game.player.pos.z = 0.0;
 	game.player.dir.sid = map;
-	game.player.dir.x = 0.0;
-	game.player.dir.y = -1.0; // North
+	game.player.dir.x = 0.5;
+	game.player.dir.y = 0.2; // North
 	game.player.dir.z = 0.0;
 
 	if (init_mlx(&game) == -1)

@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/20 16:47:13 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/20 22:05:05 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,11 @@ typedef struct s_coord
 
 typedef struct s_ray
 {
+	t_pos	pos;
 	t_dir	dir;
 	t_vec	vec;
 	t_pos	hit_point;
+	double	length;		// en grid unit
 	double	increment;	// angle entre chaque rays, en radian; depend FOV et screen width
 }				t_ray;
 
@@ -79,7 +81,7 @@ typedef struct s_img
 typedef struct s_player
 {
 	double			fov;			// player filed of view in RADIANS;
-	unsigned int	dist_screen;	// distance between screen and player view (fonction du FOV); En pixel unit du coup, sur z du screen ref
+	double	dist_screen;	// distance between screen and player view (fonction du FOV);
 	t_pos			pos;			// position du jouer, dans systeme de map
 	t_dir			dir;			// orientation du joueur, N/S/W/E;
 	double			rot;			// rotation par rapport au sys grid, en radian
@@ -155,5 +157,6 @@ void	put_sized_texture(unsigned int width, unsigned int height, t_screen *screen
 
 /* _________ RAYCASTING ________ */
 void	raytracing(t_game *game);
+struct s_coord	rotate_vector(struct s_coord from, enum e_sys_ids to, double angle);
 
 #endif
