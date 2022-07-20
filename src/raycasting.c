@@ -6,7 +6,7 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 11:03:07 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/07/20 23:05:53 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/20 23:11:51 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@
 void	draw_ray(t_game *game, t_ray ray)
 {
 	t_pos	pos_grid;
-	pos_grid.x = game->player.pos.x * 64.0;
-	pos_grid.y = game->player.pos.y * 64.0;
+	pos_grid.x = game->player.pos.x * game->cube_size;
+	pos_grid.y = game->player.pos.y * game->cube_size;
 
 	int	size_line = game->map.img.size_line / 4;	// nb de pixels par lignes
 	int	max_line = game->cube_size * game->map.height;
@@ -60,8 +60,9 @@ void	raytracing(t_game *game)
 	ray.dir.x = 0;
 	ray.dir.y = 1;
 	ray.dir.sid = view; // ATTENTION pour la suite: faut faire la rotation entre dir view et dir grid (ou map car dir map = dir grid)!
-	ray.vec.x = ray.pos.x + 5 * 64 * ray.dir.x; // t: longeur de la ligne;
-	ray.vec.y = ray.pos.y + 5 * 64 * ray.dir.y; 
+	int t = 5 * game->cube_size; // t: longeur de la ligne;
+	ray.vec.x = ray.pos.x + t * ray.dir.x;
+	ray.vec.y = ray.pos.y + t * ray.dir.y; 
 	ray.vec.sid = view;
 	ray.length = sqrt(pow(ray.vec.x, 2) + pow(ray.vec.y, 2));
 
