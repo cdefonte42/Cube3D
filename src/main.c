@@ -6,22 +6,13 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:07:19 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/19 18:22:57 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/20 12:45:42 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cubed.h"
-#include "libft.h"
-#include "mlx.h"
-#include <stdio.h>
-#include <math.h>
 
-/* Eq droite: Or(t) = Op + t * Od Avec Or = infinite rays(t). Op = 1er ray.
-Od = vecteur directeur (du screen/plan de projection) = (last ray vector - first ray vector). t = en gros distance parcourue sur le plan de proj par rapport a Op pour un
-ray donne. */ 
-void	raytracing(t_game *game)
-{
-}
+
 
 int	main(int argc, char** argv)
 {
@@ -33,14 +24,14 @@ int	main(int argc, char** argv)
 	game.title = "Cub3D";
 	game.width = SCREEN_W;
 	game.height = SCREEN_H;
+	game.cube_size = 64.0;
 	game.player.fov = (60.0 * PI) / 180.0;
 	game.player.dist_screen = game.width / tan(game.player.fov);
-
-	game.player.pos.sid = grid;
-	game.player.pos.x = 6.5; //exprime en grid unit, soit *64 pour pixels
+	game.player.pos.sid = map;
+	game.player.pos.x = 6.5; //exprime en map unit, soit *64 pour pixels
 	game.player.pos.y = 2.5;
 	game.player.pos.z = 0.0;
-	game.player.dir.sid = grid;
+	game.player.dir.sid = map;
 	game.player.dir.x = 0.0;
 	game.player.dir.y = -1.0; // North
 	game.player.dir.z = 0.0;

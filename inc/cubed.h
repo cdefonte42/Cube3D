@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/19 18:19:01 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/20 13:20:31 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include "libft.h"
 # include "mlx.h"
 # include <stdbool.h>
+# include <math.h>
+# include <stdio.h>
 
 # ifndef SCREEN_W
 #  define PI 3.142857
@@ -44,7 +46,8 @@ WEST	=	(-1, 0, 0);										|
 EAST	=	(+1, 0, 0);										V y
 */
 typedef enum e_orientation {south, north, west, east} t_orientation;
-enum e_sys_ids {screen, pixels, grid}; // nom des reperes; a rajouter si besoin d'un nouveau systeme;
+enum e_sys_ids {screen, pixels, map, grid, view}; // nom des reperes; a rajouter si besoin d'un nouveau systeme;
+enum e_type_coord {pos, dir};
 
 typedef struct s_coord
 {
@@ -57,7 +60,9 @@ typedef struct s_coord
 typedef struct s_ray
 {
 	t_dir	dir;
+	t_vec	vec;
 	t_pos	hit_point;
+	double	increment;	// angle entre chaque rays, en radian; depend FOV et screen width
 }				t_ray;
 
 typedef struct s_img
@@ -75,8 +80,9 @@ typedef struct s_player
 {
 	double			fov;			// player filed of view in RADIANS;
 	unsigned int	dist_screen;	// distance between screen and player view (fonction du FOV); En pixel unit du coup, sur z du screen ref
-	t_pos			pos;			// position du jouer, dans systeme de grid
+	t_pos			pos;			// position du jouer, dans systeme de map
 	t_dir			dir;			// orientation du joueur, N/S/W/E;
+	double			rot;			// rotation par rapport au sys grid, en radian
 }				t_player;
 
 typedef struct s_game
@@ -85,6 +91,7 @@ typedef struct s_game
 	void		*win_ptr;
 	int			width;
 	int			height;
+	int			cube_size;
 	t_player	player;
 	t_dir		plane;		// vecteur plan, ds le systeme grid
 	t_screen	screen;		// de la taille de la win, image a remplir de pixels de texture selon calculs 
@@ -136,5 +143,8 @@ int	ft_exit(t_game *game);
 /* ____ TEXTURE (tests)______*/
 void	put_texture_origin(unsigned int x, unsigned int y, t_screen *screen, t_texture *text);
 void	put_sized_texture(unsigned int width, unsigned int height, t_screen *screen, t_texture *text);
+
+/* _________ RAYCASTING ________ */
+void	raytracing(t_game *game);
 
 #endif
