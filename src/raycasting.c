@@ -6,14 +6,14 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 11:03:07 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/07/21 14:28:11 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/21 16:57:29 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cubed.h"
 
 /* Matrice de rotation: x' = cos(alpha).x - sin(alpha).y et y' = sin(alpha).x + cos(alpha).y */
-struct s_coord	rotate_vector(struct s_coord from, enum e_sys_ids to, double angle)
+struct s_coord	rotate_vector_angle(struct s_coord from, enum e_sys_ids to, double angle)
 {
 	struct s_coord	res;
 
@@ -66,6 +66,30 @@ struct s_coord	rotate_vector(struct s_coord from, enum e_sys_ids to, double angl
 //	}
 	res.z = CUBE_SIZE / 2;	// useless for now
 	return (res);
+}
+
+void	draw_first_line(t_game *game, t_ray ray, int color)
+{
+	int	size_line = game->map.img.size_line / 4;	// nb de pixels par lignes
+	int	max_line = game->cube_size * game->map.height;
+	int	*pixels = game->map.img.data;
+	int	line = 0;
+	int	col = 0;
+
+	//int t = 0; // A transformer en Dx et Dy double pour passer d'un carre a l'autre
+	double	part_int;
+	double	Dx = 64.0 - modf(game->player.pos.x, &part_int) * 64.0;
+	double	Dy = 64.0 - modf(game->player.pos.y, &part_int) * 64.0;
+	int	x = 0;
+	int	y = 0;
+	while ((x * ray.dir[grid].x) <= Dx && (y * ray.dir[grid].y) <= Dy && (line < max_line && line >= 0) && (col < size_line && col >= 0))
+	{	
+		pixels[line * size_line + col] = color;
+		++x;
+		++y;
+		col = ray.pos[grid].x + x * ray.dir[grid].x; // t: longeur de la ligne;
+		line = ray.pos[grid].y + y * ray.dir[grid].y;
+	}
 }
 
 void	draw_ray(t_game *game, t_ray ray, int color)
@@ -127,20 +151,24 @@ t_ray*	raycasting(t_game *game)
 
 	rays = malloc(sizeof(t_ray) * game->width); // A PROTEGER
 	int	i = 0;
+	int	coeff = 160;
 	while (i < index_mid_ray) // "rays de gauche" par rapport au mid ray => angle <0
 	{
-		rays[i].dir[grid] = rotate_vector(mid_ray.dir[grid], view, i * -d_angle);
+		rays[i].dir[grid] = rotate_vector_angle(mid_ray.dir[grid], view, coeff * -d_angle);
+		rays[i].pos[grid] = mid_ray.pos[grid];
+		rays[i].length = mid_ray.length;
+		--coeff;
+		++i;
+	}
+	i = index_mid_ray + 1;
+	coeff = 1;
+	while (i < nb_rays) // "rays de droite" par rapport au mid ray => angle>0
+	{
+		rays[i].dir[grid] = rotate_vector_angle(mid_ray.dir[grid], view, coeff * d_angle);
 		rays[i].pos[grid] = mid_ray.pos[grid];
 		rays[i].length = mid_ray.length;
 		++i;
-	}
-	i = 0;
-	while (i < index_mid_ray + 1) // "rays de droite" par rapport au mid ray => angle>0
-	{
-		rays[i + index_mid_ray].dir[grid] = rotate_vector(mid_ray.dir[grid], view, i * d_angle);
-		rays[i + index_mid_ray].pos[grid] = mid_ray.pos[grid];
-		rays[i + index_mid_ray].length = mid_ray.length;
-		++i;
+		++coeff;
 	}
 	rays[index_mid_ray] = mid_ray;
 	return (rays);

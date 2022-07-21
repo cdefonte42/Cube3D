@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:07:19 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/21 14:29:20 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/21 16:57:58 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ int	main(int argc, char** argv)
 	game.player.pos.z = 0.0;
 	game.player.dir.sid = map;
 	game.player.dir.x = 0.5; // ATTENTION compris entre -1 et 1!!!
-	game.player.dir.y = 0.2; // North
+	game.player.dir.y = -0.2; // North
 	game.player.dir.z = 0.0;
 
 	if (init_mlx(&game) == -1)
@@ -161,12 +161,17 @@ int	main(int argc, char** argv)
 	
 	t_ray	*rays;
 	rays = raycasting(&game); // A PROTEGER
-	int	i = 0;
-	while (i < game.width - 1)
-	{
-		draw_ray(&game, rays[i], 0x00FFFF);
-		i += 5;
-	}
+//	int	i = 0;
+//	while (i < game.width - 1)
+//	{
+//		draw_ray(&game, rays[i], 0x00FFFF);
+//		i += 6;
+//	}
+//	draw_ray(&game, rays[159], 0xF7FF00);
+//
+	draw_first_line(&game, rays[159], 0xF7FF00);
+	draw_first_line(&game, rays[319], 0xA200FF);
+	draw_first_line(&game, rays[0], 0xA200FF);
 
 	free(rays);
 

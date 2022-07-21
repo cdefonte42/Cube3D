@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/21 14:12:41 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/21 17:00:11 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ WEST	=	(-1, 0, 0);										|
 EAST	=	(+1, 0, 0);										V y
 */
 typedef enum e_orientation {south, north, west, east} t_orientation;
-enum e_sys_ids {view, grid, screen, pixels, map}; // nom des reperes; a rajouter si besoin d'un nouveau systeme;
+enum e_sys_ids {view, grid, screen, map}; // nom des reperes; a rajouter si besoin d'un nouveau systeme;
 enum e_type_coord {pos, dir};
 
 typedef struct s_coord
@@ -55,7 +55,7 @@ typedef struct s_coord
 	double				y;
 	double				z;
 	enum e_sys_ids	sid;		// identifie dans quel systeme de coordonnees les donnees sont exprimees;
-}				t_pos, t_dir, t_vec;	// per;et d'exprimer soit une position, soit un vecteur de direction dans un systeme donne
+}				t_pos, t_dir, t_vec;	// per;et d'exprimer soit une position, soit un vecteur de direction dans un systeme donne. ATTENTIONun dir ne peut prendre que des valeurs entre -1 et 1 compris
 
 typedef struct s_ray
 {
@@ -158,7 +158,8 @@ void	put_sized_texture(unsigned int width, unsigned int height, t_screen *screen
 /* _________ RAYCASTING ________ */
 t_ray	get_mid_ray(t_game *game);
 t_ray*	raycasting(t_game *game);
+void	draw_first_line(t_game *game, t_ray ray, int color);
 void	draw_ray(t_game *game, t_ray ray, int color);
-struct s_coord	rotate_vector(struct s_coord from, enum e_sys_ids to, double angle);
+struct s_coord	rotate_vector_angle(struct s_coord from, enum e_sys_ids to, double angle);
 
 #endif
