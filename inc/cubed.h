@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/20 22:05:05 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/21 11:53:11 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,9 @@ void	put_texture_origin(unsigned int x, unsigned int y, t_screen *screen, t_text
 void	put_sized_texture(unsigned int width, unsigned int height, t_screen *screen, t_texture *text);
 
 /* _________ RAYCASTING ________ */
-void	raytracing(t_game *game);
+t_ray	raycasting(t_game *game);
+void	iter_ray(t_game *game);
+void	draw_ray(t_game *game, t_ray ray);
 struct s_coord	rotate_vector(struct s_coord from, enum e_sys_ids to, double angle);
 
 #endif
