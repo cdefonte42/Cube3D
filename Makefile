@@ -6,7 +6,7 @@
 #    By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/18 12:15:17 by cdefonte          #+#    #+#              #
-#    Updated: 2022/07/20 12:47:41 by cdefonte         ###   ########.fr        #
+#    Updated: 2022/07/21 18:07:13 by cdefonte         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,9 +33,9 @@ INCLUDES	=	-I$(LIBFT_DIR) -I$(INC_DIR) -I$(LIBX_DIR)
 
 SRCS		=	$(addprefix $(SRC_DIR),\
 					main.c parsing.c parsing2.c utils.c texture.c\
-					mlx_management.c raycasting.c)
+					mlx_management.c raycasting.c map_draw.c)
 OBJS		=	$(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRCS))
-HDRS		=	$(addprefix $(INC_DIR), cubed.h)
+HDRS		=	$(addprefix $(INC_DIR), cubed.h colors.h)
 
 all			:	$(NAME)
 

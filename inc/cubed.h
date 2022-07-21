@@ -6,16 +6,17 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/21 17:00:11 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/21 18:26:57 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUBED_H
 # define CUBED_H
 
+# include "colors.h"
+# include "mlx.h"
 # include <fcntl.h>
 # include "libft.h"
-# include "mlx.h"
 # include <stdbool.h>
 # include <math.h>
 # include <stdio.h>
@@ -46,25 +47,21 @@ WEST	=	(-1, 0, 0);										|
 EAST	=	(+1, 0, 0);										V y
 */
 typedef enum e_orientation {south, north, west, east} t_orientation;
-enum e_sys_ids {view, grid, screen, map}; // nom des reperes; a rajouter si besoin d'un nouveau systeme;
-enum e_type_coord {pos, dir};
+enum e_sys_ids {view, grid, map, sys_ids_size}; // nom des reperes; a rajouter si besoin d'un nouveau systeme;
 
 typedef struct s_coord
 {
 	double				x;
 	double				y;
 	double				z;
-	enum e_sys_ids	sid;		// identifie dans quel systeme de coordonnees les donnees sont exprimees;
 }				t_pos, t_dir, t_vec;	// per;et d'exprimer soit une position, soit un vecteur de direction dans un systeme donne. ATTENTIONun dir ne peut prendre que des valeurs entre -1 et 1 compris
 
 typedef struct s_ray
 {
-	t_pos	pos[2];
-	t_dir	dir[2];
-	t_vec	vec[2];
-	t_pos	hit_point;
+	t_pos	pos[sys_ids_size];
+	t_dir	dir[sys_ids_size];
+	t_pos	hit_point[sys_ids_size];
 	double	length;		// en grid unit
-	double	increment;	// angle entre chaque rays, en radian; depend FOV et screen width
 }				t_ray;
 
 typedef struct s_img
@@ -155,11 +152,18 @@ void	ft_free_map(char **map);
 void	put_texture_origin(unsigned int x, unsigned int y, t_screen *screen, t_texture *text);
 void	put_sized_texture(unsigned int width, unsigned int height, t_screen *screen, t_texture *text);
 
+/* ______ MAP DRAWING ______ */
+void	fill_cube(t_game *game, int y, int x, int color);
+void	draw_grid(t_game *game);
+void	draw_walls(t_game *game);
+void	draw_player(t_game *game);
+int		draw_map(t_game *game);
+
 /* _________ RAYCASTING ________ */
 t_ray	get_mid_ray(t_game *game);
 t_ray*	raycasting(t_game *game);
-void	draw_first_line(t_game *game, t_ray ray, int color);
+void	draw_ray_until_first_Vline(t_game *game, t_ray ray, int color);
 void	draw_ray(t_game *game, t_ray ray, int color);
-struct s_coord	rotate_vector_angle(struct s_coord from, enum e_sys_ids to, double angle);
+struct s_coord	rotate_vector_angle(struct s_coord from, double angle);
 
 #endif
