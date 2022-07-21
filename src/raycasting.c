@@ -6,7 +6,7 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 11:03:07 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/07/21 20:29:51 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/21 22:00:41 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,6 @@ void	draw_all_hit_points(t_game *game, t_ray ray, int color)
 	(void)color;
 	//printf("ray hit x = %f y = %f \n", ray.hit_point[grid].x, ray.hit_point[grid].y);
 }
-
-//void	first_Vwall_hit(t_game *game, t_ray ray)
-//{
-//	ray.hit_point
-//}
 
 void	draw_ray_until_first_Hline(t_game *game, t_ray ray, int color)
 {

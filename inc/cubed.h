@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/21 20:09:35 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/21 21:56:17 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,11 @@ typedef struct s_img
 
 typedef struct s_player
 {
-	double			fov;			// player filed of view in RADIANS;
+	double			fov;	// player filed of view in RADIANS;
 	double	dist_screen;	// distance between screen and player view (fonction du FOV);
-	t_pos			pos;			// position du jouer, dans systeme de map
-	t_dir			dir;			// orientation du joueur, N/S/W/E, en sys map & grid;
+	t_pos			pos;	// position du jouer, dans systeme de map
+	t_dir			dir;	// orientation du joueur, N/S/W/E, en sys map & grid;
+	double			rot;	// angle increment pour une pression touche droite ou gauche
 }				t_player;
 
 typedef struct s_map
@@ -91,6 +92,8 @@ typedef struct s_map
 	int			height;
 	void		*win;	// window pour afficher la grid avec les lignes et les rays
 	t_screen	img;	// image pour la window map representation
+	t_screen	grid;	// img avec que la grille de remplit: permet d'eviter
+						// de recalculer les pixels pour wall etc a chaque frame
 }				t_map;
 
 typedef struct s_game
@@ -152,12 +155,16 @@ void	ft_free_map(char **map);
 void	put_texture_origin(unsigned int x, unsigned int y, t_screen *screen, t_texture *text);
 void	put_sized_texture(unsigned int width, unsigned int height, t_screen *screen, t_texture *text);
 
+/*______ MAP UTILS _______ */
+int	init_map(t_game *game);
+void	cpy_img_pixels(t_screen dest, t_screen src);
+
 /* ______ MAP DRAWING ______ */
 void	fill_cube(t_game *game, int y, int x, int color);
 void	draw_grid(t_game *game);
 void	draw_walls(t_game *game);
 void	draw_player(t_game *game);
-int		draw_map(t_game *game);
+void	draw_map(t_game *game);
 
 /* _________ RAYCASTING ________ */
 void	draw_all_hit_points(t_game *game, t_ray ray, int color);
@@ -169,5 +176,8 @@ void	draw_ray(t_game *game, t_ray ray, int color);
 
 /* _________ VECTORS UTILS _______*/
 struct s_coord	rotate_vector_angle(struct s_coord from, double angle);
+
+/* _____________ TESTS __________ */
+void	ray_tests(t_game *game);
 
 #endif

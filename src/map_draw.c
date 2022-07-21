@@ -6,7 +6,7 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 18:03:35 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/07/21 18:43:29 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/21 21:16:56 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 /* Remplit la position (x, y) en map unit de 64(cube size) pixels de color. */
 void	fill_cube(t_game *game, int y, int x, int color)
 {
-	int *pixels = game->map.img.data;
-	int	size_line = game->map.img.size_line / 4;
+	int *pixels = game->map.grid.data;
+	int	size_line = game->map.grid.size_line / 4;
 	int	origin_line = y * game->cube_size * size_line;
 	int	origin_col = x * game->cube_size;
 	int	max_line = origin_line + game->cube_size * size_line;
@@ -48,8 +48,8 @@ void	draw_walls(t_game *game)
 /* Draw les lignes en blanc de la grille associee a la map */
 void	draw_grid(t_game *game)
 {
-	int *pixels = game->map.img.data;
-	int	size_line = game->map.img.size_line / 4;
+	int *pixels = game->map.grid.data;
+	int	size_line = game->map.grid.size_line / 4;
 	int	max_line = size_line * game->cube_size * game->map.height;
 
 	for (int line = 0; line <= max_line; line += size_line)
@@ -68,12 +68,12 @@ void	draw_grid(t_game *game)
 au player. */
 void	draw_player(t_game *game)
 {
-	int	size_line = game->map.img.size_line / 4;
+	int	size_line = game->map.grid.size_line / 4;
 	int	origin_line = (game->player.pos.y * game->cube_size - 5) * size_line;
 	int	origin_col = game->player.pos.x * game->cube_size - 5;
 	int	max_line = origin_line + 10 * size_line;
 	int	max_col = origin_col + 10;
-	int	*pixels = game->map.img.data;
+	int	*pixels = game->map.grid.data;
 
 	for (int line = origin_line; line < max_line; line += size_line)
 	{
@@ -88,23 +88,11 @@ void	draw_player(t_game *game)
 /* Cree une nouvelle window et son MLX image associee, pour dessiner pixels par
 pixels la map en top 2D view. Return 0 si OK, -1 si erreur de Malloc. */
 // NE PUT pas l'image dessinee
-int	draw_map(t_game *game)
+void	draw_map(t_game *game)
 {
-	int		nb_pixelX = game->map.width * game->cube_size + 1;
-	int		nb_pixelY = game->map.height * game->cube_size + 1;
-
-	game->map.win = mlx_new_window(game->mlx_ptr, nb_pixelX, nb_pixelY,\
-	"Grid representation window");
-	if (!game->map.win)
-		return (-1);
-	game->map.img.ptr = mlx_new_image(game->mlx_ptr, nb_pixelX, nb_pixelY);
-	if (!game->map.img.ptr)
-		return (printf("draw_map: failed to init map img\n"), -1);
-	game->map.img.data = (int *)mlx_get_data_addr(game->map.img.ptr, &game->map.img.bpp, \
-	&game->map.img.size_line, &game->map.img.endian);
-
 	draw_walls(game);
 	draw_grid(game);
 	draw_player(game);
-	return (0);
 }
+
+

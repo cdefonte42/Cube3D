@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:32:55 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/20 16:51:30 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/21 22:28:55 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,20 @@ int	key_hook(int keycode, void *param)
 	game = param;
 	if (keycode == ESC)
 		ft_exit(game);
+	if (keycode == R_ARW)
+	{
+		game->player.dir = rotate_vector_angle(game->player.dir, game->player.rot);
+		cpy_img_pixels(game->map.img, game->map.grid);
+		ray_tests(game);
+		mlx_put_image_to_window(game->mlx_ptr, game->map.win, game->map.img.ptr, 0, 0);
+	}
+	else if (keycode == L_ARW)
+	{
+		game->player.dir = rotate_vector_angle(game->player.dir, -game->player.rot);
+		cpy_img_pixels(game->map.img, game->map.grid);
+		ray_tests(game);
+		mlx_put_image_to_window(game->mlx_ptr, game->map.win, game->map.img.ptr, 0, 0);
+	}
 	return (0);
 }
 
