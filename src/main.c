@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:07:19 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/21 12:35:17 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/21 14:26:08 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ int	main(int argc, char** argv)
 	game.player.pos.y = 2.5;
 	game.player.pos.z = 0.0;
 	game.player.dir.sid = map;
-	game.player.dir.x = 0.1; // ATTENTION compris entre -1 et 1!!!
+	game.player.dir.x = 0.5; // ATTENTION compris entre -1 et 1!!!
 	game.player.dir.y = 0.2; // North
 	game.player.dir.z = 0.0;
 
@@ -159,7 +159,16 @@ int	main(int argc, char** argv)
 	if (draw_map(&game) == -1)
 		return (ft_exit(&game), 1);
 	
-	iter_ray(&game);
+	t_ray	*rays;
+	rays = raycasting(&game); // A PROTEGER
+	int	i = 0;
+	while (i < game.width - 1)
+	{
+		draw_ray(&game, rays[i], 0x00FFFF);
+		i += 5;
+	}
+
+	free(rays);
 
 	mlx_key_hook(game.win_ptr, key_hook, &game);
 	mlx_key_hook(game.map.win, key_hook, &game);

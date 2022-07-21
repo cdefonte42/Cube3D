@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/21 11:53:11 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/21 14:12:41 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ WEST	=	(-1, 0, 0);										|
 EAST	=	(+1, 0, 0);										V y
 */
 typedef enum e_orientation {south, north, west, east} t_orientation;
-enum e_sys_ids {screen, pixels, map, grid, view}; // nom des reperes; a rajouter si besoin d'un nouveau systeme;
+enum e_sys_ids {view, grid, screen, pixels, map}; // nom des reperes; a rajouter si besoin d'un nouveau systeme;
 enum e_type_coord {pos, dir};
 
 typedef struct s_coord
@@ -59,9 +59,9 @@ typedef struct s_coord
 
 typedef struct s_ray
 {
-	t_pos	pos;
-	t_dir	dir;
-	t_vec	vec;
+	t_pos	pos[2];
+	t_dir	dir[2];
+	t_vec	vec[2];
 	t_pos	hit_point;
 	double	length;		// en grid unit
 	double	increment;	// angle entre chaque rays, en radian; depend FOV et screen width
@@ -156,9 +156,9 @@ void	put_texture_origin(unsigned int x, unsigned int y, t_screen *screen, t_text
 void	put_sized_texture(unsigned int width, unsigned int height, t_screen *screen, t_texture *text);
 
 /* _________ RAYCASTING ________ */
-t_ray	raycasting(t_game *game);
-void	iter_ray(t_game *game);
-void	draw_ray(t_game *game, t_ray ray);
+t_ray	get_mid_ray(t_game *game);
+t_ray*	raycasting(t_game *game);
+void	draw_ray(t_game *game, t_ray ray, int color);
 struct s_coord	rotate_vector(struct s_coord from, enum e_sys_ids to, double angle);
 
 #endif
