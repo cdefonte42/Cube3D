@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:07:19 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/21 18:38:16 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/21 19:47:00 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ int	main(int argc, char** argv)
 
 	if (draw_map(&game) == -1)
 		return (ft_exit(&game), 1);
-	mlx_put_image_to_window(game.mlx_ptr, game.map.img.ptr, 0, 0);
 	
 	t_ray	*rays;
 	rays = raycasting(&game); // A PROTEGER
@@ -55,10 +54,11 @@ int	main(int argc, char** argv)
 	draw_ray(&game, rays[0], CYAN);
 	draw_ray(&game, rays[319], CYAN);
 	draw_ray_until_first_Vline(&game, rays[159], RED);
-	draw_ray_until_first_Vline(&game, rays[0], PURPLE);
-	draw_ray_until_first_Vline(&game, rays[319], PURPLE);
-	draw_all_hit_points(rays[159], 
+	draw_ray_until_first_Vline(&game, rays[0], PINK);
+	draw_ray_until_first_Vline(&game, rays[319], PINK);
+	draw_all_hit_points(&game, rays[159], PURPLE);
 
+	mlx_put_image_to_window(game.mlx_ptr, game.map.win, game.map.img.ptr, 0, 0);
 	free(rays);
 
 	mlx_key_hook(game.win_ptr, key_hook, &game);

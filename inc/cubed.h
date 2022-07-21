@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/21 18:26:57 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/21 19:41:12 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,21 +40,21 @@
 #  define VIEW_HEIGHT 32 // hauteur du point de vue (du player). En general 1/2 
 # endif
 /*
-DIR			(x, y, z) in view et screen sys: (z vers ecran)	+------> x
+DIR			(x, y, z) in grid et map sys: (z vers ecran)	+------> x
 NORTH	=	(0, 0, +1);										|
 SOUTH	=	(0, 0, -1);										|
 WEST	=	(-1, 0, 0);										|
 EAST	=	(+1, 0, 0);										V y
 */
-typedef enum e_orientation {south, north, west, east} t_orientation;
-enum e_sys_ids {view, grid, map, sys_ids_size}; // nom des reperes; a rajouter si besoin d'un nouveau systeme;
+typedef enum e_orientation {south = 'S', north = 'N', west = 'W', east = 'E'} t_orientation;
+enum e_sys_ids {view, grid, map, sys_ids_size}; // nom des reperes; a rajouter si besoin d'un nouveau systeme (avant la size);
 
 typedef struct s_coord
 {
 	double				x;
 	double				y;
 	double				z;
-}				t_pos, t_dir, t_vec;	// per;et d'exprimer soit une position, soit un vecteur de direction dans un systeme donne. ATTENTIONun dir ne peut prendre que des valeurs entre -1 et 1 compris
+}				t_pos, t_dir, t_vec;	// permet d'exprimer soit une position, soit un vecteur de direction dans un systeme donne. ATTENTIONun dir ne peut prendre que des valeurs entre -1 et 1 compris
 
 typedef struct s_ray
 {
@@ -67,7 +67,8 @@ typedef struct s_ray
 typedef struct s_img
 {
 	void	*ptr;
-	int		*data;		// filled by mlx_get_data_addr(); !!! Casted en int * au lieu de char *. Contient les bits de pixels;
+	int		*data;		// filled by mlx_get_data_addr(); !!! Casted en int *
+						// au lieu de char *. Contient les bits de pixels;
 	unsigned int		width;
 	unsigned int		height;
 	int		bpp;		// bits per pixel also called the depth of the image
@@ -80,8 +81,7 @@ typedef struct s_player
 	double			fov;			// player filed of view in RADIANS;
 	double	dist_screen;	// distance between screen and player view (fonction du FOV);
 	t_pos			pos;			// position du jouer, dans systeme de map
-	t_dir			dir;			// orientation du joueur, N/S/W/E;
-	double			rot;			// rotation par rapport au sys grid, en radian
+	t_dir			dir;			// orientation du joueur, N/S/W/E, en sys map & grid;
 }				t_player;
 
 typedef struct s_map
@@ -101,8 +101,8 @@ typedef struct s_game
 	int			height;
 	int			cube_size;
 	t_player	player;
-	t_dir		plane;		// vecteur plan, ds le systeme grid
-	t_screen	screen;		// de la taille de la win, image a remplir de pixels de texture selon calculs 
+	t_screen	screen;		// de la taille de la win, image a remplir de 
+							// pixels de texture selon calculs 
 	t_texture	*text;		// tableau d'au moins 4 texture (Nord, Sud, Est, Ouest);
 	char		*title;
 	t_map		map;
@@ -160,10 +160,13 @@ void	draw_player(t_game *game);
 int		draw_map(t_game *game);
 
 /* _________ RAYCASTING ________ */
+void	draw_all_hit_points(t_game *game, t_ray ray, int color);
 t_ray	get_mid_ray(t_game *game);
 t_ray*	raycasting(t_game *game);
 void	draw_ray_until_first_Vline(t_game *game, t_ray ray, int color);
 void	draw_ray(t_game *game, t_ray ray, int color);
+
+/* _________ VECTORS UTILS _______*/
 struct s_coord	rotate_vector_angle(struct s_coord from, double angle);
 
 #endif
