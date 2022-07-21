@@ -6,7 +6,7 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 11:03:07 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/07/21 14:25:54 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/21 14:28:11 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,8 @@ void	draw_ray(t_game *game, t_ray ray, int color)
 	{	
 		pixels[(line * size_line + col)] = color;
 		++t;
-		col = ray.pos[grid].x + floor(t * ray.dir[grid].x); // t: longeur de la ligne;
-		line = ray.pos[grid].y + floor(t * ray.dir[grid].y);
+		col = ray.pos[grid].x + t * ray.dir[grid].x; // t: longeur de la ligne;
+		line = ray.pos[grid].y + t * ray.dir[grid].y;
 	}
 }
 
