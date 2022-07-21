@@ -6,7 +6,7 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 11:03:07 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/07/21 19:46:29 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/21 20:29:51 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,33 @@ void	draw_all_hit_points(t_game *game, t_ray ray, int color)
 	(void)game;
 	(void)ray;
 	(void)color;
-	printf("ray hit x = %f y = %f \n", ray.hit_point[grid].x, ray.hit_point[grid].y);
+	//printf("ray hit x = %f y = %f \n", ray.hit_point[grid].x, ray.hit_point[grid].y);
 }
 
 //void	first_Vwall_hit(t_game *game, t_ray ray)
 //{
 //	ray.hit_point
 //}
+
+void	draw_ray_until_first_Hline(t_game *game, t_ray ray, int color)
+{
+	int	size_line = game->map.img.size_line / 4;
+	int	max_line = game->cube_size * game->map.height;
+	int	*pixels = game->map.img.data;
+	int	line = 0;
+	int	col = 0;
+
+	double	part_int;
+	double	Dy = 64.0 - modf(ray.pos[map].y, &part_int) * 64.0;
+	int	x = 0;
+	while (fabs(x * ray.dir[grid].y) <= Dy && (line < max_line && line >= 0) && (col < size_line && col >= 0))
+	{	
+		pixels[line * size_line + col] = color;
+		++x;
+		col = ray.pos[grid].x + x * ray.dir[grid].x; // t: longeur de la ligne;
+		line = ray.pos[grid].y + x * ray.dir[grid].y;
+	}
+}
 
 void	draw_ray_until_first_Vline(t_game *game, t_ray ray, int color)
 {
@@ -38,19 +58,14 @@ void	draw_ray_until_first_Vline(t_game *game, t_ray ray, int color)
 	int	col = 0;
 
 	double	part_int;
-	double	Dx = 64.0 - modf(game->player.pos.x, &part_int) * 64.0;
-	double	Dy = 64.0 - modf(game->player.pos.y, &part_int) * 64.0;
-	ray.hit_point[grid].x = ray.pos[grid].x + Dx * ray.dir[grid].x;
-	ray.hit_point[grid].y = ray.pos[grid].y + Dy * ray.dir[grid].y;
+	double	Dx = 64.0 - modf(ray.pos[map].x, &part_int) * 64.0;
 	int	x = 0;
-	int	y = 0;
-	while ((x * ray.dir[grid].x) <= Dx && (y * ray.dir[grid].y) <= Dy && (line < max_line && line >= 0) && (col < size_line && col >= 0))
+	while (fabs(x * ray.dir[grid].x) <= Dx && (line < max_line && line >= 0) && (col < size_line && col >= 0))
 	{	
 		pixels[line * size_line + col] = color;
 		++x;
-		++y;
 		col = ray.pos[grid].x + x * ray.dir[grid].x; // t: longeur de la ligne;
-		line = ray.pos[grid].y + y * ray.dir[grid].y;
+		line = ray.pos[grid].y + x * ray.dir[grid].y;
 	}
 }
 

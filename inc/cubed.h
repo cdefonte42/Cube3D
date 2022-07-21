@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/21 19:41:12 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/21 20:09:35 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,7 @@ int		draw_map(t_game *game);
 void	draw_all_hit_points(t_game *game, t_ray ray, int color);
 t_ray	get_mid_ray(t_game *game);
 t_ray*	raycasting(t_game *game);
+void	draw_ray_until_first_Hline(t_game *game, t_ray ray, int color);
 void	draw_ray_until_first_Vline(t_game *game, t_ray ray, int color);
 void	draw_ray(t_game *game, t_ray ray, int color);
 

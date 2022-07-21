@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:07:19 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/21 19:47:00 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/21 20:30:15 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	main(int argc, char** argv)
 	game.player.pos.x = 6.5; //exprime en map unit, soit *64 pour pixels
 	game.player.pos.y = 2.5;
 	game.player.pos.z = 0.0;
-	game.player.dir.x = 0.5; // ATTENTION compris entre -1 et 1!!! EXPRIME EN MAP
+	game.player.dir.x = -0.5; // ATTENTION compris entre -1 et 1!!! EXPRIME EN MAP
 	game.player.dir.y = -0.2; // North
 	game.player.dir.z = 0.0;
 
@@ -56,11 +56,14 @@ int	main(int argc, char** argv)
 	draw_ray_until_first_Vline(&game, rays[159], RED);
 	draw_ray_until_first_Vline(&game, rays[0], PINK);
 	draw_ray_until_first_Vline(&game, rays[319], PINK);
+//	draw_ray_until_first_Hline(&game, rays[159], PINK);
+//	draw_ray_until_first_Hline(&game, rays[0], PINK);
+//	draw_ray_until_first_Hline(&game, rays[319], PINK);
 	draw_all_hit_points(&game, rays[159], PURPLE);
 
-	mlx_put_image_to_window(game.mlx_ptr, game.map.win, game.map.img.ptr, 0, 0);
 	free(rays);
 
+	mlx_put_image_to_window(game.mlx_ptr, game.map.win, game.map.img.ptr, 0, 0);
 	mlx_key_hook(game.win_ptr, key_hook, &game);
 	mlx_key_hook(game.map.win, key_hook, &game);
 	mlx_hook(game.win_ptr, 17, 0, &ft_exit, &game);
