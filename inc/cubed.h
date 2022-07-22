@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/22 15:43:54 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/22 19:10:52 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,10 @@ typedef struct s_hit_point
 {
 	t_pos	pos[sys_ids_size];
 	t_type	type;				// soit vertical soit horizontal wall/line; useless?
+	double	dist;				// distance en grid unit entre le player (ou 
+								// centre rayon c'est pareil) et le hitpoint. 
+								// C'est CA qui permet de determiner combien de 
+								// pixels de haut on va print sur l'ecran du game.
 }				t_hit_point;
 
 typedef struct s_ray

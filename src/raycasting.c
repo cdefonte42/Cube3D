@@ -6,7 +6,7 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 11:03:07 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/07/22 18:23:03 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/22 19:06:35 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	draw_square(t_game *game, t_pos origin, int size, int color)
 	int	max_line;
 	int	max_col;
 
-	printf("x = %f y = %f size line = %d\n", origin.x, origin.y, size_line);
+	//printf("x = %f y = %f size line = %d\n", origin.x, origin.y, size_line);
 	line = ((int)origin.y - size / 2) * size_line;
 	col = (int)origin.x - (size / 2);
 	max_line = line + size * size_line;
@@ -32,7 +32,7 @@ void	draw_square(t_game *game, t_pos origin, int size, int color)
 		col = (int)origin.x - (size / 2);
 		while (col < max_col && col < size_line)
 		{
-			printf("col = %d, line = %d\n", col, line);
+			//printf("col = %d, line = %d\n", col, line);
 			pixels[col + line] = color;
 			++col;
 		}
@@ -191,40 +191,42 @@ void	set_rays_steps(t_game *game, t_ray *rays, int nb_rays)
 	}
 }
 
-void	set_rays_first_Hline_hit_point(t_ray *rays, int nb_rays)
+void	set_rays_first_hit_point(t_ray *rays, int nb_rays)
 {
 	int		i;
+	double	len_till_Vline;
 	double	len_till_Hline;
 
 	i = 0;
 	while (i < nb_rays)
 	{
-		if (rays[i].dir[grid].y == 0.0)
-			len_till_Hline = rays[i].pos[grid].x; // A REDEFINIR
+		len_till_Vline = fabs(rays[i].stepX / rays[i].dir[grid].x);
+		len_till_Hline = fabs(rays[i].stepY / rays[i].dir[grid].y);
+		if (len_till_Vline < len_till_Hline)
+		{
+			rays[i].hit_point.type = vline;
+			if (rays[i].dir[grid].x < 0)
+				rays[i].hit_point.pos[grid].x = rays[i].pos[grid].x - rays[i].stepX;
+			else
+				rays[i].hit_point.pos[grid].x = rays[i].pos[grid].x + rays[i].stepX;
+			rays[i].hit_point.pos[grid].y = rays[i].pos[grid].y + len_till_Vline * rays[i].dir[grid].y;
+		}
+		else if (len_till_Vline > len_till_Hline)
+		{
+			rays[i].hit_point.type = hline;
+			rays[i].hit_point.pos[grid].x = rays[i].pos[grid].x + len_till_Hline * rays[i].dir[grid].x;
+			if (rays[i].dir[grid].y < 0)
+				rays[i].hit_point.pos[grid].y = rays[i].pos[grid].y - rays[i].stepY;
+			else
+				rays[i].hit_point.pos[grid].y = rays[i].pos[grid].y + rays[i].stepY;
+		}
 		else
-			len_till_Hline = fabs(rays[i].stepY / rays[i].dir[grid].y);
-		rays[i].hit_point.type = hline;
-		rays[i].hit_point.pos[grid].x = rays[i].pos[grid].x + len_till_Hline * rays[i].dir[grid].x;
-		rays[i].hit_point.pos[grid].y = rays[i].pos[grid].y + len_till_Hline * rays[i].dir[grid].y;
-		++i;
-	}
-}
-
-void	set_rays_first_Vline_hit_point(t_ray *rays, int nb_rays)
-{
-	int		i;
-	double	len_till_Vline;
-
-	i = 0;
-	while (i < nb_rays)
-	{
-		if (rays[i].dir[grid].x == 0.0)
-			len_till_Vline = rays[i].pos[grid].y; // A REDEFINIR
-		else
-			len_till_Vline = fabs(rays[i].stepX / rays[i].dir[grid].x);
-		rays[i].hit_point.type = vline;
-		rays[i].hit_point.pos[grid].x = rays[i].pos[grid].x + len_till_Vline * rays[i].dir[grid].x;
-		rays[i].hit_point.pos[grid].y = rays[i].pos[grid].y + len_till_Vline * rays[i].dir[grid].y;
+		{
+			rays[i].hit_point.type = apex;
+			rays[i].hit_point.pos[grid].x = rays[i].pos[grid].x + rays[i].stepX;
+			rays[i].hit_point.pos[grid].y = rays[i].pos[grid].y + rays[i].stepY;
+		
+		}
 		++i;
 	}
 }
@@ -239,8 +241,9 @@ t_ray*	raycasting(t_game *game)
 	cpy_ray(rays, mid_ray, nb_rays);
 	set_rays_dir(game, rays, nb_rays);
 	set_rays_steps(game, rays, nb_rays);
-	//set_rays_first_Hline_hit_point(rays, nb_rays);
-	set_rays_first_Vline_hit_point(rays, nb_rays);
+//	set_rays_first_Hline_hit_point(rays, nb_rays);
+//	set_rays_first_Vline_hit_point(rays, nb_rays);
+	set_rays_first_hit_point(rays, nb_rays);
 	//draw_rays_hit_points(game, rays, nb_rays, LIME);
 	return (rays);
 }
