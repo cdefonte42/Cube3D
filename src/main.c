@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:07:19 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/22 18:23:39 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/22 19:53:27 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 void	ray_tests(t_game *game)
 {
-	t_ray	*rays;
-	rays = raycasting(game); // A PROTEGER
+	t_ray	*rays = game->player.rays;
 //	int	i = 0;
 //	while (i < game->width - 1)
 //	{
@@ -46,14 +45,8 @@ void	ray_tests(t_game *game)
 //	draw_ray_until_first_Hline(game, rays[250], PINK);
 //	draw_ray_until_first_Hline(game, rays[319], PINK);
 
-	printf("0 ray hitpoint x = %f y = %f\n", rays[160].hit_point.pos[grid].x, rays[160].hit_point.pos[grid].y);
 	draw_square(game, rays[160].hit_point.pos[grid], 10, PINK);
 
-//	t_pos	te;
-//	te.x = 37;
-//	te.y = 12;
-//	draw_square(game, te, 10, RED);
-	free(rays);
 }
 
 int	main(int argc, char** argv)
@@ -62,7 +55,7 @@ int	main(int argc, char** argv)
 	(void)argv;
 	/* ____ MLX INIT ___*/
 	t_game	game;
-	game.map.tab = ft_clean_map(argc, argv);
+	game.map.tab = ft_clean_map(argc, argv); // A PROTEGER
 	game.map.width = ft_strlen(game.map.tab[0]);
 	game.map.height = ft_tabtablen(game.map.tab);
 	game.screen.ptr = NULL;
@@ -80,13 +73,15 @@ int	main(int argc, char** argv)
 	game.player.dir.y = 0.8; // North
 	game.player.dir.z = 0.0;
 	game.player.rot = (4 * PI) / 180;
+	game.player.rays = malloc(sizeof(t_ray) * game.width); // A PROTEGER
 
 	if (init_mlx(&game) == -1)
 		return (printf("Error init mlx\n"), ft_exit(&game), 1);
 	if (init_map(&game) == -1)
 		return (printf("Error init map datas\n"), ft_exit(&game), 1);
 	draw_map(&game);
-	cpy_img_pixels(game.map.img, game.map.grid);
+	cpy_img_pixels(game.map.grid, game.map.img);
+	raycasting(&game);
 
 	ray_tests(&game);
 

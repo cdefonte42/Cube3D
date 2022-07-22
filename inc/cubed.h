@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/22 19:10:52 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/22 19:45:24 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ typedef struct s_player
 	t_pos			pos;	// position du jouer, dans systeme de map
 	t_dir			dir;	// orientation du joueur, N/S/W/E, en sys map & grid;
 	double			rot;	// angle increment pour une pression touche droite ou gauche
+	t_ray			*rays;	// tableau de rays;
 }				t_player;
 
 typedef struct s_map
@@ -177,7 +178,7 @@ void	put_sized_texture(unsigned int width, unsigned int height, t_screen *screen
 
 /*______ MAP UTILS _______ */
 int	init_map(t_game *game);
-void	cpy_img_pixels(t_screen dest, t_screen src);
+void	cpy_img_pixels(t_screen from, t_screen to);
 
 /* ______ MAP DRAWING ______ */
 void	fill_cube(t_game *game, int y, int x, int color);
@@ -188,7 +189,7 @@ void	draw_map(t_game *game);
 
 /* _________ RAYCASTING ________ */
 t_ray	get_mid_ray(t_game *game);
-t_ray*	raycasting(t_game *game);
+void	raycasting(t_game *game);
 void	draw_ray_until_first_Hline(t_game *game, t_ray ray, int color);
 void	draw_ray_until_first_Vline(t_game *game, t_ray ray, int color);
 void	draw_ray(t_game *game, t_ray ray, int color);

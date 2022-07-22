@@ -6,7 +6,7 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 21:10:57 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/07/21 21:52:15 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/22 19:39:53 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,15 @@
 /* Set les pixels de dest aux memes valeurs que ceux de src. ATTENTION, dest
 et src doivent avoir les memes dimensions! Permet de "sauvegarder" une img
 temporairement par exemple. */
-void	cpy_img_pixels(t_screen dest, t_screen src)
+void	cpy_img_pixels(t_screen from, t_screen to)
 {
-	int	size = src.height * (src.size_line / 4);
+	int	size = from.height * (from.size_line / 4);
 	int	i;
 
 	i = 0;
 	while (i < size)
 	{
-		dest.data[i] = src.data[i];
+		to.data[i] = from.data[i];
 		++i;
 	}
 }

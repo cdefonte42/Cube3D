@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:32:55 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/21 22:28:55 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/22 19:54:48 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ int	ft_exit(t_game *game)
 {
 	if (!game)
 		return (0);
+	if (game->player.rays)
+		free(game->player.rays);
 	if (game->screen.ptr)
 		mlx_destroy_image(game->mlx_ptr, game->screen.ptr);
 	if (game->map.img.ptr)
@@ -48,14 +50,16 @@ int	key_hook(int keycode, void *param)
 	if (keycode == R_ARW)
 	{
 		game->player.dir = rotate_vector_angle(game->player.dir, game->player.rot);
-		cpy_img_pixels(game->map.img, game->map.grid);
+		cpy_img_pixels(game->map.grid, game->map.img);
+		raycasting(game);
 		ray_tests(game);
 		mlx_put_image_to_window(game->mlx_ptr, game->map.win, game->map.img.ptr, 0, 0);
 	}
 	else if (keycode == L_ARW)
 	{
 		game->player.dir = rotate_vector_angle(game->player.dir, -game->player.rot);
-		cpy_img_pixels(game->map.img, game->map.grid);
+		cpy_img_pixels(game->map.grid, game->map.img);
+		raycasting(game);
 		ray_tests(game);
 		mlx_put_image_to_window(game->mlx_ptr, game->map.win, game->map.img.ptr, 0, 0);
 	}

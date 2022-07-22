@@ -6,7 +6,7 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 11:03:07 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/07/22 19:06:35 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/22 19:50:25 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,16 +141,13 @@ void	cpy_ray(t_ray *tab, t_ray src, int nb_rays)
 		tab[nb_rays] = src;
 }
 
-void	set_rays_dir(t_game *game, t_ray *rays, int nb_rays)
+void	set_rays_dir(t_ray *rays, int nb_rays, double d_angle)
 {
 	int		index_mid_ray = nb_rays / 2 - 1;
-	double	d_angle;	// delta angle en radian = angle increment
-						// = angle entre chaque ray;
 	int		i = 0;
 	int		coeff = 160;
 	t_ray	mid_ray = rays[index_mid_ray];
 
-	d_angle = atan(1 / game->player.dist_screen);
 	while (i < index_mid_ray) // "rays de gauche" par rapport au mid ray => angle <0
 	{
 		rays[i].dir[grid] = rotate_vector_angle(mid_ray.dir[grid], coeff * -d_angle);
@@ -167,7 +164,6 @@ void	set_rays_dir(t_game *game, t_ray *rays, int nb_rays)
 		++i;
 		++coeff;
 	}
-
 }
 
 //bool	check_hit_point_is_wall(t_game *game, t_ray ray)
@@ -175,76 +171,65 @@ void	set_rays_dir(t_game *game, t_ray *rays, int nb_rays)
 //	return (false);
 //}
 
-void	set_rays_steps(t_game *game, t_ray *rays, int nb_rays)
+void	set_ray_steps(t_game *game, t_ray ray)
 {
-	int		i;
 	double	int_part;
 	double	cube_size;
 
-	i = 0;
 	cube_size = game->cube_size;
-	while (i < nb_rays)
-	{
-			rays[i].stepX = cube_size - modf(rays[i].pos[map].x, &int_part) * cube_size;
-			rays[i].stepY = cube_size - modf(rays[i].pos[map].y, &int_part) * cube_size;
-		++i;
-	}
+	ray.stepX = cube_size - modf(ray.pos[map].x, &int_part) * cube_size;
+	ray.stepY = cube_size - modf(ray.pos[map].y, &int_part) * cube_size;
 }
 
-void	set_rays_first_hit_point(t_ray *rays, int nb_rays)
+void	set_ray_first_hit_point(t_ray *ray)
 {
-	int		i;
 	double	len_till_Vline;
 	double	len_till_Hline;
 
-	i = 0;
-	while (i < nb_rays)
+	len_till_Vline = fabs(ray->stepX / ray->dir[grid].x);
+	len_till_Hline = fabs(ray->stepY / ray->dir[grid].y);
+	if (len_till_Vline < len_till_Hline)
 	{
-		len_till_Vline = fabs(rays[i].stepX / rays[i].dir[grid].x);
-		len_till_Hline = fabs(rays[i].stepY / rays[i].dir[grid].y);
-		if (len_till_Vline < len_till_Hline)
-		{
-			rays[i].hit_point.type = vline;
-			if (rays[i].dir[grid].x < 0)
-				rays[i].hit_point.pos[grid].x = rays[i].pos[grid].x - rays[i].stepX;
-			else
-				rays[i].hit_point.pos[grid].x = rays[i].pos[grid].x + rays[i].stepX;
-			rays[i].hit_point.pos[grid].y = rays[i].pos[grid].y + len_till_Vline * rays[i].dir[grid].y;
-		}
-		else if (len_till_Vline > len_till_Hline)
-		{
-			rays[i].hit_point.type = hline;
-			rays[i].hit_point.pos[grid].x = rays[i].pos[grid].x + len_till_Hline * rays[i].dir[grid].x;
-			if (rays[i].dir[grid].y < 0)
-				rays[i].hit_point.pos[grid].y = rays[i].pos[grid].y - rays[i].stepY;
-			else
-				rays[i].hit_point.pos[grid].y = rays[i].pos[grid].y + rays[i].stepY;
-		}
+		ray->hit_point.type = vline;
+		if (ray->dir[grid].x < 0)
+			ray->hit_point.pos[grid].x = ray->pos[grid].x - ray->stepX;
 		else
-		{
-			rays[i].hit_point.type = apex;
-			rays[i].hit_point.pos[grid].x = rays[i].pos[grid].x + rays[i].stepX;
-			rays[i].hit_point.pos[grid].y = rays[i].pos[grid].y + rays[i].stepY;
-		
-		}
-		++i;
+			ray->hit_point.pos[grid].x = ray->pos[grid].x + ray->stepX;
+		ray->hit_point.pos[grid].y = ray->pos[grid].y + len_till_Vline * ray->dir[grid].y;
+	}
+	else if (len_till_Vline > len_till_Hline)
+	{
+		ray->hit_point.type = hline;
+		ray->hit_point.pos[grid].x = ray->pos[grid].x + len_till_Hline * ray->dir[grid].x;
+		if (ray->dir[grid].y < 0)
+			ray->hit_point.pos[grid].y = ray->pos[grid].y - ray->stepY;
+		else
+			ray->hit_point.pos[grid].y = ray->pos[grid].y + ray->stepY;
+	}
+	else
+	{
+		ray->hit_point.type = apex;
+		ray->hit_point.pos[grid].x = ray->pos[grid].x + ray->stepX;
+		ray->hit_point.pos[grid].y = ray->pos[grid].y + ray->stepY;
+	
 	}
 }
 
-t_ray*	raycasting(t_game *game)
+void	raycasting(t_game *game)
 {
-	t_ray	*rays;
-	t_ray	mid_ray = get_mid_ray(game);
-	int		nb_rays = game->width;
+	t_ray	mid_ray;
+	int		nb_rays;
+	double	d_angle;// delta angle en radian = angle increment = angle entre chaque ray;
 
-	rays = malloc(sizeof(t_ray) * game->width); // A PROTEGER
-	cpy_ray(rays, mid_ray, nb_rays);
-	set_rays_dir(game, rays, nb_rays);
-	set_rays_steps(game, rays, nb_rays);
-//	set_rays_first_Hline_hit_point(rays, nb_rays);
-//	set_rays_first_Vline_hit_point(rays, nb_rays);
-	set_rays_first_hit_point(rays, nb_rays);
-	//draw_rays_hit_points(game, rays, nb_rays, LIME);
-	return (rays);
+	mid_ray = get_mid_ray(game);
+	nb_rays = game->width;
+	d_angle = atan(1 / game->player.dist_screen);
+	cpy_ray(game->player.rays, mid_ray, nb_rays);
+	set_rays_dir(game->player.rays, nb_rays, d_angle);
+	for (int i = 0; i < nb_rays; ++i)
+	{
+		set_ray_steps(game, game->player.rays[i]);
+		set_ray_first_hit_point(&(game->player.rays[i]));
+	}
 }
 
