@@ -6,7 +6,7 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 11:03:07 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/07/21 22:00:41 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/22 12:15:43 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,13 @@ void	draw_ray_until_first_Hline(t_game *game, t_ray ray, int color)
 
 	double	part_int;
 	double	Dy = 64.0 - modf(ray.pos[map].y, &part_int) * 64.0;
-	int	x = 0;
-	while (fabs(x * ray.dir[grid].y) <= Dy && (line < max_line && line >= 0) && (col < size_line && col >= 0))
+	int	length = 0;
+	while (fabs(length * ray.dir[grid].y) <= Dy && (line < max_line && line >= 0) && (col < size_line && col >= 0))
 	{	
 		pixels[line * size_line + col] = color;
-		++x;
-		col = ray.pos[grid].x + x * ray.dir[grid].x; // t: longeur de la ligne;
-		line = ray.pos[grid].y + x * ray.dir[grid].y;
+		++length;
+		col = ray.pos[grid].x + length * ray.dir[grid].x; // t: longeur de la ligne;
+		line = ray.pos[grid].y + length * ray.dir[grid].y;
 	}
 }
 
@@ -54,13 +54,13 @@ void	draw_ray_until_first_Vline(t_game *game, t_ray ray, int color)
 
 	double	part_int;
 	double	Dx = 64.0 - modf(ray.pos[map].x, &part_int) * 64.0;
-	int	x = 0;
-	while (fabs(x * ray.dir[grid].x) <= Dx && (line < max_line && line >= 0) && (col < size_line && col >= 0))
+	int	length = 0;
+	while (fabs(length * ray.dir[grid].x) <= Dx && (line < max_line && line >= 0) && (col < size_line && col >= 0))
 	{	
 		pixels[line * size_line + col] = color;
-		++x;
-		col = ray.pos[grid].x + x * ray.dir[grid].x; // t: longeur de la ligne;
-		line = ray.pos[grid].y + x * ray.dir[grid].y;
+		++length;
+		col = ray.pos[grid].x + length * ray.dir[grid].x; // t: longeur de la ligne;
+		line = ray.pos[grid].y + length * ray.dir[grid].y;
 	}
 }
 
@@ -89,6 +89,7 @@ t = longueur */
 t_ray	get_mid_ray(t_game *game)
 {
 	t_ray	ray;
+	double	int_part;
 
 	ray.pos[view].x = 0; // pour repasser en sys en map: + pos[map].x;
 	ray.pos[view].y = 0;
@@ -102,6 +103,8 @@ t_ray	get_mid_ray(t_game *game)
 	ray.dir[grid].y = game->player.dir.y;
 	ray.dir[map].x = game->player.dir.x;
 	ray.dir[map].y = game->player.dir.y;
+	ray.stepX = game->cube_size - modf(ray.pos[map].x, &int_part) * game->cube_size;
+	ray.stepY = game->cube_size - modf(ray.pos[map].y, &int_part) * game->cube_size;
 //	int t = 10 * game->cube_size; // t: longeur de la ligne;
 //	ray.vec[view].x = ray.pos[view].x + t * ray.dir[view].x;
 //	ray.vec[view].y = ray.pos[view].y + t * ray.dir[view].y; 
@@ -116,25 +119,20 @@ void	cpy_ray(t_ray *tab, t_ray src, int nb_rays)
 		tab[nb_rays] = src;
 }
 
-t_ray*	raycasting(t_game *game)
+void	set_rays_dir(t_game *game, t_ray *rays, int nb_rays)
 {
-	t_ray	*rays;
-	t_ray	mid_ray = get_mid_ray(game);
-	int		nb_rays = game->width;
 	int		index_mid_ray = nb_rays / 2 - 1;
-	double	d_angle;	// delta angle en radian = angle increment = angle entre chaque ray;
+	double	d_angle;	// delta angle en radian = angle increment
+						// = angle entre chaque ray;
+	int		i = 0;
+	int		coeff = 160;
+	t_ray	mid_ray = rays[index_mid_ray];
 
 	d_angle = atan(1 / game->player.dist_screen);
-
-	rays = malloc(sizeof(t_ray) * game->width); // A PROTEGER
-	cpy_ray(rays, mid_ray, nb_rays);
-	int	i = 0;
-	int	coeff = 160;
 	while (i < index_mid_ray) // "rays de gauche" par rapport au mid ray => angle <0
 	{
 		rays[i].dir[grid] = rotate_vector_angle(mid_ray.dir[grid], coeff * -d_angle);
 		rays[i].dir[map] = rays[i].dir[grid];
-		//rays[i].length = mid_ray.length;
 		--coeff;
 		++i;
 	}
@@ -144,10 +142,81 @@ t_ray*	raycasting(t_game *game)
 	{
 		rays[i].dir[grid] = rotate_vector_angle(rays[i].dir[grid], coeff * d_angle);
 		rays[i].dir[map] = rays[i].dir[grid];
-		//rays[i].length = mid_ray.length;
 		++i;
 		++coeff;
 	}
+
+}
+
+void	ray_next_hit_point(t_ray ray)
+{
+	t_hit_point	Vline;
+	t_hit_point	Hline;
+
+	Vline.type = vline;
+	Vline.pos[grid].x = ray.pos[grid].x + ray.stepX * ray.dir[grid].x;
+	Vline.pos[grid].y = ray.pos[grid].y + ray.stepX * ray.dir[grid].y;
+
+	Hline.type = hline;
+	Hline.pos[grid].x = ray.pos[grid].x + ray.stepY * ray.dir[grid].x;
+	Hline.pos[grid].y = ray.pos[grid].y + ray.stepY * ray.dir[grid].y;
+}
+
+//bool	check_hit_point_is_wall(t_game *game, t_ray ray)
+//{
+//	return (false);
+//}
+
+void	set_rays_steps(t_game *game, t_ray *rays, int nb_rays)
+{
+	int		i;
+	double	int_part;
+	double	cube_size;
+
+	i = 0;
+	cube_size = game->cube_size;
+	while (i < nb_rays)
+	{
+		rays[i].stepX = cube_size - modf(rays[i].pos[map].x, &int_part) * cube_size;
+		rays[i].stepY = cube_size - modf(rays[i].pos[map].y, &int_part) * cube_size;
+		++i;
+	}
+}
+
+void	set_rays_first_hit_point(t_ray *rays, int nb_rays)
+{
+	int		i;
+
+	i = 0;
+	while (i < nb_rays)
+	{
+		if (rays[i].stepX <= rays[i].stepY)
+		{
+			rays[i].hit_point.type = vline;
+			rays[i].hit_point.pos[grid].x = rays[i].pos[grid].x + rays[i].stepX * rays[i].dir[grid].x;
+			rays[i].hit_point.pos[grid].y = rays[i].pos[grid].y + rays[i].stepX * rays[i].dir[grid].y;
+		}
+		else if (rays[i].stepX >= rays[i].stepY)
+		{
+			rays[i].hit_point.type = hline;
+			rays[i].hit_point.pos[grid].x = rays[i].pos[grid].x + rays[i].stepY * rays[i].dir[grid].x;
+			rays[i].hit_point.pos[grid].y = rays[i].pos[grid].y + rays[i].stepY * rays[i].dir[grid].y;
+		}
+		++i;
+	}
+}
+
+t_ray*	raycasting(t_game *game)
+{
+	t_ray	*rays;
+	t_ray	mid_ray = get_mid_ray(game);
+	int		nb_rays = game->width;
+
+	rays = malloc(sizeof(t_ray) * game->width); // A PROTEGER
+	cpy_ray(rays, mid_ray, nb_rays);
+	set_rays_dir(game, rays, nb_rays);
+	set_rays_steps(game, rays, nb_rays);
+	set_rays_first_hit_point(rays, nb_rays);
 	return (rays);
 }
 

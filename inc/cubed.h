@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/21 21:56:17 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/22 12:15:10 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,9 @@ SOUTH	=	(0, 0, -1);										|
 WEST	=	(-1, 0, 0);										|
 EAST	=	(+1, 0, 0);										V y
 */
+
+/* Type de l'element touche par le rayon: wall (vertical/horizontal), sprite, door*/
+typedef enum e_element_type {vline, hline, vwall, hwall, sprite, door} t_type;
 typedef enum e_orientation {south = 'S', north = 'N', west = 'W', east = 'E'} t_orientation;
 enum e_sys_ids {view, grid, map, sys_ids_size}; // nom des reperes; a rajouter si besoin d'un nouveau systeme (avant la size);
 
@@ -54,14 +57,24 @@ typedef struct s_coord
 	double				x;
 	double				y;
 	double				z;
-}				t_pos, t_dir, t_vec;	// permet d'exprimer soit une position, soit un vecteur de direction dans un systeme donne. ATTENTIONun dir ne peut prendre que des valeurs entre -1 et 1 compris
+}				t_pos, t_dir, t_vec;	// permet d'exprimer soit une position, soit un vecteur de direction dans un systeme donne. ATTENTION une dir ne peut prendre que des valeurs entre -1 et 1 compris
+
+typedef struct s_hit_point
+{
+	t_pos	pos[sys_ids_size];
+	t_type	type;				// soit vertical soit horizontal wall/line; useless?
+}				t_hit_point;
 
 typedef struct s_ray
 {
 	t_pos	pos[sys_ids_size];
 	t_dir	dir[sys_ids_size];
-	t_pos	hit_point[sys_ids_size];
-	double	length;		// en grid unit
+	double	stepX;		// longueur pour first vertical wall
+	double	stepY;		// longueur, en grid unit, a faire sur le rayon pour 
+						// toucher le premier horizontal wall
+	t_hit_point	hit_point;	// point qui touche une ligne, et a la fin du
+							// calcul un wall
+	double	len_to_wall;		// 'till wall touched. en grid unit
 }				t_ray;
 
 typedef struct s_img
