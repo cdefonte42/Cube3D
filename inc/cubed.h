@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/22 14:43:08 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/22 15:43:54 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ EAST	=	(+1, 0, 0);										V y
 */
 
 /* Type de l'element touche par le rayon: wall (vertical/horizontal), sprite, door*/
-typedef enum e_element_type {vline, hline, vwall, hwall, sprite, door} t_type;
+typedef enum e_element_type {apex, vline, hline, vwall, hwall, sprite, door} t_type;
 typedef enum e_orientation {south = 'S', north = 'N', west = 'W', east = 'E'} t_orientation;
 enum e_sys_ids {view, grid, map, sys_ids_size}; // nom des reperes; a rajouter si besoin d'un nouveau systeme (avant la size);
 
