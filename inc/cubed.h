@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/22 12:15:10 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/22 14:43:08 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,9 @@ typedef struct s_ray
 						// toucher le premier horizontal wall
 	t_hit_point	hit_point;	// point qui touche une ligne, et a la fin du
 							// calcul un wall
+// Seul veritable truc qui nous interesse: la longueur du ray jusquau premier mur!
+// Donc en vrai les hitpoints on s'en fou un peu. On veut juste le premier "bon"
+// hit_point, et du coup en deduire la longueur: sqrt(pow2x + pow2y)
 	double	len_to_wall;		// 'till wall touched. en grid unit
 }				t_ray;
 
@@ -180,12 +183,12 @@ void	draw_player(t_game *game);
 void	draw_map(t_game *game);
 
 /* _________ RAYCASTING ________ */
-void	draw_all_hit_points(t_game *game, t_ray ray, int color);
 t_ray	get_mid_ray(t_game *game);
 t_ray*	raycasting(t_game *game);
 void	draw_ray_until_first_Hline(t_game *game, t_ray ray, int color);
 void	draw_ray_until_first_Vline(t_game *game, t_ray ray, int color);
 void	draw_ray(t_game *game, t_ray ray, int color);
+void	draw_square(t_game *game, t_pos origin, int size, int color);
 
 /* _________ VECTORS UTILS _______*/
 struct s_coord	rotate_vector_angle(struct s_coord from, double angle);

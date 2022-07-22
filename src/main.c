@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:07:19 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/21 22:33:22 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/22 15:39:57 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,29 +22,36 @@ void	ray_tests(t_game *game)
 //		draw_ray(game, rays[i], CYAN);
 //		i += 6;
 //	}
-	draw_ray(game, rays[0], CYAN);
-	draw_ray(game, rays[50], CYAN);
-	draw_ray(game, rays[100], CYAN);
-	draw_ray(game, rays[130], CYAN);
+//	draw_ray(game, rays[0], CYAN);
+//	draw_ray(game, rays[50], CYAN);
+//	draw_ray(game, rays[100], CYAN);
+//	draw_ray(game, rays[130], CYAN);
 	draw_ray(game, rays[159], YELLOW);
-	draw_ray(game, rays[170], CYAN);
-	draw_ray(game, rays[200], CYAN);
-	draw_ray(game, rays[250], CYAN);
-	draw_ray(game, rays[319], CYAN);
+//	draw_ray(game, rays[170], CYAN);
+//	draw_ray(game, rays[200], CYAN);
+//	draw_ray(game, rays[250], CYAN);
+//	draw_ray(game, rays[319], CYAN);
+
 //	draw_ray_until_first_Vline(game, rays[159], RED);
 //	draw_ray_until_first_Vline(game, rays[0], PINK);
 //	draw_ray_until_first_Vline(game, rays[319], PINK);
-	draw_ray_until_first_Hline(game, rays[0], PINK);
-	draw_ray_until_first_Hline(game, rays[50], PINK);
-	draw_ray_until_first_Hline(game, rays[100], PINK);
-	draw_ray_until_first_Hline(game, rays[130], PINK);
-	draw_ray_until_first_Hline(game, rays[159], PINK);
-	draw_ray_until_first_Hline(game, rays[170], PINK);
-	draw_ray_until_first_Hline(game, rays[200], PINK);
-	draw_ray_until_first_Hline(game, rays[250], PINK);
-	draw_ray_until_first_Hline(game, rays[319], PINK);
-	draw_all_hit_points(game, rays[159], PURPLE);
 
+//	draw_ray_until_first_Hline(game, rays[0], PINK);
+//	draw_ray_until_first_Hline(game, rays[50], PINK);
+//	draw_ray_until_first_Hline(game, rays[100], PINK);
+//	draw_ray_until_first_Hline(game, rays[130], PINK);
+//	draw_ray_until_first_Hline(game, rays[159], PINK);
+//	draw_ray_until_first_Hline(game, rays[170], PINK);
+//	draw_ray_until_first_Hline(game, rays[200], PINK);
+//	draw_ray_until_first_Hline(game, rays[250], PINK);
+//	draw_ray_until_first_Hline(game, rays[319], PINK);
+
+	printf("0 ray hitpoint x = %f y = %f\n", rays[159].hit_point.pos[grid].x, rays[159].hit_point.pos[grid].y);
+	//draw_square(game, rays[159].hit_point.pos[grid], 10, PINK);
+	t_pos	te;
+	te.x = 6.5 * 64.0;
+	te.y = 2.5 * 64.0;
+	draw_square(game, te, 10, PINK);
 	free(rays);
 }
 
@@ -68,8 +75,8 @@ int	main(int argc, char** argv)
 	game.player.pos.x = 6.5; //exprime en map unit, soit *64 pour pixels
 	game.player.pos.y = 2.5;
 	game.player.pos.z = 0.0;
-	game.player.dir.x = -0.5; // ATTENTION compris entre -1 et 1!!! EXPRIME EN MAP
-	game.player.dir.y = -0.2; // North
+	game.player.dir.x = 0.0; // ATTENTION compris entre -1 et 1!!! EXPRIME EN MAP
+	game.player.dir.y = 1.0; // North
 	game.player.dir.z = 0.0;
 	game.player.rot = (4 * PI) / 180;
 
@@ -81,6 +88,7 @@ int	main(int argc, char** argv)
 	cpy_img_pixels(game.map.img, game.map.grid);
 
 	ray_tests(&game);
+
 
 	mlx_put_image_to_window(game.mlx_ptr, game.map.win, game.map.img.ptr, 0, 0);
 	mlx_key_hook(game.win_ptr, key_hook, &game);

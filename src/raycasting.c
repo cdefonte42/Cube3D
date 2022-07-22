@@ -6,23 +6,44 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 11:03:07 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/07/22 12:15:43 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/22 15:36:08 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cubed.h"
 
-void	draw_all_hit_points(t_game *game, t_ray ray, int color)
+/* Dessine un carre, de size haut et size large (en pixel), a la position origin */
+void	draw_square(t_game *game, t_pos origin, int size, int color)
 {
-//	int	size_line = game->map.img.size_line / 4;
-//	int	*pixels = game->map.img.data;
-//
-//	pixels[ray.hit_point[grid].x * 
-	(void)game;
-	(void)ray;
-	(void)color;
-	//printf("ray hit x = %f y = %f \n", ray.hit_point[grid].x, ray.hit_point[grid].y);
+	int	size_line = game->map.img.size_line / 4;
+	int	*pixels = game->map.img.data;
+	int	line;
+	int	col;
+	int	max_line;
+	int	max_col;
+
+	line = (origin.y - size / 2) * size_line;
+	col = origin.x - (size / 2);
+	max_line = line + size * size_line;
+	max_col = col + size;
+	while (line < max_line && line < game->map.height * game->cube_size * size_line)
+	{
+		col = origin.x - (size / 2);
+		while (col < max_col && col < size_line)
+		{
+			pixels[col + line] = color;
+			++col;
+		}
+		col = origin.x - (size / 2);
+		line += size_line;
+	}
+	
 }
+//
+//void	draw_rays_hit_points(t_game *game, t_ray ray, int nb_rays, int color)
+//{
+//	
+//}
 
 void	draw_ray_until_first_Hline(t_game *game, t_ray ray, int color)
 {
@@ -167,6 +188,8 @@ void	ray_next_hit_point(t_ray ray)
 //	return (false);
 //}
 
+/* ATTENTION pas bon car valable sur tous les rayons que si joueur tout le temps
+en plein centre du carre... */
 void	set_rays_steps(t_game *game, t_ray *rays, int nb_rays)
 {
 	int		i;
@@ -186,21 +209,26 @@ void	set_rays_steps(t_game *game, t_ray *rays, int nb_rays)
 void	set_rays_first_hit_point(t_ray *rays, int nb_rays)
 {
 	int		i;
+//	double	len_till_Vline;
+//	double	len_till_Hline;
 
 	i = 0;
 	while (i < nb_rays)
 	{
+	//	len_till_Vline = rays[i].stepX * rays[i].dir[grid].x;
 		if (rays[i].stepX <= rays[i].stepY)
 		{
+			printf("1\n");
 			rays[i].hit_point.type = vline;
-			rays[i].hit_point.pos[grid].x = rays[i].pos[grid].x + rays[i].stepX * rays[i].dir[grid].x;
+			rays[i].hit_point.pos[grid].x = rays[i].pos[grid].x + rays[i].stepX;
 			rays[i].hit_point.pos[grid].y = rays[i].pos[grid].y + rays[i].stepX * rays[i].dir[grid].y;
 		}
 		else if (rays[i].stepX >= rays[i].stepY)
 		{
+			printf("2\n");
 			rays[i].hit_point.type = hline;
 			rays[i].hit_point.pos[grid].x = rays[i].pos[grid].x + rays[i].stepY * rays[i].dir[grid].x;
-			rays[i].hit_point.pos[grid].y = rays[i].pos[grid].y + rays[i].stepY * rays[i].dir[grid].y;
+			rays[i].hit_point.pos[grid].y = rays[i].pos[grid].y + rays[i].stepY;
 		}
 		++i;
 	}
@@ -217,6 +245,7 @@ t_ray*	raycasting(t_game *game)
 	set_rays_dir(game, rays, nb_rays);
 	set_rays_steps(game, rays, nb_rays);
 	set_rays_first_hit_point(rays, nb_rays);
+	//draw_rays_hit_points(game, rays, nb_rays, LIME);
 	return (rays);
 }
 
