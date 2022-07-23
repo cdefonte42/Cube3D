@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/23 12:58:21 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/23 15:35:56 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ EAST	=	(+1, 0, 0);										V y
 */
 
 /* Type de l'element touche par le rayon: wall (vertical/horizontal), sprite, door*/
-typedef enum e_element_type {apex, vline, hline, vwall, hwall, sprite, door} t_type;
+typedef enum e_element_type {apex, vline, vwall, hline, hwall, sprite, door} t_type;
 typedef enum e_orientation {south = 'S', north = 'N', west = 'W', east = 'E'} t_orientation;
 enum e_sys_ids {view, grid, map, sys_ids_size}; // nom des reperes; a rajouter si besoin d'un nouveau systeme (avant la size);
 
@@ -102,7 +102,7 @@ typedef struct s_player
 	double	dist_screen;	// distance between screen and player view (fonction du FOV);
 	t_pos			pos;	// position du jouer, dans systeme de map
 	t_dir			dir;	// orientation du joueur, N/S/W/E, en sys map & grid;
-	double			angle;	// son orientation par rapport au repre de la map
+	//double			angle;	// son orientation par rapport au repre de la map
 							//en radians
 	double			rot_speed;	// angle increment pour une pression touche droite ou gauche
 	double			mv_speed;	// inc (en map unit) pour le deplacement du jouer
@@ -189,6 +189,9 @@ void	draw_grid(t_game *game);
 void	draw_walls(t_game *game);
 void	draw_player(t_game *game);
 void	draw_map(t_game *game);
+
+/*_______ COLISION _______*/
+bool	check_for_colision(t_game *game, int keycode);
 
 /* _________ RAYCASTING ________ */
 t_ray	get_mid_ray(t_game *game);

@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:07:19 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/23 13:06:14 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/23 15:36:04 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,10 @@ void	ray_tests(t_game *game)
 //		draw_square(game, rays[0].hit_point.pos[grid], 5, PINK);
 //	else 
 //		draw_square(game, rays[0].hit_point.pos[grid], 5, RED);
-	if (check_hit_point_is_wall(game, rays[50]) == true)
-		draw_square(game, rays[50].hit_point.pos[grid], 5, PINK);
+	if (check_hit_point_is_wall(game, rays[159]) == true)
+		draw_square(game, rays[159].hit_point.pos[grid], 5, PINK);
 	else 
-		draw_square(game, rays[50].hit_point.pos[grid], 5, RED);
+		draw_square(game, rays[159].hit_point.pos[grid], 5, LIME);
 //	if (check_hit_point_is_wall(game, rays[100]) == true)
 //		draw_square(game, rays[100].hit_point.pos[grid], 5, PINK);
 //	else 
@@ -61,10 +61,10 @@ void	ray_tests(t_game *game)
 //		draw_square(game, rays[130].hit_point.pos[grid], 5, PINK);
 //	else 
 //		draw_square(game, rays[130].hit_point.pos[grid], 5, RED);
-	if (check_hit_point_is_wall(game, rays[159]) == true)
-		draw_square(game, rays[159].hit_point.pos[grid], 5, PINK);
-	else 
-		draw_square(game, rays[159].hit_point.pos[grid], 5, RED);
+//	if (check_hit_point_is_wall(game, rays[159]) == true)
+//		draw_square(game, rays[159].hit_point.pos[grid], 5, PINK);
+//	else 
+//		draw_square(game, rays[159].hit_point.pos[grid], 5, LIME);
 
 }
 
@@ -85,13 +85,13 @@ int	main(int argc, char** argv)
 	game.cube_size = 64.0;
 	game.player.fov = (60.0 * PI) / 180.0;
 	game.player.dist_screen = (game.width / 2) / tan(game.player.fov / 2);
-	game.player.pos.x = 6.7; //exprime en map unit, soit *64 pour pixels
-	game.player.pos.y = 2.3;
+	game.player.pos.x = 1.5; //exprime en map unit, soit *64 pour pixels
+	game.player.pos.y = 1.5;
 	game.player.pos.z = 0.0;
-	game.player.dir.x = 0.5; // ATTENTION compris entre -1 et 1!!! EXPRIME EN MAP
-	game.player.dir.y = 0.5; // North
+	game.player.dir.x = 0.0; // ATTENTION compris entre -1 et 1!!! EXPRIME EN MAP
+	game.player.dir.y = -1.0; // North
 	game.player.dir.z = 0.0;
-	game.player.angle = atan(game.player.dir.y / game.player.dir.x);
+	//game.player.angle = atan(game.player.dir.y / game.player.dir.x);
 	game.player.rot_speed = (4 * PI) / 180;
 	game.player.mv_speed = 5.0 / 64.0; // se deplace de 5 pixels en appuyant 1 fois sur touche
 	game.player.rays = malloc(sizeof(t_ray) * game.width); // A PROTEGER

@@ -6,7 +6,7 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 11:03:07 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/07/23 12:35:52 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/23 15:24:48 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,13 +189,23 @@ bool	check_hit_point_is_wall(t_game *game, t_ray ray)
 {
 	int	x;
 	int	y;
+	double	intx;
+	double	inty;
+	double	u = ray.hit_point.pos[grid].x;
+	double	v = ray.hit_point.pos[grid].y;
+	(void)u;
+	(void)v;
 
-	x = ray.hit_point.pos[grid].x / 64.0;
-	y = ray.hit_point.pos[grid].y / 64.0;
+	modf(ray.hit_point.pos[grid].x, &intx);
+	modf(ray.hit_point.pos[grid].y, &inty);
+	x = intx / 64.0;
+	y = inty / 64.0;
+	printf("AVANT y = %d x = %d u = %f v = % f \n", y,x,u,v);
 	if (ray.dir[grid].y <= 0 && ray.dir[grid].x >= - 0.5 && ray.dir[grid].x <= 0.5)
 		--y;
 	if (ray.dir[grid].x <= 0 && ray.dir[grid].y <= 0.5 && ray.dir[grid].y >= -0.5)
 		--x;
+	printf("APRES y = %d x = %d u = %f v = % f \n", y,x,u,v);
 	if (game->map.tab[y][x] == '1')
 		return (true);
 	return (false);
@@ -253,11 +263,12 @@ void	raycasting(t_game *game)
 	d_angle = atan(1 / game->player.dist_screen);
 	cpy_ray(game->player.rays, mid_ray, nb_rays);
 	set_rays_dir(game->player.rays, nb_rays, d_angle);
+	printf("ray dir APRES x = %f y = %f\n", game->player.rays[159].dir[grid].x, game->player.rays[159].dir[grid].y);
 	for (int i = 0; i < nb_rays; ++i)
 	{
 		set_ray_steps(game, game->player.rays[i]);
 		set_ray_first_line_hit_point(&(game->player.rays[i]));
-		set_wall_hit_point(game, game->player.rays[i]);
+		//set_wall_hit_point(game, game->player.rays[i]);
 	}
 }
 
