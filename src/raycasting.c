@@ -6,26 +6,26 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 11:03:07 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/07/23 18:43:54 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/23 19:55:48 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cubed.h"
 
-void	set_ray_steps(t_game *game, t_ray ray)
+void	set_ray_steps(t_game *game, t_ray *ray)
 {
 	double	int_part;
 	double	cube_size;
 
 	cube_size = game->cube_size;
-	if (ray.dir[grid].x >= 0)
-		ray.stepX = cube_size - modf(ray.pos[map].x, &int_part) * cube_size;
+	if (ray->dir[grid].x > 0)
+		ray->stepX = cube_size - (modf(ray->pos[map].x, &int_part) * cube_size);
 	else
-		ray.stepX = -modf(ray.pos[map].x, &int_part) * cube_size;
-	if (ray.dir[grid].y >= 0)
-		ray.stepY = cube_size - modf(ray.pos[map].y, &int_part) * cube_size;
+		ray->stepX = - (modf(ray->pos[map].x, &int_part) * cube_size);
+	if (ray->dir[grid].y > 0)
+		ray->stepY = cube_size - (modf(ray->pos[map].y, &int_part) * cube_size);
 	else
-		ray.stepY = -modf(ray.pos[map].y, &int_part) * cube_size;
+		ray->stepY = - (modf(ray->pos[map].y, &int_part) * cube_size);
 }
 
 /* Eq droite: Or(t) = Op + t * Od Avec Or = infinite rays(t). Op = point origine ray.
@@ -37,24 +37,23 @@ t_ray	get_mid_ray(t_game *game)
 	double	int_part;
 	int		cube_size = game->cube_size;
 
-	ray.pos[view].x = 0; // pour repasser en sys en map: + pos[map].x;
-	ray.pos[view].y = 0;
+	ray.pos[view].x = 0.0; // pour repasser en sys en map: + pos[map].x;
+	ray.pos[view].y = 0.0;
 	ray.pos[grid].x = game->player.pos.x * game->cube_size;
 	ray.pos[grid].y = game->player.pos.y * game->cube_size;
 	ray.pos[map].x = game->player.pos.x;
 	ray.pos[map].y = game->player.pos.y;
-	ray.dir[view].x = 0;
-	ray.dir[view].y = 1; // ATTENTION pour la suite: faut faire la rotation entre dir view et dir grid (ou map car dir map = dir grid)!
+	ray.dir[view].x = 0.0;
+	ray.dir[view].y = 1.0; // ATTENTION pour la suite: faut faire la rotation entre dir view et dir grid (ou map car dir map = dir grid)!
 	ray.dir[grid].x = game->player.dir.x;
 	ray.dir[grid].y = game->player.dir.y;
 	ray.dir[map].x = game->player.dir.x;
 	ray.dir[map].y = game->player.dir.y;
-	set_ray_steps(game, ray);
-	if (ray.dir[grid].x >= 0)
+	if (ray.dir[grid].x >= 0.0)
 		ray.stepX = cube_size - modf(ray.pos[map].x, &int_part) * cube_size;
 	else
 		ray.stepX = -modf(ray.pos[map].x, &int_part) * cube_size;
-	if (ray.dir[grid].y >= 0)
+	if (ray.dir[grid].y >= 0.0)
 		ray.stepY = cube_size - modf(ray.pos[map].y, &int_part) * cube_size;
 	else
 		ray.stepY = -modf(ray.pos[map].y, &int_part) * cube_size;
@@ -172,7 +171,7 @@ void	raycasting(t_game *game)
 	set_rays_dir(game->player.rays, nb_rays, d_angle);
 	for (int i = 0; i < nb_rays; ++i)
 	{
-		set_ray_steps(game, game->player.rays[i]);
+		set_ray_steps(game, &(game->player.rays[i]));
 		set_ray_first_line_hit_point(&(game->player.rays[i]));
 		//set_wall_hit_point(game, game->player.rays[i]);
 	}
