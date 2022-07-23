@@ -6,7 +6,7 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 18:03:35 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/07/23 18:40:12 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/23 22:34:16 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	draw_walls(t_game *game)
 		for (int j = 0; j < game->map.width; ++j)
 		{
 			if (game->map.tab[i][j] == '1')
-				fill_cube(game, i, j, GREEN);
+				fill_cube(game, i, j, GREY);
 		}
 	}
 }
