@@ -6,13 +6,14 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 11:03:07 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/07/23 11:55:48 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/23 12:35:52 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cubed.h"
 
-/* Dessine un carre, de size haut et size large (en pixel), a la position origin */
+/* Dessine un carre, de size haut et size large (en pixel), a la 
+position origin (en grid unit)*/
 // Un peu la meme chose que draw_player et fill_cube dans draw_map.c
 void	draw_square(t_game *game, t_pos origin, int size, int color)
 {
@@ -108,11 +109,11 @@ void	set_ray_steps(t_game *game, t_ray ray)
 	if (ray.dir[grid].x >= 0)
 		ray.stepX = cube_size - modf(ray.pos[map].x, &int_part) * cube_size;
 	else
-		ray.stepX = -(cube_size - modf(ray.pos[map].x, &int_part) * cube_size);
+		ray.stepX = -modf(ray.pos[map].x, &int_part) * cube_size;
 	if (ray.dir[grid].y >= 0)
 		ray.stepY = cube_size - modf(ray.pos[map].y, &int_part) * cube_size;
 	else
-		ray.stepY = -(cube_size - modf(ray.pos[map].y, &int_part) * cube_size);
+		ray.stepY = -modf(ray.pos[map].y, &int_part) * cube_size;
 }
 
 /* Eq droite: Or(t) = Op + t * Od Avec Or = infinite rays(t). Op = point origine ray.
@@ -140,11 +141,11 @@ t_ray	get_mid_ray(t_game *game)
 	if (ray.dir[grid].x >= 0)
 		ray.stepX = cube_size - modf(ray.pos[map].x, &int_part) * cube_size;
 	else
-		ray.stepX = -(cube_size - modf(ray.pos[map].x, &int_part) * cube_size);
+		ray.stepX = -modf(ray.pos[map].x, &int_part) * cube_size;
 	if (ray.dir[grid].y >= 0)
 		ray.stepY = cube_size - modf(ray.pos[map].y, &int_part) * cube_size;
 	else
-		ray.stepY = -(cube_size - modf(ray.pos[map].y, &int_part) * cube_size);
+		ray.stepY = -modf(ray.pos[map].y, &int_part) * cube_size;
 //	int t = 10 * game->cube_size; // t: longeur de la ligne;
 //	ray.vec[view].x = ray.pos[view].x + t * ray.dir[view].x;
 //	ray.vec[view].y = ray.pos[view].y + t * ray.dir[view].y; 

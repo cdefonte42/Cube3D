@@ -6,7 +6,7 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 18:03:35 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/07/21 21:16:56 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/23 12:29:41 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,8 @@ au player. */
 void	draw_player(t_game *game)
 {
 	int	size_line = game->map.grid.size_line / 4;
-	int	origin_line = (game->player.pos.y * game->cube_size - 5) * size_line;
-	int	origin_col = game->player.pos.x * game->cube_size - 5;
+	int	origin_line = ((int)(game->player.pos.y * game->cube_size - 5) * size_line);
+	int	origin_col = (game->player.pos.x * game->cube_size - 5);
 	int	max_line = origin_line + 10 * size_line;
 	int	max_col = origin_col + 10;
 	int	*pixels = game->map.grid.data;
