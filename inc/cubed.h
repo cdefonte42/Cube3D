@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/23 15:35:56 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/23 18:40:26 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ typedef struct s_ray
 	t_pos	pos[sys_ids_size];
 	t_dir	dir[sys_ids_size];
 	double	stepX;		// longueur pour first vertical wall
-	double	stepY;		// longueur, en grid unit, a faire sur le rayon pour 
+	double	stepY;		// longueur, en grid unit, a faire sur le ray pour 
 						// toucher le premier horizontal wall
 	t_hit_point	hit_point;	// point qui touche une ligne, et a la fin du
 							// calcul un wall
@@ -187,8 +187,9 @@ void	cpy_img_pixels(t_screen from, t_screen to);
 void	fill_cube(t_game *game, int y, int x, int color);
 void	draw_grid(t_game *game);
 void	draw_walls(t_game *game);
-void	draw_player(t_game *game);
 void	draw_map(t_game *game);
+void	draw_player(t_game *game);
+void	draw_square(t_game *game, t_pos origin, int size, int color);
 
 /*_______ COLISION _______*/
 bool	check_for_colision(t_game *game, int keycode);
@@ -196,16 +197,17 @@ bool	check_for_colision(t_game *game, int keycode);
 /* _________ RAYCASTING ________ */
 t_ray	get_mid_ray(t_game *game);
 void	raycasting(t_game *game);
-void	draw_ray_until_first_Hline(t_game *game, t_ray ray, int color);
-void	draw_ray_until_first_Vline(t_game *game, t_ray ray, int color);
-void	draw_ray(t_game *game, t_ray ray, int color);
-void	draw_square(t_game *game, t_pos origin, int size, int color);
 bool	check_hit_point_is_wall(t_game *game, t_ray ray);
 
 /* _________ VECTORS UTILS _______*/
 struct s_coord	rotate_vector_angle(struct s_coord from, double angle);
 
-/* _____________ TESTS __________ */
+/*__________ RAYTRACING (DEBUG) _______*/
+void	draw_ray_until_first_Hline(t_game *game, t_ray ray, int color);
+void	draw_ray_until_first_Vline(t_game *game, t_ray ray, int color);
+void	draw_ray(t_game *game, t_ray ray, int color);
+
+/* _____________ TESTS (DEBUG) __________ */
 void	ray_tests(t_game *game);
 
 #endif

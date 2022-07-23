@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:32:55 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/23 15:35:45 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/23 18:22:02 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	key_hook(int keycode, void *param)
 		ray_tests(game);
 		mlx_put_image_to_window(game->mlx_ptr, game->map.win, game->map.img.ptr, 0, 0);
 	}
-	else if (keycode == UP_ARW)
+	else if (keycode == UP_ARW && !check_for_colision(game, keycode))
 	{
 		game->player.pos.x += game->player.dir.x * game->player.mv_speed;
 		game->player.pos.y += game->player.dir.y * game->player.mv_speed;

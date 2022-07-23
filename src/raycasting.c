@@ -6,99 +6,11 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 11:03:07 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/07/23 18:12:36 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/23 18:43:54 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cubed.h"
-
-/* Dessine un carre, de size haut et size large (en pixel), a la 
-position origin (en grid unit)*/
-// Un peu la meme chose que draw_player et fill_cube dans draw_map.c
-void	draw_square(t_game *game, t_pos origin, int size, int color)
-{
-	int	size_line = game->map.img.size_line / 4;
-	int	*pixels = game->map.img.data;
-	int	line;
-	int	col;
-	int	max_line;
-	int	max_col;
-
-	line = ((int)origin.y - size / 2) * size_line;
-	col = (int)origin.x - (size / 2);
-	max_line = line + size * size_line;
-	max_col = col + size;
-	while (line < max_line && line < (int)game->map.img.height * size_line)
-	{
-		col = (int)origin.x - (size / 2);
-		while (col < max_col && col < size_line)
-		{
-			pixels[col + line] = color;
-			++col;
-		}
-		line += size_line;
-	}
-	
-}
-
-void	draw_ray_until_first_Hline(t_game *game, t_ray ray, int color)
-{
-	int	size_line = game->map.img.size_line / 4;
-	int	max_line = game->cube_size * game->map.height;
-	int	*pixels = game->map.img.data;
-	int	line = 0;
-	int	col = 0;
-
-	double	part_int;
-	double	Dy = 64.0 - modf(ray.pos[map].y, &part_int) * 64.0;
-	int	length = 0;
-	while (fabs(length * ray.dir[grid].y) <= Dy && (line < max_line && line >= 0) && (col < size_line && col >= 0))
-	{	
-		pixels[line * size_line + col] = color;
-		++length;
-		col = ray.pos[grid].x + length * ray.dir[grid].x; // t: longeur de la ligne;
-		line = ray.pos[grid].y + length * ray.dir[grid].y;
-	}
-}
-
-void	draw_ray_until_first_Vline(t_game *game, t_ray ray, int color)
-{
-	int	size_line = game->map.img.size_line / 4;
-	int	max_line = game->cube_size * game->map.height;
-	int	*pixels = game->map.img.data;
-	int	line = 0;
-	int	col = 0;
-
-	double	part_int;
-	double	Dx = 64.0 - modf(ray.pos[map].x, &part_int) * 64.0;
-	int	length = 0;
-	while (fabs(length * ray.dir[grid].x) <= Dx && (line < max_line && line >= 0) && (col < size_line && col >= 0))
-	{	
-		pixels[line * size_line + col] = color;
-		++length;
-		col = ray.pos[grid].x + length * ray.dir[grid].x; // t: longeur de la ligne;
-		line = ray.pos[grid].y + length * ray.dir[grid].y;
-	}
-}
-
-void	draw_ray(t_game *game, t_ray ray, int color)
-{
-	int	size_line = game->map.img.size_line / 4;
-	int	max_line = game->cube_size * game->map.height;
-	int	*pixels = game->map.img.data;
-	int	line = 0;
-	int	col = 0;
-
-	//t = longueur du vecteur (de la ligne)
-	int t = 0; // A transformer en Dx et Dy double pour passer d'un carre a l'autre
-	while ((line < max_line && line >= 0) && (col < size_line && col >= 0))
-	{	
-		pixels[(line * size_line + col)] = color;
-		++t;
-		col = ray.pos[grid].x + t * ray.dir[grid].x;
-		line = ray.pos[grid].y + t * ray.dir[grid].y;
-	}
-}
 
 void	set_ray_steps(t_game *game, t_ray ray)
 {
@@ -154,6 +66,11 @@ t_ray	get_mid_ray(t_game *game)
 	return (ray);
 }
 
+/* Copie toutes les donnees du ray 'src' (must be the mid ray!) dans tous les 
+rays du tableau. Ceci afin d'initialiser leur donnees et calculs (?) 
+Peut etre pas utile si on pouvait faire comme en c++ des membres static: 
+une seule et meme instance de variable commune a tous. Comment? En mettant la
+var dans le player, mais du coup devrait se balader avec le player partout... */
 void	cpy_ray(t_ray *tab, t_ray src, int nb_rays)
 {
 	while (--nb_rays >= 0)
@@ -253,7 +170,6 @@ void	raycasting(t_game *game)
 	d_angle = atan(1 / game->player.dist_screen);
 	cpy_ray(game->player.rays, mid_ray, nb_rays);
 	set_rays_dir(game->player.rays, nb_rays, d_angle);
-	printf("ray dir APRES x = %f y = %f\n", game->player.rays[159].dir[grid].x, game->player.rays[159].dir[grid].y);
 	for (int i = 0; i < nb_rays; ++i)
 	{
 		set_ray_steps(game, game->player.rays[i]);

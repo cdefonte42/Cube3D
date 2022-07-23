@@ -6,7 +6,7 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 18:03:35 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/07/23 12:54:56 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/23 18:40:12 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /* Remplit la position (x, y) en map unit de 64(cube size) pixels de color. */
 void	fill_cube(t_game *game, int y, int x, int color)
 {
-	int *pixels = game->map.grid.data;
+	int	*pixels = game->map.grid.data;
 	int	size_line = game->map.grid.size_line / 4;
 	int	origin_line = y * game->cube_size * size_line;
 	int	origin_col = x * game->cube_size;
@@ -85,6 +85,35 @@ void	draw_player(t_game *game)
 	}
 }
 
+/* Dessine un carre, de size haut et size large (en pixel), a la 
+position origin (en grid unit)*/
+// Un peu la meme chose que draw_player et fill_cube dans draw_map.c
+void	draw_square(t_game *game, t_pos origin, int size, int color)
+{
+	int	size_line = game->map.img.size_line / 4;
+	int	*pixels = game->map.img.data;
+	int	line;
+	int	col;
+	int	max_line;
+	int	max_col;
+
+	line = ((int)origin.y - size / 2) * size_line;
+	col = (int)origin.x - (size / 2);
+	max_line = line + size * size_line;
+	max_col = col + size;
+	while (line < max_line && line < (int)game->map.img.height * size_line)
+	{
+		col = (int)origin.x - (size / 2);
+		while (col < max_col && col < size_line)
+		{
+			pixels[col + line] = color;
+			++col;
+		}
+		line += size_line;
+	}
+	
+}
+
 /* Cree une nouvelle window et son MLX image associee, pour dessiner pixels par
 pixels la map en top 2D view. Return 0 si OK, -1 si erreur de Malloc. */
 // NE PUT pas l'image dessinee
@@ -92,7 +121,6 @@ void	draw_map(t_game *game)
 {
 	draw_walls(game);
 	draw_grid(game);
-	//draw_player(game);
 }
 
 
