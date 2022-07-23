@@ -6,7 +6,7 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 11:03:07 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/07/23 11:44:49 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/23 11:55:48 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,9 +192,9 @@ bool	check_hit_point_is_wall(t_game *game, t_ray ray)
 	x = ray.hit_point.pos[grid].x / 64.0;
 	y = ray.hit_point.pos[grid].y / 64.0;
 	if (ray.dir[grid].y <= 0 && ray.dir[grid].x >= - 0.5 && ray.dir[grid].x <= 0.5)
-		--x;
-	if (ray.dir[grid].x <= 0 && ray.dir[grid].y <= 0.5 && ray.dir[grid].y >= -0.5)
 		--y;
+	if (ray.dir[grid].x <= 0 && ray.dir[grid].y <= 0.5 && ray.dir[grid].y >= -0.5)
+		--x;
 	if (game->map.tab[y][x] == '1')
 		return (true);
 	return (false);
@@ -232,6 +232,15 @@ void	set_ray_first_line_hit_point(t_ray *ray)
 	}
 }
 
+void	set_wall_hit_point(t_game *game, t_ray ray)
+{
+	/* while check_hit_point_is_wall(game, ray) == false
+		faire le calcul: need to know le delta x et le delta y !!!
+	*/
+	(void)ray;
+	(void)game;
+}
+
 void	raycasting(t_game *game)
 {
 	t_ray	mid_ray;
@@ -247,6 +256,7 @@ void	raycasting(t_game *game)
 	{
 		set_ray_steps(game, game->player.rays[i]);
 		set_ray_first_line_hit_point(&(game->player.rays[i]));
+		set_wall_hit_point(game, game->player.rays[i]);
 	}
 }
 
