@@ -6,7 +6,7 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 11:03:07 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/07/23 20:26:57 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/23 22:32:06 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ void	set_ray_steps(t_game *game, t_ray *ray)
 	double	cube_size;
 
 	cube_size = game->cube_size;
-	if (ray->dir[grid].x > 0)
+	if (ray->dir[grid].x >= 0)
 		ray->stepX = cube_size - (modf(ray->pos[map].x, &int_part) * cube_size);
 	else
 		ray->stepX = - (modf(ray->pos[map].x, &int_part) * cube_size);
-	if (ray->dir[grid].y > 0)
+	if (ray->dir[grid].y >= 0)
 		ray->stepY = cube_size - (modf(ray->pos[map].y, &int_part) * cube_size);
 	else
 		ray->stepY = - (modf(ray->pos[map].y, &int_part) * cube_size);
@@ -47,6 +47,7 @@ t_ray	get_mid_ray(t_game *game)
 	ray.dir[grid].y = game->player.dir.y;
 	ray.dir[map].x = game->player.dir.x;
 	ray.dir[map].y = game->player.dir.y;
+	ray.hit_point.dist = 0.0;
 	set_ray_steps(game, &ray);
 	return (ray);
 }
@@ -94,18 +95,16 @@ bool	check_hit_point_is_wall(t_game *game, t_ray ray)
 
 	x = (int)ray.hit_point.pos[grid].x / 64;
 	y = (int)ray.hit_point.pos[grid].y / 64;
-	if (ray.hit_point.type == vline && ray.stepX < 0)
+	if ((ray.hit_point.type == vline || ray.hit_point.type == apex) && ray.stepX <= 0)
 		--x;
-	if (ray.hit_point.type == hline && ray.stepY < 0)
+	if ((ray.hit_point.type == hline || ray.hit_point.type == apex) && ray.stepY <= 0)
 		--y;
 	if (game->map.tab[y][x] == '1')
 		return (true);
 	return (false);
 }
 
-/*Then calculate the hit point x and y coordinates; MAIS EN FAIT pour optimiser,
-on a besoin que des x et y a des valeurs multiples de CUBE_SIZE et pas precis*/
-void	set_ray_first_line_hit_point(t_ray *ray)
+void	next_hit_point(t_ray *ray)
 {
 	double	len_till_Vline;
 	double	len_till_Hline;
@@ -115,39 +114,50 @@ void	set_ray_first_line_hit_point(t_ray *ray)
 	if (len_till_Vline < len_till_Hline)
 	{
 		ray->hit_point.type = vline;
-		ray->hit_point.dist = len_till_Vline;
+		ray->hit_point.dist += len_till_Vline;
 		ray->hit_point.pos[grid].x = ray->pos[grid].x + ray->stepX;
 		ray->hit_point.pos[grid].y = ray->pos[grid].y + len_till_Vline * ray->dir[grid].y;
 	}
 	else if (len_till_Vline > len_till_Hline)
 	{
 		ray->hit_point.type = hline;
-		ray->hit_point.dist = len_till_Hline;
+		ray->hit_point.dist += len_till_Hline;
 		ray->hit_point.pos[grid].x = ray->pos[grid].x + len_till_Hline * ray->dir[grid].x;
 		ray->hit_point.pos[grid].y = ray->pos[grid].y + ray->stepY;
 	}
 	else
 	{
 		ray->hit_point.type = apex;
+		ray->hit_point.dist += len_till_Hline;
 		ray->hit_point.pos[grid].x = ray->pos[grid].x + ray->stepX;
 		ray->hit_point.pos[grid].y = ray->pos[grid].y + ray->stepY;
-	
 	}
 }
 
 void	set_wall_hit_point(t_game *game, t_ray *ray)
 {
-	/* while check_hit_point_is_wall(game, ray) == false
-		faire le calcul: need to know le delta x et le delta y !!!
-	*/
-	(void)ray;
-	(void)game;
-}
-
-void	set_ray_deltas(t_game *game, t_ray *ray)
-{
-	(void)game;
-	(void)ray;
+	while (check_hit_point_is_wall(game, *ray) == false)
+	{
+		if (ray->hit_point.type == vline)
+		{
+			if (ray->stepX < 0)
+				ray->stepX -= game->cube_size;
+			else
+				ray->stepX += game->cube_size;
+		}
+		else
+		{
+			if (ray->stepY < 0)
+				ray->stepY -= game->cube_size;
+			else if (ray->stepY > 0)
+				ray->stepY += game->cube_size;
+		}
+		next_hit_point(ray);
+	}
+	if (ray->hit_point.type == vline)
+		ray->hit_point.type = vwall;
+	else if (ray->hit_point.type == hline)
+		ray->hit_point.type = hwall;
 }
 
 void	raycasting(t_game *game)
@@ -164,8 +174,8 @@ void	raycasting(t_game *game)
 	for (int i = 0; i < nb_rays; ++i)
 	{
 		set_ray_steps(game, &(game->player.rays[i]));
-		set_ray_first_line_hit_point(&(game->player.rays[i]));
-		//set_wall_hit_point(game, game->player.rays[i]);
+		next_hit_point(&(game->player.rays[i]));
+		set_wall_hit_point(game, &(game->player.rays[i]));
 	}
 }
 
