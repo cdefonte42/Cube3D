@@ -6,7 +6,7 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 11:03:07 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/07/23 15:24:48 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/23 18:12:36 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,23 +189,13 @@ bool	check_hit_point_is_wall(t_game *game, t_ray ray)
 {
 	int	x;
 	int	y;
-	double	intx;
-	double	inty;
-	double	u = ray.hit_point.pos[grid].x;
-	double	v = ray.hit_point.pos[grid].y;
-	(void)u;
-	(void)v;
 
-	modf(ray.hit_point.pos[grid].x, &intx);
-	modf(ray.hit_point.pos[grid].y, &inty);
-	x = intx / 64.0;
-	y = inty / 64.0;
-	printf("AVANT y = %d x = %d u = %f v = % f \n", y,x,u,v);
-	if (ray.dir[grid].y <= 0 && ray.dir[grid].x >= - 0.5 && ray.dir[grid].x <= 0.5)
-		--y;
-	if (ray.dir[grid].x <= 0 && ray.dir[grid].y <= 0.5 && ray.dir[grid].y >= -0.5)
+	x = (int)ray.hit_point.pos[grid].x / 64;
+	y = (int)ray.hit_point.pos[grid].y / 64;
+	if (ray.hit_point.type == vline && ray.stepX < 0)
 		--x;
-	printf("APRES y = %d x = %d u = %f v = % f \n", y,x,u,v);
+	if (ray.hit_point.type == hline && ray.stepY < 0)
+		--y;
 	if (game->map.tab[y][x] == '1')
 		return (true);
 	return (false);
