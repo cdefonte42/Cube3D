@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/23 10:59:17 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/23 12:58:21 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,10 @@ typedef struct s_player
 	double	dist_screen;	// distance between screen and player view (fonction du FOV);
 	t_pos			pos;	// position du jouer, dans systeme de map
 	t_dir			dir;	// orientation du joueur, N/S/W/E, en sys map & grid;
-	double			rot;	// angle increment pour une pression touche droite ou gauche
+	double			angle;	// son orientation par rapport au repre de la map
+							//en radians
+	double			rot_speed;	// angle increment pour une pression touche droite ou gauche
+	double			mv_speed;	// inc (en map unit) pour le deplacement du jouer
 	t_ray			*rays;	// tableau de rays;
 }				t_player;
 

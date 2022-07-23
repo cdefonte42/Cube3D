@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:07:19 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/23 12:36:07 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/23 13:06:14 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,9 @@ int	main(int argc, char** argv)
 	game.player.dir.x = 0.5; // ATTENTION compris entre -1 et 1!!! EXPRIME EN MAP
 	game.player.dir.y = 0.5; // North
 	game.player.dir.z = 0.0;
-	game.player.rot = (4 * PI) / 180;
+	game.player.angle = atan(game.player.dir.y / game.player.dir.x);
+	game.player.rot_speed = (4 * PI) / 180;
+	game.player.mv_speed = 5.0 / 64.0; // se deplace de 5 pixels en appuyant 1 fois sur touche
 	game.player.rays = malloc(sizeof(t_ray) * game.width); // A PROTEGER
 
 	if (init_mlx(&game) == -1)
@@ -101,6 +103,7 @@ int	main(int argc, char** argv)
 	draw_map(&game);
 	cpy_img_pixels(game.map.grid, game.map.img);
 	raycasting(&game);
+	draw_player(&game);
 
 	ray_tests(&game);
 

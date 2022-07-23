@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:32:55 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/22 19:54:48 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/23 13:06:38 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,16 +49,40 @@ int	key_hook(int keycode, void *param)
 		ft_exit(game);
 	if (keycode == R_ARW)
 	{
-		game->player.dir = rotate_vector_angle(game->player.dir, game->player.rot);
+		game->player.dir = rotate_vector_angle(game->player.dir, game->player.rot_speed);
+		game->player.angle += game->player.rot_speed;
 		cpy_img_pixels(game->map.grid, game->map.img);
+		draw_player(game);
 		raycasting(game);
 		ray_tests(game);
 		mlx_put_image_to_window(game->mlx_ptr, game->map.win, game->map.img.ptr, 0, 0);
 	}
 	else if (keycode == L_ARW)
 	{
-		game->player.dir = rotate_vector_angle(game->player.dir, -game->player.rot);
+		game->player.dir = rotate_vector_angle(game->player.dir, -game->player.rot_speed);
+		game->player.angle -= game->player.rot_speed;
 		cpy_img_pixels(game->map.grid, game->map.img);
+		draw_player(game);
+		raycasting(game);
+		ray_tests(game);
+		mlx_put_image_to_window(game->mlx_ptr, game->map.win, game->map.img.ptr, 0, 0);
+	}
+	else if (keycode == UP_ARW)
+	{
+		game->player.pos.x += cos(game->player.angle) * game->player.mv_speed;
+		game->player.pos.y += sin(game->player.angle) * game->player.mv_speed;
+		cpy_img_pixels(game->map.grid, game->map.img);
+		draw_player(game);
+		raycasting(game);
+		ray_tests(game);
+		mlx_put_image_to_window(game->mlx_ptr, game->map.win, game->map.img.ptr, 0, 0);
+	}
+	else if (keycode == DOWN_ARW)
+	{
+		game->player.pos.x -= cos(game->player.angle) * game->player.mv_speed;
+		game->player.pos.y -= sin(game->player.angle) * game->player.mv_speed;
+		cpy_img_pixels(game->map.grid, game->map.img);
+		draw_player(game);
 		raycasting(game);
 		ray_tests(game);
 		mlx_put_image_to_window(game->mlx_ptr, game->map.win, game->map.img.ptr, 0, 0);

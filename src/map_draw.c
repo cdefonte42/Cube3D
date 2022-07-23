@@ -6,7 +6,7 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 18:03:35 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/07/23 12:29:41 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/23 12:54:56 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	draw_player(t_game *game)
 	int	origin_col = (game->player.pos.x * game->cube_size - 5);
 	int	max_line = origin_line + 10 * size_line;
 	int	max_col = origin_col + 10;
-	int	*pixels = game->map.grid.data;
+	int	*pixels = game->map.img.data;
 
 	for (int line = origin_line; line < max_line; line += size_line)
 	{
@@ -92,7 +92,7 @@ void	draw_map(t_game *game)
 {
 	draw_walls(game);
 	draw_grid(game);
-	draw_player(game);
+	//draw_player(game);
 }
 
 
