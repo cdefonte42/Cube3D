@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/22 19:45:24 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/23 10:59:17 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,6 +194,7 @@ void	draw_ray_until_first_Hline(t_game *game, t_ray ray, int color);
 void	draw_ray_until_first_Vline(t_game *game, t_ray ray, int color);
 void	draw_ray(t_game *game, t_ray ray, int color);
 void	draw_square(t_game *game, t_pos origin, int size, int color);
+bool	check_hit_point_is_wall(t_game *game, t_ray ray);
 
 /* _________ VECTORS UTILS _______*/
 struct s_coord	rotate_vector_angle(struct s_coord from, double angle);

@@ -6,13 +6,14 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 11:03:07 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/07/22 19:50:25 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/23 11:23:04 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cubed.h"
 
 /* Dessine un carre, de size haut et size large (en pixel), a la position origin */
+// Un peu la meme chose que draw_player et fill_cube dans draw_map.c
 void	draw_square(t_game *game, t_pos origin, int size, int color)
 {
 	int	size_line = game->map.img.size_line / 4;
@@ -22,7 +23,6 @@ void	draw_square(t_game *game, t_pos origin, int size, int color)
 	int	max_line;
 	int	max_col;
 
-	//printf("x = %f y = %f size line = %d\n", origin.x, origin.y, size_line);
 	line = ((int)origin.y - size / 2) * size_line;
 	col = (int)origin.x - (size / 2);
 	max_line = line + size * size_line;
@@ -32,7 +32,6 @@ void	draw_square(t_game *game, t_pos origin, int size, int color)
 		col = (int)origin.x - (size / 2);
 		while (col < max_col && col < size_line)
 		{
-			//printf("col = %d, line = %d\n", col, line);
 			pixels[col + line] = color;
 			++col;
 		}
@@ -40,11 +39,6 @@ void	draw_square(t_game *game, t_pos origin, int size, int color)
 	}
 	
 }
-//
-//void	draw_rays_hit_points(t_game *game, t_ray ray, int nb_rays, int color)
-//{
-//	
-//}
 
 void	draw_ray_until_first_Hline(t_game *game, t_ray ray, int color)
 {
@@ -166,10 +160,22 @@ void	set_rays_dir(t_ray *rays, int nb_rays, double d_angle)
 	}
 }
 
-//bool	check_hit_point_is_wall(t_game *game, t_ray ray)
-//{
-//	return (false);
-//}
+bool	check_hit_point_is_wall(t_game *game, t_ray ray)
+{
+	int	x;
+	int	y;
+
+	x = ray.hit_point.pos[grid].x / 64.0;
+	y = ray.hit_point.pos[grid].y / 64.0;
+	if (ray.dir[grid].y <= 0 && ray.dir[grid].x >= - 0.5 && ray.dir[grid].x <= 0.5)
+		--x;
+	if (ray.dir[grid].x <= 0 && ray.dir[grid].y <= 0.5 && ray.dir[grid].y >= -0.5)
+		--y;
+	printf("map coord x = %d y = %d \n", x, y);
+	if (game->map.tab[y][x] == '1')
+		return (true);
+	return (false);
+}
 
 void	set_ray_steps(t_game *game, t_ray ray)
 {
@@ -181,7 +187,9 @@ void	set_ray_steps(t_game *game, t_ray ray)
 	ray.stepY = cube_size - modf(ray.pos[map].y, &int_part) * cube_size;
 }
 
-void	set_ray_first_hit_point(t_ray *ray)
+/*Then calculate the hit point x and y coordinates; MAIS EN FAIT pour optimiser,
+on a besoin que des x et y a des valeurs multiples de CUBE_SIZE et pas precis*/
+void	set_ray_first_line_hit_point(t_ray *ray)
 {
 	double	len_till_Vline;
 	double	len_till_Hline;
@@ -191,6 +199,7 @@ void	set_ray_first_hit_point(t_ray *ray)
 	if (len_till_Vline < len_till_Hline)
 	{
 		ray->hit_point.type = vline;
+		ray->hit_point.dist = len_till_Vline;
 		if (ray->dir[grid].x < 0)
 			ray->hit_point.pos[grid].x = ray->pos[grid].x - ray->stepX;
 		else
@@ -200,6 +209,7 @@ void	set_ray_first_hit_point(t_ray *ray)
 	else if (len_till_Vline > len_till_Hline)
 	{
 		ray->hit_point.type = hline;
+		ray->hit_point.dist = len_till_Hline;
 		ray->hit_point.pos[grid].x = ray->pos[grid].x + len_till_Hline * ray->dir[grid].x;
 		if (ray->dir[grid].y < 0)
 			ray->hit_point.pos[grid].y = ray->pos[grid].y - ray->stepY;
@@ -229,7 +239,7 @@ void	raycasting(t_game *game)
 	for (int i = 0; i < nb_rays; ++i)
 	{
 		set_ray_steps(game, game->player.rays[i]);
-		set_ray_first_hit_point(&(game->player.rays[i]));
+		set_ray_first_line_hit_point(&(game->player.rays[i]));
 	}
 }
 

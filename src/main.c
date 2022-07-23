@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:07:19 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/22 19:53:27 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/23 11:03:09 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,12 @@ void	ray_tests(t_game *game)
 //	draw_ray_until_first_Hline(game, rays[250], PINK);
 //	draw_ray_until_first_Hline(game, rays[319], PINK);
 
-	draw_square(game, rays[160].hit_point.pos[grid], 10, PINK);
+//	draw_square(game, rays[160].hit_point.pos[grid], 10, PINK);
+	if (check_hit_point_is_wall(game, rays[160]) == true)
+		draw_square(game, rays[160].hit_point.pos[grid], 10, PINK);
+	else 
+		draw_square(game, rays[160].hit_point.pos[grid], 10, RED);
+	//check_hit_point_is_wall(game, rays[160]);
 
 }
 
