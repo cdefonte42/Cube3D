@@ -6,7 +6,7 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 11:03:07 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/07/23 19:55:48 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/23 20:26:57 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,34 +34,20 @@ t = longueur */
 t_ray	get_mid_ray(t_game *game)
 {
 	t_ray	ray;
-	double	int_part;
-	int		cube_size = game->cube_size;
 
-	ray.pos[view].x = 0.0; // pour repasser en sys en map: + pos[map].x;
+	ray.pos[view].x = 0.0;
 	ray.pos[view].y = 0.0;
 	ray.pos[grid].x = game->player.pos.x * game->cube_size;
 	ray.pos[grid].y = game->player.pos.y * game->cube_size;
 	ray.pos[map].x = game->player.pos.x;
 	ray.pos[map].y = game->player.pos.y;
 	ray.dir[view].x = 0.0;
-	ray.dir[view].y = 1.0; // ATTENTION pour la suite: faut faire la rotation entre dir view et dir grid (ou map car dir map = dir grid)!
+	ray.dir[view].y = 1.0;
 	ray.dir[grid].x = game->player.dir.x;
 	ray.dir[grid].y = game->player.dir.y;
 	ray.dir[map].x = game->player.dir.x;
 	ray.dir[map].y = game->player.dir.y;
-	if (ray.dir[grid].x >= 0.0)
-		ray.stepX = cube_size - modf(ray.pos[map].x, &int_part) * cube_size;
-	else
-		ray.stepX = -modf(ray.pos[map].x, &int_part) * cube_size;
-	if (ray.dir[grid].y >= 0.0)
-		ray.stepY = cube_size - modf(ray.pos[map].y, &int_part) * cube_size;
-	else
-		ray.stepY = -modf(ray.pos[map].y, &int_part) * cube_size;
-//	int t = 10 * game->cube_size; // t: longeur de la ligne;
-//	ray.vec[view].x = ray.pos[view].x + t * ray.dir[view].x;
-//	ray.vec[view].y = ray.pos[view].y + t * ray.dir[view].y; 
-//	ray.length = sqrt(pow(ray.vec[view].x, 2) + pow(ray.vec[view].y, 2));
-	
+	set_ray_steps(game, &ray);
 	return (ray);
 }
 
@@ -149,13 +135,19 @@ void	set_ray_first_line_hit_point(t_ray *ray)
 	}
 }
 
-void	set_wall_hit_point(t_game *game, t_ray ray)
+void	set_wall_hit_point(t_game *game, t_ray *ray)
 {
 	/* while check_hit_point_is_wall(game, ray) == false
 		faire le calcul: need to know le delta x et le delta y !!!
 	*/
 	(void)ray;
 	(void)game;
+}
+
+void	set_ray_deltas(t_game *game, t_ray *ray)
+{
+	(void)game;
+	(void)ray;
 }
 
 void	raycasting(t_game *game)
