@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:07:19 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/23 18:20:17 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/23 22:35:06 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,57 +15,15 @@
 void	ray_tests(t_game *game)
 {
 	t_ray	*rays = game->player.rays;
-//	int	i = 0;
-//	while (i < game->width - 1)
-//	{
-//		draw_ray(game, rays[i], CYAN);
-//		i += 6;
-//	}
-	draw_ray(game, rays[0], CYAN);
-	draw_ray(game, rays[50], CYAN);
-	draw_ray(game, rays[100], CYAN);
-	draw_ray(game, rays[130], CYAN);
+	int	i = 0;
+	while (i < game->width - 1)
+	{
+		draw_ray(game, rays[i], PURPLE);
+		draw_square(game, rays[i].hit_point.pos[grid], 5, LIME);
+		i += 6;
+	}
 	draw_ray(game, rays[159], YELLOW);
-	draw_ray(game, rays[170], CYAN);
-	draw_ray(game, rays[200], CYAN);
-	draw_ray(game, rays[250], CYAN);
-	draw_ray(game, rays[319], CYAN);
-
-//	draw_ray_until_first_Vline(game, rays[159], RED);
-//	draw_ray_until_first_Vline(game, rays[0], PINK);
-//	draw_ray_until_first_Vline(game, rays[319], PINK);
-
-//	draw_ray_until_first_Hline(game, rays[0], PINK);
-//	draw_ray_until_first_Hline(game, rays[50], PINK);
-//	draw_ray_until_first_Hline(game, rays[100], PINK);
-//	draw_ray_until_first_Hline(game, rays[130], PINK);
-//	draw_ray_until_first_Hline(game, rays[159], PINK);
-//	draw_ray_until_first_Hline(game, rays[170], PINK);
-//	draw_ray_until_first_Hline(game, rays[200], PINK);
-//	draw_ray_until_first_Hline(game, rays[250], PINK);
-//	draw_ray_until_first_Hline(game, rays[319], PINK);
-
-//	if (check_hit_point_is_wall(game, rays[0]) == true)
-//		draw_square(game, rays[0].hit_point.pos[grid], 5, PINK);
-//	else 
-//		draw_square(game, rays[0].hit_point.pos[grid], 5, RED);
-	if (check_hit_point_is_wall(game, rays[159]) == true)
-		draw_square(game, rays[159].hit_point.pos[grid], 5, PINK);
-	else 
-		draw_square(game, rays[159].hit_point.pos[grid], 5, LIME);
-//	if (check_hit_point_is_wall(game, rays[100]) == true)
-//		draw_square(game, rays[100].hit_point.pos[grid], 5, PINK);
-//	else 
-//		draw_square(game, rays[100].hit_point.pos[grid], 5, RED);
-//	if (check_hit_point_is_wall(game, rays[130]) == true)
-//		draw_square(game, rays[130].hit_point.pos[grid], 5, PINK);
-//	else 
-//		draw_square(game, rays[130].hit_point.pos[grid], 5, RED);
-//	if (check_hit_point_is_wall(game, rays[159]) == true)
-//		draw_square(game, rays[159].hit_point.pos[grid], 5, PINK);
-//	else 
-//		draw_square(game, rays[159].hit_point.pos[grid], 5, LIME);
-
+	draw_square(game, rays[159].hit_point.pos[grid], 5, PINK);
 }
 
 int	main(int argc, char** argv)
@@ -85,11 +43,11 @@ int	main(int argc, char** argv)
 	game.cube_size = 64.0;
 	game.player.fov = (60.0 * PI) / 180.0;
 	game.player.dist_screen = (game.width / 2) / tan(game.player.fov / 2);
-	game.player.pos.x = 1.5; //exprime en map unit, soit *64 pour pixels
-	game.player.pos.y = 1.5;
+	game.player.pos.x = 8.5; //exprime en map unit, soit *64 pour pixels
+	game.player.pos.y = 3.5;
 	game.player.pos.z = 0.0;
-	game.player.dir.x = 0.0; // ATTENTION compris entre -1 et 1!!! EXPRIME EN MAP
-	game.player.dir.y = -1.0; // North
+	game.player.dir.x = -0.450; // ATTENTION compris entre -1 et 1!!! EXPRIME EN MAP
+	game.player.dir.y = 0.55;
 	game.player.dir.z = 0.0;
 	//game.player.angle = atan(game.player.dir.y / game.player.dir.x);
 	game.player.rot_speed = (4 * PI) / 180;
@@ -104,6 +62,7 @@ int	main(int argc, char** argv)
 	cpy_img_pixels(game.map.grid, game.map.img);
 	raycasting(&game);
 	draw_player(&game);
+	draw_square(&game, game.player.rays[159].hit_point.pos[grid], 5, PINK);
 
 	ray_tests(&game);
 
