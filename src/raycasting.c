@@ -6,7 +6,7 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 11:03:07 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/07/23 11:23:04 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/23 11:44:49 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,22 @@ void	draw_ray(t_game *game, t_ray ray, int color)
 	}
 }
 
+void	set_ray_steps(t_game *game, t_ray ray)
+{
+	double	int_part;
+	double	cube_size;
+
+	cube_size = game->cube_size;
+	if (ray.dir[grid].x >= 0)
+		ray.stepX = cube_size - modf(ray.pos[map].x, &int_part) * cube_size;
+	else
+		ray.stepX = -(cube_size - modf(ray.pos[map].x, &int_part) * cube_size);
+	if (ray.dir[grid].y >= 0)
+		ray.stepY = cube_size - modf(ray.pos[map].y, &int_part) * cube_size;
+	else
+		ray.stepY = -(cube_size - modf(ray.pos[map].y, &int_part) * cube_size);
+}
+
 /* Eq droite: Or(t) = Op + t * Od Avec Or = infinite rays(t). Op = point origine ray.
 Od = vecteur directeur (du screen/plan de projection) = (last ray vector - first ray vector).
 t = longueur */ 
@@ -106,6 +122,7 @@ t_ray	get_mid_ray(t_game *game)
 {
 	t_ray	ray;
 	double	int_part;
+	int		cube_size = game->cube_size;
 
 	ray.pos[view].x = 0; // pour repasser en sys en map: + pos[map].x;
 	ray.pos[view].y = 0;
@@ -119,8 +136,15 @@ t_ray	get_mid_ray(t_game *game)
 	ray.dir[grid].y = game->player.dir.y;
 	ray.dir[map].x = game->player.dir.x;
 	ray.dir[map].y = game->player.dir.y;
-	ray.stepX = game->cube_size - modf(ray.pos[map].x, &int_part) * game->cube_size;
-	ray.stepY = game->cube_size - modf(ray.pos[map].y, &int_part) * game->cube_size;
+	set_ray_steps(game, ray);
+	if (ray.dir[grid].x >= 0)
+		ray.stepX = cube_size - modf(ray.pos[map].x, &int_part) * cube_size;
+	else
+		ray.stepX = -(cube_size - modf(ray.pos[map].x, &int_part) * cube_size);
+	if (ray.dir[grid].y >= 0)
+		ray.stepY = cube_size - modf(ray.pos[map].y, &int_part) * cube_size;
+	else
+		ray.stepY = -(cube_size - modf(ray.pos[map].y, &int_part) * cube_size);
 //	int t = 10 * game->cube_size; // t: longeur de la ligne;
 //	ray.vec[view].x = ray.pos[view].x + t * ray.dir[view].x;
 //	ray.vec[view].y = ray.pos[view].y + t * ray.dir[view].y; 
@@ -171,20 +195,9 @@ bool	check_hit_point_is_wall(t_game *game, t_ray ray)
 		--x;
 	if (ray.dir[grid].x <= 0 && ray.dir[grid].y <= 0.5 && ray.dir[grid].y >= -0.5)
 		--y;
-	printf("map coord x = %d y = %d \n", x, y);
 	if (game->map.tab[y][x] == '1')
 		return (true);
 	return (false);
-}
-
-void	set_ray_steps(t_game *game, t_ray ray)
-{
-	double	int_part;
-	double	cube_size;
-
-	cube_size = game->cube_size;
-	ray.stepX = cube_size - modf(ray.pos[map].x, &int_part) * cube_size;
-	ray.stepY = cube_size - modf(ray.pos[map].y, &int_part) * cube_size;
 }
 
 /*Then calculate the hit point x and y coordinates; MAIS EN FAIT pour optimiser,
@@ -200,10 +213,7 @@ void	set_ray_first_line_hit_point(t_ray *ray)
 	{
 		ray->hit_point.type = vline;
 		ray->hit_point.dist = len_till_Vline;
-		if (ray->dir[grid].x < 0)
-			ray->hit_point.pos[grid].x = ray->pos[grid].x - ray->stepX;
-		else
-			ray->hit_point.pos[grid].x = ray->pos[grid].x + ray->stepX;
+		ray->hit_point.pos[grid].x = ray->pos[grid].x + ray->stepX;
 		ray->hit_point.pos[grid].y = ray->pos[grid].y + len_till_Vline * ray->dir[grid].y;
 	}
 	else if (len_till_Vline > len_till_Hline)
@@ -211,10 +221,7 @@ void	set_ray_first_line_hit_point(t_ray *ray)
 		ray->hit_point.type = hline;
 		ray->hit_point.dist = len_till_Hline;
 		ray->hit_point.pos[grid].x = ray->pos[grid].x + len_till_Hline * ray->dir[grid].x;
-		if (ray->dir[grid].y < 0)
-			ray->hit_point.pos[grid].y = ray->pos[grid].y - ray->stepY;
-		else
-			ray->hit_point.pos[grid].y = ray->pos[grid].y + ray->stepY;
+		ray->hit_point.pos[grid].y = ray->pos[grid].y + ray->stepY;
 	}
 	else
 	{

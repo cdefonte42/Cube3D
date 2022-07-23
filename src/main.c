@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:07:19 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/23 11:03:09 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/23 11:43:45 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,8 @@ int	main(int argc, char** argv)
 	game.player.pos.x = 6.5; //exprime en map unit, soit *64 pour pixels
 	game.player.pos.y = 2.5;
 	game.player.pos.z = 0.0;
-	game.player.dir.x = 0.3; // ATTENTION compris entre -1 et 1!!! EXPRIME EN MAP
-	game.player.dir.y = 0.8; // North
+	game.player.dir.x = 0.5; // ATTENTION compris entre -1 et 1!!! EXPRIME EN MAP
+	game.player.dir.y = 0.5; // North
 	game.player.dir.z = 0.0;
 	game.player.rot = (4 * PI) / 180;
 	game.player.rays = malloc(sizeof(t_ray) * game.width); // A PROTEGER
