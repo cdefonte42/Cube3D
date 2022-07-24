@@ -6,7 +6,7 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 11:03:07 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/07/24 18:34:55 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/24 18:54:04 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	set_rays_dir(t_ray *rays, int nb_rays, double d_angle)
 {
 	int		index_mid_ray = nb_rays / 2 - 1;
 	int		i = 0;
-	int		coeff = 160;
+	int		coeff = nb_rays / 2;
 	t_ray	mid_ray = rays[index_mid_ray];
 
 	while (i < index_mid_ray) // "rays de gauche" par rapport au mid ray => angle <0
@@ -96,8 +96,8 @@ bool	check_hit_point_is_wall(t_game *game, t_ray ray)
 	int	x;
 	int	y;
 
-	x = (int)ray.hit_point.pos[grid].x / 64;
-	y = (int)ray.hit_point.pos[grid].y / 64;
+	x = (int)ray.hit_point.pos[grid].x / game->cube_size;
+	y = (int)ray.hit_point.pos[grid].y / game->cube_size;
 	if ((ray.hit_point.type == vline || ray.hit_point.type == apex) && ray.stepX <= 0)
 		--x;
 	if ((ray.hit_point.type == hline || ray.hit_point.type == apex) && ray.stepY <= 0)
@@ -107,7 +107,7 @@ bool	check_hit_point_is_wall(t_game *game, t_ray ray)
 	return (false);
 }
 
-void	next_hit_point(t_ray *ray, int i)
+void	next_hit_point(t_ray *ray)
 {
 	double	len_till_Vline;
 	double	len_till_Hline;
@@ -116,25 +116,17 @@ void	next_hit_point(t_ray *ray, int i)
 	len_till_Hline = fabs(ray->stepY / ray->dir[grid].y);
 	if (len_till_Vline < len_till_Hline)
 	{
-		if (i == 159)
-			printf("+= V %f  dist = %f", len_till_Vline, ray->hit_point.dist);
 		ray->hit_point.type = vline;
 		ray->hit_point.dist += len_till_Vline;
 		ray->hit_point.pos[grid].x = ray->pos[grid].x + ray->stepX;
 		ray->hit_point.pos[grid].y = ray->pos[grid].y + len_till_Vline * ray->dir[grid].y;
-		if (i == 159)
-			printf(" res dist = %f\n", ray->hit_point.dist);
 	}
 	else if (len_till_Vline > len_till_Hline)
 	{
-		if (i == 159)
-			printf("+= H %f  dist = %f", len_till_Hline, ray->hit_point.dist);
 		ray->hit_point.type = hline;
 		ray->hit_point.dist += len_till_Hline;
 		ray->hit_point.pos[grid].x = ray->pos[grid].x + len_till_Hline * ray->dir[grid].x;
 		ray->hit_point.pos[grid].y = ray->pos[grid].y + ray->stepY;
-		if (i == 159)
-			printf(" res dist = %f\n", ray->hit_point.dist);
 	}
 	else
 	{
@@ -142,48 +134,6 @@ void	next_hit_point(t_ray *ray, int i)
 		ray->hit_point.dist += len_till_Hline;
 		ray->hit_point.pos[grid].x = ray->pos[grid].x + ray->stepX;
 		ray->hit_point.pos[grid].y = ray->pos[grid].y + ray->stepY;
-		if (i == 159)
-			printf("+= A %f res dist = %f\n", len_till_Hline, ray->hit_point.dist);
-	}
-}
-
-void	good_hit_point(t_ray *ray, int i)
-{
-	double	len_till_Vline;
-	double	len_till_Hline;
-
-	len_till_Vline = fabs(ray->stepX / ray->dir[grid].x);
-	len_till_Hline = fabs(ray->stepY / ray->dir[grid].y);
-	if (len_till_Vline < len_till_Hline)
-	{
-		if (i == 159)
-			printf("+= V %f  dist = %f", len_till_Vline, ray->hit_point.dist);
-		ray->hit_point.type = vline;
-		ray->hit_point.dist += len_till_Vline;
-		ray->hit_point.pos[grid].x = ray->pos[grid].x + ray->stepX;
-		ray->hit_point.pos[grid].y = ray->pos[grid].y + len_till_Vline * ray->dir[grid].y;
-		if (i == 159)
-			printf(" res dist = %f\n", ray->hit_point.dist);
-	}
-	else if (len_till_Vline > len_till_Hline)
-	{
-		if (i == 159)
-			printf("+= H %f  dist = %f", len_till_Hline, ray->hit_point.dist);
-		ray->hit_point.type = hline;
-		ray->hit_point.dist += len_till_Hline;
-		ray->hit_point.pos[grid].x = ray->pos[grid].x + len_till_Hline * ray->dir[grid].x;
-		ray->hit_point.pos[grid].y = ray->pos[grid].y + ray->stepY;
-		if (i == 159)
-			printf(" res dist = %f\n", ray->hit_point.dist);
-	}
-	else
-	{
-		ray->hit_point.type = apex;
-		ray->hit_point.dist += len_till_Hline;
-		ray->hit_point.pos[grid].x = ray->pos[grid].x + ray->stepX;
-		ray->hit_point.pos[grid].y = ray->pos[grid].y + ray->stepY;
-		if (i == 159)
-			printf("+= A %f res dist = %f\n", len_till_Hline, ray->hit_point.dist);
 	}
 }
 
@@ -192,7 +142,7 @@ void	set_hpt_dist(t_ray *ray)
 	ray->hit_point.dist = sqrt(pow(fabs(ray->hit_point.pos[grid].x - ray->pos[grid].x), 2) +  pow(fabs(ray->hit_point.pos[grid].y - ray->pos[grid].y), 2));
 }
 
-void	set_wall_hit_point(t_game *game, t_ray *ray, int i)
+void	set_wall_hit_point(t_game *game, t_ray *ray)
 {
 	while (check_hit_point_is_wall(game, *ray) == false)
 	{
@@ -210,12 +160,22 @@ void	set_wall_hit_point(t_game *game, t_ray *ray, int i)
 			else if (ray->stepY > 0)
 				ray->stepY += game->cube_size;
 		}
-		next_hit_point(ray, i);
+		next_hit_point(ray);
 	}
 	if (ray->hit_point.type == vline)
-		ray->hit_point.type = vwall;
+	{
+		if (ray->dir[grid].x >= 0)
+			ray->hit_point.type = ewall;
+		else
+			ray->hit_point.type = wwall;
+	}
 	else if (ray->hit_point.type == hline)
-		ray->hit_point.type = hwall;
+	{
+		if (ray->dir[grid].y >= 0)
+			ray->hit_point.type = swall;
+		else
+			ray->hit_point.type = nwall;
+	}
 	set_hpt_dist(ray);
 }
 
@@ -233,8 +193,8 @@ void	raycasting(t_game *game)
 	for (int i = 0; i < nb_rays; ++i)
 	{
 		set_ray_steps(game, &(game->player.rays[i]));
-		next_hit_point(&(game->player.rays[i]), i);
-		set_wall_hit_point(game, &(game->player.rays[i]), i);
+		next_hit_point(&(game->player.rays[i]));
+		set_wall_hit_point(game, &(game->player.rays[i]));
 	}
 }
 

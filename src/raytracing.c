@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 18:33:19 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/24 14:53:33 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/24 18:52:52 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	draw_ray_until_first_Hline(t_game *game, t_ray ray, int color)
 	int	col = 0;
 
 	double	part_int;
-	double	Dy = 64.0 - modf(ray.pos[map].y, &part_int) * 64.0;
+	double	Dy = game->cube_size - modf(ray.pos[map].y, &part_int) * game->cube_size;
 	int	length = 0;
 	while (fabs(length * ray.dir[grid].y) <= Dy && (line < max_line && line >= 0) && (col < size_line && col >= 0))
 	{	
@@ -41,7 +41,7 @@ void	draw_ray_until_first_Vline(t_game *game, t_ray ray, int color)
 	int	col = 0;
 
 	double	part_int;
-	double	Dx = 64.0 - modf(ray.pos[map].x, &part_int) * 64.0;
+	double	Dx = game->cube_size - modf(ray.pos[map].x, &part_int) * game->cube_size;
 	int	length = 0;
 	while (fabs(length * ray.dir[grid].x) <= Dx && (line < max_line && line >= 0) && (col < size_line && col >= 0))
 	{	
@@ -77,6 +77,7 @@ specifique. */
 void	draw_all_rays(t_game *game)
 {
 	t_ray	*rays = game->player.rays;
+	int		index_mid_ray = game->width / 2;
 	int	i = 0;
 	while (i < game->width - 1)
 	{
@@ -84,6 +85,6 @@ void	draw_all_rays(t_game *game)
 		draw_square(game, rays[i].hit_point.pos[grid], 5, LIME);
 		i += 6;
 	}
-	draw_ray(game, rays[159], YELLOW);
-	draw_square(game, rays[159].hit_point.pos[grid], 5, PINK);
+	draw_ray(game, rays[index_mid_ray], YELLOW);
+	draw_square(game, rays[index_mid_ray].hit_point.pos[grid], 5, PINK);
 }

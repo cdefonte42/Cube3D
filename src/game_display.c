@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 12:27:33 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/24 18:19:19 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/24 18:48:18 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,7 @@ void	draw_game(t_game *game)
 	int	size_line = game->img.size_line / 4;
 	while (col < nb_rays)
 	{
-		//hpwall = (int)game->player.dist_screen * 64 / (int)(rays[col].hit_point.dist);
-		hpwall = (int)game->player.dist_screen * 64 / (int)(rays[col].hit_point.dist * cos(rays[col].angle));
+		hpwall = (int)game->player.dist_screen * game->cube_size / (int)(rays[col].hit_point.dist * cos(rays[col].angle));
 		if (hpwall > (int)game->img.height)
 			hpwall = game->img.height;
 		min_line = (game->img.height - hpwall) / 2;
@@ -38,14 +37,16 @@ void	draw_game(t_game *game)
 		if (max_line > (int)game->img.height)
 			max_line = game->img.height;
 		line = min_line;
-		if (col == 159)
-		{
-			printf("h p wall = %d min line = %d max line = %d\n", hpwall, min_line, max_line);
-			printf("ray dist here=%f\n\n", rays[col].hit_point.dist);
-		}
 		while (line < max_line && line < game->height)
 		{
-			game->img.data[col + line * size_line] = RED;
+			if (rays[col].hit_point.type == nwall)
+				game->img.data[col + line * size_line] = BLUE;
+			else if (rays[col].hit_point.type == swall)
+				game->img.data[col + line * size_line] = RED;
+			else if (rays[col].hit_point.type == wwall)
+				game->img.data[col + line * size_line] = PURPLE;
+			else if (rays[col].hit_point.type == ewall)
+				game->img.data[col + line * size_line] = ORANGE;
 			++line;
 		}
 		++col;

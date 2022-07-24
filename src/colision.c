@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 14:00:03 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/23 18:29:56 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/24 18:48:47 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ bool	check_for_colision(t_game *game, int keycode)
 
 	mid_ray = game->player.rays[(game->width / 2) - 1];
 
-	if (keycode == UP_ARW && mid_ray.hit_point.dist <= game->player.mv_speed * 64.0)
+	if (keycode == UP_ARW && mid_ray.hit_point.dist <= game->player.mv_speed * game->cube_size)
 		return (true);
 	return (false);
 }

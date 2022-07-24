@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/24 18:26:00 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/24 18:58:18 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,18 @@
 # endif
 
 # ifndef SCREEN_W
-#  define SCREEN_W 320
+#  define SCREEN_W 640
 # endif
 # ifndef SCREEN_H
-#  define SCREEN_H 200
+#  define SCREEN_H 300
 # endif
 
 # ifndef CUBE_SIZE
-#  define CUBE_SIZE 64
+#  define CUBE_SIZE 32
 # endif
 
 # ifndef VIEW_HEIGHT
-#  define VIEW_HEIGHT 32 // player's sight height (usually 1/2 cubes's height)
+#  define VIEW_HEIGHT 16 // player's sight height (usually 1/2 cubes's height)
 # endif
 
 /*
@@ -52,7 +52,7 @@ EAST	=	(+1, 0, 0);										V y
 sprite, door etc.. */
 typedef enum e_element_type
 {
-	apex, vline, vwall, hline, hwall, sprite, door
+	apex, vline, wwall, ewall, hline, nwall, swall, sprite, door
 }			t_type;
 
 typedef enum e_orientation
