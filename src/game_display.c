@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 12:27:33 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/24 18:48:18 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/24 22:05:06 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,11 @@ void	draw_game(t_game *game)
 	int	size_line = game->img.size_line / 4;
 	while (col < nb_rays)
 	{
-		hpwall = (int)game->player.dist_screen * game->cube_size / (int)(rays[col].hit_point.dist * cos(rays[col].angle));
+		// ATTENTION floating point exception: car division par 0!!
+		if (col == game->width / 2 - 1 || rays[col].hit_point.dist * cos(rays[col].angle) == 0.0)
+			hpwall = (int)(game->player.dist_screen * game->cube_size / (rays[col].hit_point.dist));
+		else
+			hpwall = (int)(game->player.dist_screen * game->cube_size / (rays[col].hit_point.dist * cos(rays[col].angle)));
 		if (hpwall > (int)game->img.height)
 			hpwall = game->img.height;
 		min_line = (game->img.height - hpwall) / 2;
