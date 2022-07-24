@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 13:42:49 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/19 13:50:17 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/24 14:21:20 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 // params a changer en t_wn*, et ajouter enum orientation pour choisir la bonne texture
 // changer x et y en t_pos pour les coordonnees d'origine
 // Attention ne check pas si on depasse le screen!!!
-void	put_texture_origin(unsigned int x, unsigned int y, t_screen *screen, t_texture *text)
+void	put_texture_origin(unsigned int x, unsigned int y, t_img *screen, t_texture *text)
 {
 	unsigned int	text_line = 0;
 	unsigned int	screen_line = 0;
@@ -37,7 +37,7 @@ void	put_texture_origin(unsigned int x, unsigned int y, t_screen *screen, t_text
 }
 
 /* Permet de texturiser, avec une texture donee, le screen sur une width et une height; */
-void	put_sized_texture(unsigned int width, unsigned int height, t_screen *screen, t_texture *text)
+void	put_sized_texture(unsigned int width, unsigned int height, t_img *screen, t_texture *text)
 {
 	unsigned int	x = 0;
 	unsigned int	y = 0;
@@ -65,12 +65,12 @@ int	texturize_screen_tests(t_game *game)
 	printf("data size = %lu, bpp=%d, size_line=%d, endian=%d\n", sizeof(wall.data), wall.bpp, wall.size_line, wall.endian);
 
 	/*_____ IMG/SCREEN CREATION _____*/
-	t_screen	screen;
+	t_img	screen;
 	screen.ptr = mlx_new_image(game->mlx_ptr, SCREEN_W, SCREEN_H);
 	if (screen.ptr == NULL)
 		return (printf("Error occurs new image screen\n"), ft_exit(game), 1);
 	screen.data = (int *)mlx_get_data_addr(screen.ptr, &screen.bpp, &screen.size_line, &screen.endian);
-	game->screen = screen;
+	game->img = screen;
 	printf("screen data size = %lu, bpp=%d, size_line=%d, endian=%d\n", sizeof(screen.data), screen.bpp, screen.size_line, screen.endian);
 	/* Filling screen with texturized pixels */
 //	put_sized_texture(192, 192, &screen, &wall);

@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:32:55 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/23 18:22:02 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/24 14:22:07 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,14 @@ int	ft_exit(t_game *game)
 		return (0);
 	if (game->player.rays)
 		free(game->player.rays);
-	if (game->screen.ptr)
-		mlx_destroy_image(game->mlx_ptr, game->screen.ptr);
+	if (game->img.ptr)
+		mlx_destroy_image(game->mlx_ptr, game->img.ptr);
 	if (game->map.img.ptr)
 		mlx_destroy_image(game->mlx_ptr, game->map.img.ptr);
 	if (game->map.tab)
 		ft_free_map(game->map.tab);
-	if (game->win_ptr)
-		mlx_destroy_window(game->mlx_ptr, game->win_ptr);
+	if (game->win)
+		mlx_destroy_window(game->mlx_ptr, game->win);
 	if (game->map.win)
 		mlx_destroy_window(game->mlx_ptr, game->map.win);
 	if (game->mlx_ptr)
@@ -87,16 +87,5 @@ int	key_hook(int keycode, void *param)
 		ray_tests(game);
 		mlx_put_image_to_window(game->mlx_ptr, game->map.win, game->map.img.ptr, 0, 0);
 	}
-	return (0);
-}
-
-int	init_mlx(t_game *game)
-{
-	game->mlx_ptr = mlx_init();
-	if (!game->mlx_ptr)
-		return (-1);
-	game->win_ptr = mlx_new_window(game->mlx_ptr, game->width, game->height, game->title);
-	if (!game->win_ptr)
-		return (-1);
 	return (0);
 }

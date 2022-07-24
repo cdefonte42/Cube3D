@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/23 18:40:26 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/24 14:23:29 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,55 +84,56 @@ typedef struct s_ray
 	double	len_to_wall;		// 'till wall touched. en grid unit
 }				t_ray;
 
-typedef struct s_img
-{
-	void	*ptr;
-	int		*data;		// filled by mlx_get_data_addr(); !!! Casted en int *
-						// au lieu de char *. Contient les bits de pixels;
-	unsigned int		width;
-	unsigned int		height;
-	int		bpp;		// bits per pixel also called the depth of the image
-	int		size_line;	// number of bytes used to store one line of the image in memor
-	int		endian;		// little == 0; big endian == 1;
-}				t_texture, t_screen;
-
 typedef struct s_player
 {
 	double			fov;	// player filed of view in RADIANS;
-	double	dist_screen;	// distance between screen and player view (fonction du FOV);
+	double	dist_screen;	// distance between screen and player view 
+							// (fonction du FOV);
 	t_pos			pos;	// position du jouer, dans systeme de map
 	t_dir			dir;	// orientation du joueur, N/S/W/E, en sys map & grid;
-	//double			angle;	// son orientation par rapport au repre de la map
-							//en radians
-	double			rot_speed;	// angle increment pour une pression touche droite ou gauche
+//	double			angle;	// son orientation (en radian) par rapport au 
+							// repre de la map
+	double			rot_speed;	// angle (en radian) increment pour une 
+								// pression touche droite ou gauche
 	double			mv_speed;	// inc (en map unit) pour le deplacement du jouer
 	t_ray			*rays;	// tableau de rays;
 }				t_player;
 
-typedef struct s_map
+typedef struct s_img
 {
-	char		**tab;
-	int			width;
-	int			height;
-	void		*win;	// window pour afficher la grid avec les lignes et les rays
-	t_screen	img;	// image pour la window map representation
-	t_screen	grid;	// img avec que la grille de remplit: permet d'eviter
-						// de recalculer les pixels pour wall etc a chaque frame
-}				t_map;
+	void	*ptr;		// ptr returned by mlx_new_img
+	unsigned int		width; // en nombre de pixels (+1 par rapport a sa win?)
+	unsigned int		height;	// en nombre de pixels (+1/win?)
+	int		*data;		// filled by mlx_get_data_addr(); !!! Casted en int *
+						// au lieu de char *. Contient les bits de pixels;
+	int		bpp;		// bits per pixel also called the depth of the image
+	int		size_line;	// number of bytes used to store one line of the image in memor
+	int		endian;		// little == 0; big endian == 1;
+}				t_texture, t_img;
+
+typedef struct s_map	// AFFICHAGE DE LA MINIMAP
+{
+	char	**tab;	// tableau retourne par le parsing de fichier .cub
+	int		width;	// nb de colonnes du tab
+	int		height;	// nb de lignes du tab
+	void	*win;	// window dans laquelle afficher la map
+	t_img	img;	// image a remplir pour afficher mini map et rays. 
+					// Prend toute la window.
+	t_img	grid;	// img avec que la grille de remplit: permet d'eviter
+					// de recalculer les pixels pour wall etc a chaque frame
+}			t_map;
 
 typedef struct s_game
 {
 	void		*mlx_ptr;
-	void		*win_ptr;
-	int			width;
-	int			height;
-	int			cube_size;
+	void		*win;		// Window dans laquelle afficher le jeu
+	int			width;		// taille de la window en pixels
+	int			height;		// taille de la window en pixels
+	int			cube_size;	// taille des murs en pixels
+	t_img		img;		// image du jeu
 	t_player	player;
-	t_screen	screen;		// de la taille de la win, image a remplir de 
-							// pixels de texture selon calculs 
+	t_map		map;		// Tout ce qui est pour afficher la map
 	t_texture	*text;		// tableau d'au moins 4 texture (Nord, Sud, Est, Ouest);
-	char		*title;
-	t_map		map;
 }				t_game;
 
 # if defined(__APPLE__) && defined(__MACH__)
@@ -169,19 +170,23 @@ char	**ft_remove_n(char **map);
 
 /*_____ MLX MANAGE __________*/
 int	key_hook(int keycode, void *param);
-int	init_mlx(t_game *game);
 int	ft_exit(t_game *game);
+
+/* ______ INITIALISATIONS ____ */
+int	init_player(t_game *game);
+int	init_game(t_game *game, int argc, char **argv);
+int	init_map(t_game *game, int argc, char **argv);
 
 /*_____ UTILS __________*/
 void	ft_free_map(char **map);
 
 /* ____ TEXTURE (tests)______*/
-void	put_texture_origin(unsigned int x, unsigned int y, t_screen *screen, t_texture *text);
-void	put_sized_texture(unsigned int width, unsigned int height, t_screen *screen, t_texture *text);
+void	put_texture_origin(unsigned int x, unsigned int y, t_img *screen, t_texture *text);
+void	put_sized_texture(unsigned int width, unsigned int height, t_img *screen, t_texture *text);
 
-/*______ MAP UTILS _______ */
-int	init_map(t_game *game);
-void	cpy_img_pixels(t_screen from, t_screen to);
+/*______ IMG UTILS _______ */
+void	cpy_img_pixels(t_img from, t_img to);
+void	draw_square(t_game *game, t_pos origin, int size, int color);
 
 /* ______ MAP DRAWING ______ */
 void	fill_cube(t_game *game, int y, int x, int color);
@@ -189,7 +194,6 @@ void	draw_grid(t_game *game);
 void	draw_walls(t_game *game);
 void	draw_map(t_game *game);
 void	draw_player(t_game *game);
-void	draw_square(t_game *game, t_pos origin, int size, int color);
 
 /*_______ COLISION _______*/
 bool	check_for_colision(t_game *game, int keycode);
