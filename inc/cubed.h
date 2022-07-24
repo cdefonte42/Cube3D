@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/24 14:51:56 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/24 17:32:53 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,9 @@ typedef struct s_ray
 // Donc en vrai les hitpoints on s'en fou un peu. On veut juste le premier "bon"
 // hit_point, et du coup en deduire la longueur: sqrt(pow2x + pow2y)
 	double	len_to_wall;		// 'till wall touched. en grid unit
+	double	angle;			// angle (en radian) representant la rotation du ray
+							// par rapport a la VIEW, cad angle entre ce ray et
+							// le "ray du mid"
 }				t_ray;
 
 typedef struct s_player
@@ -193,8 +196,12 @@ int		init_map(t_game *game, int argc, char **argv);
 void	ft_free_map(char **map);
 
 /*______ IMG UTILS _______ */
+void	erase_img(t_img *img);
 void	cpy_img_pixels(t_img from, t_img to);
 void	draw_square(t_game *game, t_pos origin, int size, int color);
+
+/* __________ GAME DRAWING ________ */
+void	draw_game(t_game *game);
 
 /* ______ MAP DRAWING ______ */
 void	fill_cube(t_game *game, int y, int x, int color);

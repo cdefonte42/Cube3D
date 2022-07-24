@@ -1,34 +1,46 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   wall_draw.c                                        :+:      :+:    :+:   */
+/*   game_display.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 12:27:33 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/24 12:44:03 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/24 17:24:25 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cubed.h"
 
+
+/* NEED une optimisation non ? */
+/* Remplit la game win de pixels en fonction des murs sol ciel etc */
 void	draw_game(t_game *game)
 {
-	double	hwall;
+	int	hpwall; // hauteur percue du wall
 	t_ray	*rays = game->player.rays;
-	int	i = 0;
-	int	nb_rays = game->screen.width;
+	int	nb_rays = game->width;
 	int	col = 0;
 	int line;
-	int	*pixels = game->screen.data;
-	int	size_line = game->screen.size_line / 4;
+	int	min_line;
+	int	max_line;
+	int	size_line = game->img.size_line / 4;
 	while (col < nb_rays)
 	{
-		line = 0;
-		while (line < game->screen.height)
+		hpwall = (int)game->player.dist_screen * 64 / (int)rays[col].hit_point.dist;
+		if (hpwall > (int)game->img.height)
+			hpwall = game->img.height;
+		min_line = (game->img.height - hpwall) / 2;
+		max_line = (game->img.height + hpwall) / 2;
+		if (min_line < 0)
+			min_line = 0;
+		if (max_line > (int)game->img.height)
+			max_line = game->img.height;
+		line = min_line;
+		while (line < max_line && line < game->height)
 		{
-			pixels[col + line]
-			line += size_line;
+			game->img.data[col + line * size_line] = RED;
+			++line;
 		}
 		++col;
 	}

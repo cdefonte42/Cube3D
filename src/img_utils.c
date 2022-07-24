@@ -6,11 +6,24 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 21:10:57 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/07/24 14:16:11 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/24 16:43:51 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cubed.h"
+/* Reset l'image img en black */
+void	erase_img(t_img *img)
+{
+	int	size = img->height * (img->size_line / 4);
+	int	i;
+
+	i = 0;
+	while (i < size)
+	{
+		img->data[i] = BLACK;
+		++i;
+	}
+}
 
 /* Set les pixels de dest aux memes valeurs que ceux de src. ATTENTION, dest
 et src doivent avoir les memes dimensions! Permet de "sauvegarder" une img

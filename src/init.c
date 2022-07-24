@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 14:13:54 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/24 14:25:15 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/24 16:42:44 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,11 @@ int	init_player(t_game *game)
 {
 	game->player.fov = (60.0 * PI) / 180.0;
 	game->player.dist_screen = (game->width / 2) / tan(game->player.fov / 2);
-	game->player.pos.x = 8.5; //exprime en map unit, soit *64 pour pixels
-	game->player.pos.y = 3.5;
+	game->player.pos.x = 2.5; //exprime en map unit, soit *64 pour pixels
+	game->player.pos.y = 2.5;
 	game->player.pos.z = 0.0;
-	game->player.dir.x = -0.450; // ATTENTION compris entre -1 et 1!!! EXPRIME EN MAP
-	game->player.dir.y = 0.55;
+	game->player.dir.x = 0.0; // ATTENTION compris entre -1 et 1!!! EXPRIME EN MAP
+	game->player.dir.y = -1.0;
 	game->player.dir.z = 0.0;
 	//game->player.angle = atan(game.player.dir.y / game.player.dir.x);
 	game->player.rot_speed = (4 * PI) / 180; // se tourne de 4 degres
@@ -77,6 +77,10 @@ int	init_game(t_game *game, int argc, char **argv)
 	game->img.ptr = mlx_new_image(game->mlx_ptr, SCREEN_W, SCREEN_H);
 	if (!game->img.ptr)
 		return (-1);
+	game->img.data = (int *)mlx_get_data_addr(game->img.ptr, &game->img.bpp, \
+	&game->img.size_line, &game->img.endian);
+	game->img.width = SCREEN_W;
+	game->img.height = SCREEN_H;
 	
 	if (init_map(game, argc, argv) == -1)
 		return (-1);

@@ -6,7 +6,7 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 11:03:07 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/07/23 22:32:06 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/24 17:32:25 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ t_ray	get_mid_ray(t_game *game)
 {
 	t_ray	ray;
 
+	ray.angle = 0.0;
 	ray.pos[view].x = 0.0;
 	ray.pos[view].y = 0.0;
 	ray.pos[grid].x = game->player.pos.x * game->cube_size;
@@ -74,6 +75,7 @@ void	set_rays_dir(t_ray *rays, int nb_rays, double d_angle)
 	{
 		rays[i].dir[grid] = rotate_vector_angle(mid_ray.dir[grid], coeff * -d_angle);
 		rays[i].dir[map] = rays[i].dir[grid];
+		rays[i].angle = coeff * -d_angle;
 		--coeff;
 		++i;
 	}
@@ -83,6 +85,7 @@ void	set_rays_dir(t_ray *rays, int nb_rays, double d_angle)
 	{
 		rays[i].dir[grid] = rotate_vector_angle(rays[i].dir[grid], coeff * d_angle);
 		rays[i].dir[map] = rays[i].dir[grid];
+		rays[i].angle = coeff * d_angle;
 		++i;
 		++coeff;
 	}
@@ -168,7 +171,7 @@ void	raycasting(t_game *game)
 
 	mid_ray = get_mid_ray(game);
 	nb_rays = game->width;
-	d_angle = atan(1 / game->player.dist_screen);
+	d_angle = atan(1 / game->player.dist_screen); // PAS BESOIN de calculer chaque fois
 	cpy_ray(game->player.rays, mid_ray, nb_rays);
 	set_rays_dir(game->player.rays, nb_rays, d_angle);
 	for (int i = 0; i < nb_rays; ++i)
