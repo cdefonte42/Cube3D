@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 18:33:19 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/23 18:33:45 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/24 14:53:33 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,21 @@ void	draw_ray(t_game *game, t_ray ray, int color)
 		col = ray.pos[grid].x + t * ray.dir[grid].x;
 		line = ray.pos[grid].y + t * ray.dir[grid].y;
 	}
+}
+
+/* Draw 1 ray sur 6 (a changer si besoin) et leur hit point correspondant.
+Le ray du milieu (direction view player) est dessine avec un code couleur 
+specifique. */
+void	draw_all_rays(t_game *game)
+{
+	t_ray	*rays = game->player.rays;
+	int	i = 0;
+	while (i < game->width - 1)
+	{
+		draw_ray(game, rays[i], PURPLE);
+		draw_square(game, rays[i].hit_point.pos[grid], 5, LIME);
+		i += 6;
+	}
+	draw_ray(game, rays[159], YELLOW);
+	draw_square(game, rays[159].hit_point.pos[grid], 5, PINK);
 }

@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/24 14:23:29 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/24 14:51:56 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,20 +37,31 @@
 # endif
 
 # ifndef VIEW_HEIGHT
-#  define VIEW_HEIGHT 32 // hauteur du point de vue (du player). En general 1/2 
+#  define VIEW_HEIGHT 32 // player's sight height (usually 1/2 cubes's height)
 # endif
+
 /*
 DIR			(x, y, z) in grid et map sys: (z vers ecran)	+------> x
-NORTH	=	(0, 0, +1);										|
-SOUTH	=	(0, 0, -1);										|
+NORTH	=	(0, -1, 0);										|
+SOUTH	=	(0, 1, 0);										|
 WEST	=	(-1, 0, 0);										|
 EAST	=	(+1, 0, 0);										V y
 */
 
-/* Type de l'element touche par le rayon: wall (vertical/horizontal), sprite, door*/
-typedef enum e_element_type {apex, vline, vwall, hline, hwall, sprite, door} t_type;
-typedef enum e_orientation {south = 'S', north = 'N', west = 'W', east = 'E'} t_orientation;
-enum e_sys_ids {view, grid, map, sys_ids_size}; // nom des reperes; a rajouter si besoin d'un nouveau systeme (avant la size);
+/* Type de l'element touche par le rayon: wall (vertical/horizontal), 
+sprite, door etc.. */
+typedef enum e_element_type
+{
+	apex, vline, vwall, hline, hwall, sprite, door
+}			t_type;
+
+typedef enum e_orientation
+{
+	south = 'S', north = 'N', west = 'W', east = 'E'
+}			t_orientation;
+
+/*	Nom des reperes; a rajouter si besoin d'un nouveau systeme (avant la size)*/
+enum e_sys_ids {view, grid, map, sys_ids_size};
 
 typedef struct s_coord
 {
@@ -160,29 +171,26 @@ typedef struct s_game
 # endif
 
 /*____ PARSING ____ */
-int	ft_isok_len(char **map);
-int	ft_isok_char(char **map);
-int	ft_nb_line(char *filename);
+int		ft_isok_len(char **map);
+int		ft_isok_char(char **map);
+int		ft_nb_line(char *filename);
 char	**ft_clean_map(int argc, char **argv);
-int	ft_check_walls(char **map);
+int		ft_check_walls(char **map);
 char	**ft_new_map(char *filename, int nb_line);
 char	**ft_remove_n(char **map);
 
 /*_____ MLX MANAGE __________*/
-int	key_hook(int keycode, void *param);
-int	ft_exit(t_game *game);
+int		key_hook(int keycode, void *param);
+void	refresh_game(t_game *game);
+int		ft_exit(t_game *game);
 
 /* ______ INITIALISATIONS ____ */
-int	init_player(t_game *game);
-int	init_game(t_game *game, int argc, char **argv);
-int	init_map(t_game *game, int argc, char **argv);
+int		init_player(t_game *game);
+int		init_game(t_game *game, int argc, char **argv);
+int		init_map(t_game *game, int argc, char **argv);
 
 /*_____ UTILS __________*/
 void	ft_free_map(char **map);
-
-/* ____ TEXTURE (tests)______*/
-void	put_texture_origin(unsigned int x, unsigned int y, t_img *screen, t_texture *text);
-void	put_sized_texture(unsigned int width, unsigned int height, t_img *screen, t_texture *text);
 
 /*______ IMG UTILS _______ */
 void	cpy_img_pixels(t_img from, t_img to);
@@ -210,8 +218,10 @@ struct s_coord	rotate_vector_angle(struct s_coord from, double angle);
 void	draw_ray_until_first_Hline(t_game *game, t_ray ray, int color);
 void	draw_ray_until_first_Vline(t_game *game, t_ray ray, int color);
 void	draw_ray(t_game *game, t_ray ray, int color);
+void	draw_all_rays(t_game *game);
 
-/* _____________ TESTS (DEBUG) __________ */
-void	ray_tests(t_game *game);
+/* ____ TEXTURE (tests)______*/
+void	put_texture_origin(unsigned int x, unsigned int y, t_img *screen, t_texture *text);
+void	put_sized_texture(unsigned int width, unsigned int height, t_img *screen, t_texture *text);
 
 #endif

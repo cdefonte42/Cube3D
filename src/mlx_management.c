@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:32:55 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/24 14:22:07 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/24 14:53:46 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,18 @@ int	ft_exit(t_game *game)
 	exit (0);
 }
 
+/* Refresh les differents affichages (game screen, minimap). Implique le
+recalcul de tous les rayons. */
+void	refresh_game(t_game *game)
+{
+	cpy_img_pixels(game->map.grid, game->map.img);
+	raycasting(game);
+	draw_player(game);	// pour MINIMAP
+	draw_all_rays(game);	// pour MINIMAP (et DEBUG)
+	mlx_put_image_to_window(game->mlx_ptr, game->map.win, game->map.img.ptr, 0, 0);
+	mlx_put_image_to_window(game->mlx_ptr, game->win, game->img.ptr, 0, 0);
+}
+
 /* Appellee quand mlx_key_hook declenchee */
 int	key_hook(int keycode, void *param)
 {
@@ -51,41 +63,25 @@ int	key_hook(int keycode, void *param)
 	{
 		game->player.dir = rotate_vector_angle(game->player.dir, game->player.rot_speed);
 		//game->player.angle += game->player.rot_speed;
-		cpy_img_pixels(game->map.grid, game->map.img);
-		draw_player(game);
-		raycasting(game);
-		ray_tests(game);
-		mlx_put_image_to_window(game->mlx_ptr, game->map.win, game->map.img.ptr, 0, 0);
+		refresh_game(game);
 	}
 	else if (keycode == L_ARW)
 	{
 		game->player.dir = rotate_vector_angle(game->player.dir, -game->player.rot_speed);
 		//game->player.angle -= game->player.rot_speed;
-		cpy_img_pixels(game->map.grid, game->map.img);
-		draw_player(game);
-		raycasting(game);
-		ray_tests(game);
-		mlx_put_image_to_window(game->mlx_ptr, game->map.win, game->map.img.ptr, 0, 0);
+		refresh_game(game);
 	}
 	else if (keycode == UP_ARW && !check_for_colision(game, keycode))
 	{
 		game->player.pos.x += game->player.dir.x * game->player.mv_speed;
 		game->player.pos.y += game->player.dir.y * game->player.mv_speed;
-		cpy_img_pixels(game->map.grid, game->map.img);
-		draw_player(game);
-		raycasting(game);
-		ray_tests(game);
-		mlx_put_image_to_window(game->mlx_ptr, game->map.win, game->map.img.ptr, 0, 0);
+		refresh_game(game);
 	}
 	else if (keycode == DOWN_ARW)
 	{
 		game->player.pos.x -= game->player.dir.x * game->player.mv_speed;
 		game->player.pos.y -= game->player.dir.y * game->player.mv_speed;
-		cpy_img_pixels(game->map.grid, game->map.img);
-		draw_player(game);
-		raycasting(game);
-		ray_tests(game);
-		mlx_put_image_to_window(game->mlx_ptr, game->map.win, game->map.img.ptr, 0, 0);
+		refresh_game(game);
 	}
 	return (0);
 }
