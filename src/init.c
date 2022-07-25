@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 14:13:54 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/24 18:57:05 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/25 13:45:50 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	init_player(t_game *game)
 	game->player.dist_screen = (game->width / 2) / tan(game->player.fov / 2);
 	game->player.pos.x = 3.5; //exprime en map unit, soit *64 pour pixels
 	game->player.pos.y = 2.5;
-	game->player.pos.z = 0.0;
+	game->player.pos.z = 0.5;
 	game->player.dir.x = 0.0; // ATTENTION compris entre -1 et 1!!! EXPRIME EN MAP
 	game->player.dir.y = -1.0;
 	game->player.dir.z = 0.0;

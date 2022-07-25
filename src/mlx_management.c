@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:32:55 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/24 17:39:36 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/25 14:37:56 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,18 @@ int	key_hook(int keycode, void *param)
 		game->player.pos.x -= game->player.dir.x * game->player.mv_speed;
 		game->player.pos.y -= game->player.dir.y * game->player.mv_speed;
 		refresh_game(game);
+	}
+	else if (keycode == SPACE)
+	{
+		game->player.pos.z = 0.7;
+		erase_img(&(game->img));
+		draw_game(game);
+		mlx_put_image_to_window(game->mlx_ptr, game->win, game->img.ptr, 0, 0);
+		game->player.pos.z = 0.5;
+		sleep(1);
+		erase_img(&(game->img));
+		draw_game(game);
+		mlx_put_image_to_window(game->mlx_ptr, game->win, game->img.ptr, 0, 0);
 	}
 	return (0);
 }
