@@ -26,7 +26,7 @@ int	ft_exit(t_win *win)
 	if (win->map)
 		free(win->map);
 	i = 0;
-	if (win->win_ptr)
+	if (win->mlx_ptr && win->win_ptr)
 		mlx_destroy_window(win->mlx_ptr, win->win_ptr);
 	if (win->mlx_ptr)
 	{
@@ -41,11 +41,11 @@ int	ft_exit(t_win *win)
 Retourne 0 si OK, -1 si la hauteur ou la largeur est trop grande */
 int	ft_set_maxsize_screen(t_win *win)
 {
-	int	screen_width;
-	int	screen_height;
+	//int	screen_width;
+	//int	screen_height;
 
-	screen_width = SCREEN_W;
-	screen_height = SCREEN_H;
+	//screen_width = SCREEN_W;
+	//screen_height = SCREEN_H;
 //	win->width = ft_strlen(win->map[0]) * WALL_SIZE;
 //	win->height = ft_tabtablen(win->map) * WALL_SIZE;
 	win->width = SCREEN_W;
