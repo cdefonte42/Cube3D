@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 12:27:33 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/25 17:06:14 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/25 17:38:56 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,40 @@ double	wall_height_ratio(t_ray ray, double dist_screen, double cube_size)
 	return (hpwall);
 }
 
-void	draw_uni_walls(t_type wall_type, int *pixel)
+void	draw_uni_walls(int line, int max_line, int col, t_game *game)
 {
-	if (wall_type == nwall)
-		*pixel = BLUE;
-	else if (wall_type == swall)
-		*pixel = RED;
-	else if (wall_type == wwall)
-		*pixel = PURPLE;
-	else if (wall_type == ewall)
-		*pixel = ORANGE;
+	int		size_line;
+	t_ray	*rays;
+
+	size_line = game->img.size_line;
+	rays = game->player.rays;
+	while (line < max_line)
+	{
+		if (rays[col].hit_point.type == nwall)
+			game->img.data[col + line * size_line] = BLUE;
+		else if (rays[col].hit_point.type == swall)
+			game->img.data[col + line * size_line] = RED;
+		else if (rays[col].hit_point.type == wwall)
+			game->img.data[col + line * size_line] = PURPLE;
+		else if (rays[col].hit_point.type == ewall)
+			game->img.data[col + line * size_line] = ORANGE;
+		++line;
+	}
+}
+
+void	get_interval(int *min_line, int *max_line, int screen_height, double hpwall)
+{
+	double	min;
+	double	max;
+
+	min = ((double)screen_height - hpwall) * 0.5;
+	max = ((double)screen_height + hpwall) * 0.5;
+	if (min < 0.0)
+		min = 0.0;
+	if (max > screen_height)
+		max = screen_height;
+	*min_line = (int)min;
+	*max_line = (int)max;
 }
 
 /* NEED une optimisation non ? */
@@ -44,27 +68,17 @@ void	draw_game(t_game *game)
 {
 	double	hpwall; // hauteur percue du wall
 	t_ray	*rays = game->player.rays;
-	int		nb_rays = game->width;
-	int		col = 0;
-	int		line;
-	double	min_line;
-	double	max_line;
-	int	size_line = game->img.size_line;
+	int	nb_rays = game->width;
+	int	col;
+	int	min_line;
+	int	max_line;
+
+	col = 0;
 	while (col < nb_rays)
 	{
 		hpwall = wall_height_ratio(rays[col], game->player.dist_screen, game->cube_size);
-		min_line = ((double)game->img.height - hpwall) * 0.5;
-		max_line = ((double)game->img.height + hpwall) * 0.5;
-		if (min_line < 0.0)
-			min_line = 0.0;
-		if (max_line > (double)game->img.height)
-			max_line = (double)game->img.height;
-		line = (int)min_line;
-		while (line < (int)max_line)
-		{
-			draw_uni_walls(rays[col].hit_point.type, &(game->img.data[col + line * size_line]));
-			++line;
-		}
+		get_interval(&min_line, &max_line, game->img.height, hpwall);
+		draw_uni_walls(min_line, max_line, col, game);
 		++col;
 	}
 }
