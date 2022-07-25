@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/24 18:58:18 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/25 13:47:15 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,23 +21,23 @@
 # include <math.h>
 # include <stdio.h>
 
-# ifndef SCREEN_W
+# ifndef PI
 #  define PI 3.142857
 # endif
 
-# ifndef SCREEN_W
+# ifndef SCREEN_W		// should be pair
 #  define SCREEN_W 640
 # endif
 # ifndef SCREEN_H
-#  define SCREEN_H 300
+#  define SCREEN_H 640	// should be pair
 # endif
 
 # ifndef CUBE_SIZE
-#  define CUBE_SIZE 32
+#  define CUBE_SIZE 64	// should be pair. (8 multiples top)
 # endif
 
 # ifndef VIEW_HEIGHT
-#  define VIEW_HEIGHT 16 // player's sight height (usually 1/2 cubes's height)
+#  define VIEW_HEIGHT 32	// player's sight height (usually 1/2 cubes's height)
 # endif
 
 /*
@@ -67,7 +67,7 @@ typedef struct s_coord
 {
 	double				x;
 	double				y;
-	double				z;
+	double				z;	// z[view]=0 z[map]=0.5 et z[grid] = 1/2 * cube_size
 }				t_pos, t_dir, t_vec;	// permet d'exprimer soit une position, soit un vecteur de direction dans un systeme donne. ATTENTION une dir ne peut prendre que des valeurs entre -1 et 1 compris
 
 typedef struct s_hit_point
@@ -160,17 +160,19 @@ typedef struct s_game
 #  define D_KEY				2
 #  define W_KEY				13
 #  define ESC 				53
+#  define SPACE 			49
 
 # else
 #  define L_ARW				65361
 #  define R_ARW				65363
-#  define UP_ARW				65362
-#  define DOWN_ARW				65364
-#  define A_KEY					97
+#  define UP_ARW			65362
+#  define DOWN_ARW			65364
+#  define A_KEY				97
 #  define W_KEY				119
-#  define S_KEY					115
-#  define D_KEY					100
-#  define ESC					65307
+#  define S_KEY				115
+#  define D_KEY				100
+#  define ESC				65307
+//#  define SPACE 			?????
 # endif
 
 /*____ PARSING ____ */
