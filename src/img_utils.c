@@ -6,7 +6,7 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 21:10:57 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/07/25 15:29:51 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/25 17:05:56 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 /* Reset l'image img en black */
 void	erase_img(t_img *img)
 {
-	int	size = img->height * (img->size_line / 4);
+	int	size = img->height * img->size_line;
 	int	i;
 
 	i = 0;
@@ -30,7 +30,7 @@ et src doivent avoir les memes dimensions! Permet de "sauvegarder" une img
 temporairement par exemple. */
 void	cpy_img_pixels(t_img from, t_img to)
 {
-	int	size = from.height * (from.size_line / 4);
+	int	size = from.height * from.size_line;
 	int	i;
 
 	i = 0;
@@ -46,7 +46,7 @@ position origin (en grid unit)*/
 // Un peu la meme chose que draw_player et fill_cube dans draw_map.c
 void	draw_square(t_game *game, t_pos origin, int size, int color)
 {
-	int	size_line = game->map.img.size_line / 4;
+	int	size_line = game->map.img.size_line;
 	int	*pixels = game->map.img.data;
 	int	line;
 	int	col;

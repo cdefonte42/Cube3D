@@ -6,7 +6,7 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 18:03:35 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/07/24 14:16:24 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/25 17:06:25 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,12 @@
 void	fill_cube(t_game *game, int y, int x, int color)
 {
 	int	*pixels = game->map.grid.data;
-	int	size_line = game->map.grid.size_line / 4;
-	int	origin_line = y * game->cube_size * size_line;
+	int	origin_line = y * game->cube_size * game->map.grid.size_line;
 	int	origin_col = x * game->cube_size;
-	int	max_line = origin_line + game->cube_size * size_line;
+	int	max_line = origin_line + game->cube_size * game->map.grid.size_line;
 	int	max_col = origin_col + game->cube_size;;
 
-	for (int line = origin_line; line < max_line; line += size_line)
+	for (int line = origin_line; line < max_line; line += game->map.grid.size_line)
 	{
 		for (int col = origin_col; col < max_col; ++col)
 			pixels[col + line] = color;
@@ -49,7 +48,7 @@ void	draw_walls(t_game *game)
 void	draw_grid(t_game *game)
 {
 	int *pixels = game->map.grid.data;
-	int	size_line = game->map.grid.size_line / 4;
+	int	size_line = game->map.grid.size_line;
 	int	max_line = size_line * game->cube_size * game->map.height;
 
 	for (int line = 0; line <= max_line; line += size_line)
@@ -68,7 +67,7 @@ void	draw_grid(t_game *game)
 au player. */
 void	draw_player(t_game *game)
 {
-	int	size_line = game->map.grid.size_line / 4;
+	int	size_line = game->map.grid.size_line;
 	int	origin_line = ((int)(game->player.pos.y * game->cube_size - 5) * size_line);
 	int	origin_col = (game->player.pos.x * game->cube_size - 5);
 	int	max_line = origin_line + 10 * size_line;

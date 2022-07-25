@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 12:27:33 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/25 16:54:43 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/25 17:06:14 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	draw_game(t_game *game)
 	int		line;
 	double	min_line;
 	double	max_line;
-	int	size_line = game->img.size_line / 4;
+	int	size_line = game->img.size_line;
 	while (col < nb_rays)
 	{
 		hpwall = wall_height_ratio(rays[col], game->player.dist_screen, game->cube_size);
