@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 12:27:33 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/25 17:38:56 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/25 18:25:01 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,69 +16,99 @@
 Correction du fish eye grace a la projection (cos(a)) de la distance du hit 
 point sur l'axe de view. */
 // ATTENTION floating point exception: car division par 0!!
-double	wall_height_ratio(t_ray ray, double dist_screen, double cube_size)
+double	wall_height_ratio(t_ray ray, double distScreen, double cubeSize)
 {
 	double	hpwall;
+
 	if (ray.hit_point.dist * cos(ray.angle) == 0.0)
-		hpwall = dist_screen * cube_size / (ray.hit_point.dist);
+		hpwall = distScreen * cubeSize / (ray.hit_point.dist);
 	else
-		hpwall = dist_screen * cube_size / (ray.hit_point.dist * cos(ray.angle));
+		hpwall = distScreen * cubeSize / (ray.hit_point.dist * cos(ray.angle));
 	return (hpwall);
 }
 
-void	draw_uni_walls(int line, int max_line, int col, t_game *game)
+/* Colori en couleur uni, en fonction du type de wall (nord, sud, est, ouest);
+pixels pointe vers l'adresse du premier pixel a colorier dans l'image;
+max (en pixel), represente le dernier pixel / la fin du mur (a ne PAS 
+colorier!). */
+void	draw_uni_walls(t_type type, int *pixels, int size_line, int max)
 {
-	int		size_line;
-	t_ray	*rays;
+	int		i;
+	int		color;
 
-	size_line = game->img.size_line;
-	rays = game->player.rays;
-	while (line < max_line)
+	i = 0;
+	if (type == nwall)
+		color = BLUE;
+	else if (type == swall)
+		color = RED;
+	else if (type == wwall)
+		color = PURPLE;
+	else
+		color = ORANGE;
+	while (i < max)
 	{
-		if (rays[col].hit_point.type == nwall)
-			game->img.data[col + line * size_line] = BLUE;
-		else if (rays[col].hit_point.type == swall)
-			game->img.data[col + line * size_line] = RED;
-		else if (rays[col].hit_point.type == wwall)
-			game->img.data[col + line * size_line] = PURPLE;
-		else if (rays[col].hit_point.type == ewall)
-			game->img.data[col + line * size_line] = ORANGE;
-		++line;
+		pixels[i] = color;
+		i += size_line;
 	}
 }
 
-void	get_interval(int *min_line, int *max_line, int screen_height, double hpwall)
+/* Set les le minimun et le maximum de l'interval de coloration d'une slice de
+mur. Les valeurs sont set en pixels. */
+void	get_interval(int *min_line, int *max_line, t_img img, double hpwall)
 {
 	double	min;
 	double	max;
 
-	min = ((double)screen_height - hpwall) * 0.5;
-	max = ((double)screen_height + hpwall) * 0.5;
+	min = ((double)img.height - hpwall) * 0.5;
+	max = ((double)img.height + hpwall) * 0.5;
 	if (min < 0.0)
 		min = 0.0;
-	if (max > screen_height)
-		max = screen_height;
-	*min_line = (int)min;
-	*max_line = (int)max;
+	if (max > img.height)
+		max = img.height;
+	*min_line = (int)min * img.size_line;
+	*max_line = (int)max * img.size_line;
 }
 
-/* NEED une optimisation non ? */
-/* Remplit la game win de pixels en fonction des murs sol ciel etc */
+/* Permet de colorier le ciel, ou le sol. pixels est l'adresse du premier pixel
+a colorier, size_line est la valeur a incrementer a chaque tour, et max est
+l'index du dernier pixels (a ne PAS colorier). */
+void	draw_floor_or_sky(int *pixels, int size_line, int max, int color)
+{
+	int	i;
+
+	i = 0;
+	while (i < max)
+	{
+		pixels[i] = color;
+		i += size_line;
+	}
+}
+
+/* Remplit la game win de pixels en fonction des murs sol ciel etc.
+	hpwall : Hauteur "percue" du mur (ratio hauteur mur / distance de celui ci)
+	min_line et max_line : en pixels! Interval entre le haut et le bas du mur.
+*/
 void	draw_game(t_game *game)
 {
-	double	hpwall; // hauteur percue du wall
-	t_ray	*rays = game->player.rays;
-	int	nb_rays = game->width;
-	int	col;
-	int	min_line;
-	int	max_line;
+	double	hpwall;
+	int		nb_rays;
+	int		col;
+	int		min_line;
+	int		max_line;
 
 	col = 0;
+	nb_rays = game->width;
 	while (col < nb_rays)
 	{
-		hpwall = wall_height_ratio(rays[col], game->player.dist_screen, game->cube_size);
-		get_interval(&min_line, &max_line, game->img.height, hpwall);
-		draw_uni_walls(min_line, max_line, col, game);
+		hpwall = wall_height_ratio(game->player.rays[col], \
+		game->player.dist_screen, game->cube_size);
+		get_interval(&min_line, &max_line, game->img, hpwall);
+		draw_uni_walls(game->player.rays[col].hit_point.type, \
+		&(game->img.data[col + min_line]), game->img.size_line, max_line);
+		draw_floor_or_sky(&(game->img.data[col + max_line]), \
+		game->img.size_line, game->img.height * game->img.size_line, GREEN);
+		draw_floor_or_sky(&(game->img.data[col]), game->img.size_line, \
+		min_line, CYAN);
 		++col;
 	}
 }
