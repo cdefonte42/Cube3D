@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/25 13:47:15 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/25 15:27:58 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,13 @@ EAST	=	(+1, 0, 0);										V y
 */
 
 /* Type de l'element touche par le rayon: wall (vertical/horizontal), 
-sprite, door etc.. */
+sprite, door etc.. ATTENTION "nb_textures" a un emplacement important: il
+determine la taille d'allocation du tableau de texures (pour l'instant que les
+murs de texturises, plus tard si bonus portes et sprites il faudra les deplacer
+avant nb_textures). */
 typedef enum e_element_type
 {
-	apex, vline, wwall, ewall, hline, nwall, swall, sprite, door
+	wwall, ewall, nwall, swall, nb_textures, hline, vline, apex, sprite, door
 }			t_type;
 
 typedef enum e_orientation
@@ -113,16 +116,26 @@ typedef struct s_player
 	t_ray			*rays;	// tableau de rays;
 }				t_player;
 
+/* Structure contenant toutes les donnees d'une image mlx: 
+	ptr		:	pointeur retourne par mlx_new_img() ou mlx_xpm_file_to_image().
+	width	:	en nombre de pixels (+1 par rapport a sa win?)
+	height	:	en nombre de pixels (+1/win?)
+	data	:	filled by mlx_get_data_addr(); !!! Casted en int * au lieu de 
+				char *. Contient les bits de pixels;
+	bpp		:	bits per pixel also called the depth of the image
+	size_line	: number of bytes used to store one line of the image in memor
+	endian		: little == 0; big endian == 1;
+NOTE: Peut etre ajouter un char *filename? Ne serait utile que pour les textures
+*/
 typedef struct s_img
 {
-	void	*ptr;		// ptr returned by mlx_new_img
-	unsigned int		width; // en nombre de pixels (+1 par rapport a sa win?)
-	unsigned int		height;	// en nombre de pixels (+1/win?)
-	int		*data;		// filled by mlx_get_data_addr(); !!! Casted en int *
-						// au lieu de char *. Contient les bits de pixels;
-	int		bpp;		// bits per pixel also called the depth of the image
-	int		size_line;	// number of bytes used to store one line of the image in memor
-	int		endian;		// little == 0; big endian == 1;
+	void	*ptr;
+	int		width;
+	int		height;
+	int		*data;
+	int		bpp;
+	int		size_line;
+	int		endian;
 }				t_texture, t_img;
 
 typedef struct s_map	// AFFICHAGE DE LA MINIMAP
