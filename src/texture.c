@@ -6,9 +6,17 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 13:42:49 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/25 14:47:23 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/25 16:25:33 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cubed.h"
 
+
+void	draw_buff_texture(t_game *game)
+{
+	int		nb_rays;
+
+	nb_rays = game->width;
+	
+}

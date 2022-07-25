@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/25 15:27:58 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/25 16:22:38 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 # endif
 
 # ifndef CUBE_SIZE
-#  define CUBE_SIZE 64	// should be pair. (8 multiples top)
+#  define CUBE_SIZE 64	// should be pair. (8 multiples top) AND same size than xpm
 # endif
 
 # ifndef VIEW_HEIGHT
@@ -243,7 +243,6 @@ void	draw_ray(t_game *game, t_ray ray, int color);
 void	draw_all_rays(t_game *game);
 
 /* ____ TEXTURE (tests)______*/
-void	put_texture_origin(unsigned int x, unsigned int y, t_img *screen, t_texture *text);
-void	put_sized_texture(unsigned int width, unsigned int height, t_img *screen, t_texture *text);
+void	draw_buff_texture(t_game *game);
 
 #endif
