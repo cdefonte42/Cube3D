@@ -6,7 +6,7 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 21:10:57 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/07/24 16:43:51 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/25 15:29:51 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	draw_square(t_game *game, t_pos origin, int size, int color)
 	col = (int)origin.x - (size / 2);
 	max_line = line + size * size_line;
 	max_col = col + size;
-	while (line < max_line && line < (int)game->map.img.height * size_line)
+	while (line < max_line && line < game->map.img.height * size_line)
 	{
 		col = (int)origin.x - (size / 2);
 		while (col < max_col && col < size_line)

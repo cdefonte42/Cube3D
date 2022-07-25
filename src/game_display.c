@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 12:27:33 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/24 22:05:06 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/25 15:30:34 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,13 @@ void	draw_game(t_game *game)
 			hpwall = (int)(game->player.dist_screen * game->cube_size / (rays[col].hit_point.dist));
 		else
 			hpwall = (int)(game->player.dist_screen * game->cube_size / (rays[col].hit_point.dist * cos(rays[col].angle)));
-		if (hpwall > (int)game->img.height)
+		if (hpwall > game->img.height)
 			hpwall = game->img.height;
 		min_line = (game->img.height - hpwall) / 2;
 		max_line = (game->img.height + hpwall) / 2;
 		if (min_line < 0)
 			min_line = 0;
-		if (max_line > (int)game->img.height)
+		if (max_line > game->img.height)
 			max_line = game->img.height;
 		line = min_line;
 		while (line < max_line && line < game->height)
