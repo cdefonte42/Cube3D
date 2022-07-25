@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 14:13:54 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/25 15:49:25 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/25 16:18:10 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,25 +74,25 @@ int	init_textures(t_game *game)
 		return (-1);
 	
 	game->text[wwall].ptr = mlx_xpm_file_to_image(game->mlx_ptr, \
-"img/west_wall_128_128.xpm", &game->text[wwall].width, &game->text[wwall].height);
+"img/west_wall_64_64.xpm", &game->text[wwall].width, &game->text[wwall].height);
 	if (!game->text[wwall].ptr)
 		return (printf("Error loading wall img\n"), -1);
 	game->text[wwall].data = (int *)mlx_get_data_addr(game->text[wwall].ptr, &game->text[wwall].bpp, &game->text[wwall].size_line, &game->text[wwall].endian);
 
 	game->text[ewall].ptr = mlx_xpm_file_to_image(game->mlx_ptr, \
-"img/east_wall_128_128.xpm", &game->text[ewall].width, &game->text[ewall].height);
+"img/east_wall_64_64.xpm", &game->text[ewall].width, &game->text[ewall].height);
 	if (!game->text[ewall].ptr)
 		return (printf("Error loading wall img\n"), -1);
 	game->text[ewall].data = (int *)mlx_get_data_addr(game->text[ewall].ptr, &game->text[ewall].bpp, &game->text[ewall].size_line, &game->text[ewall].endian);
 
 	game->text[nwall].ptr = mlx_xpm_file_to_image(game->mlx_ptr, \
-"img/north_wall_128_128.xpm", &game->text[nwall].width, &game->text[nwall].height);
+"img/north_wall_64_64.xpm", &game->text[nwall].width, &game->text[nwall].height);
 	if (!game->text[nwall].ptr)
 		return (printf("Error loading wall img\n"), -1);
 	game->text[nwall].data = (int *)mlx_get_data_addr(game->text[nwall].ptr, &game->text[nwall].bpp, &game->text[nwall].size_line, &game->text[nwall].endian);
 
 	game->text[swall].ptr = mlx_xpm_file_to_image(game->mlx_ptr, \
-"img/south_wall_128_128.xpm", &game->text[swall].width, &game->text[swall].height);
+"img/south_wall_64_64.xpm", &game->text[swall].width, &game->text[swall].height);
 	if (!game->text[swall].ptr)
 		return (printf("Error loading wall img\n"), -1);
 	game->text[swall].data = (int *)mlx_get_data_addr(game->text[swall].ptr, &game->text[swall].bpp, &game->text[swall].size_line, &game->text[swall].endian);
