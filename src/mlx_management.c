@@ -6,18 +6,20 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:32:55 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/24 17:39:36 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/25 15:49:09 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cubed.h"
 
 /*Appellee quand red cross clicked ou ESC press*/
-// Manque pas mal de destroy, notemment le tableau de texture 
 int	ft_exit(t_game *game)
 {
+
 	if (!game)
 		return (0);
+	if (game->text)
+		free(game->text);
 	if (game->player.rays)
 		free(game->player.rays);
 	if (game->img.ptr)
