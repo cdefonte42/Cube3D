@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/25 16:22:38 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/26 17:46:57 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,7 +215,7 @@ void	erase_img(t_img *img);
 void	cpy_img_pixels(t_img from, t_img to);
 void	draw_square(t_game *game, t_pos origin, int size, int color);
 
-/* __________ GAME DRAWING ________ */
+/* __________ DISPLAY GAME ________ */
 void	draw_game(t_game *game);
 
 /* ______ MAP DRAWING ______ */
@@ -243,6 +243,6 @@ void	draw_ray(t_game *game, t_ray ray, int color);
 void	draw_all_rays(t_game *game);
 
 /* ____ TEXTURE (tests)______*/
-void	draw_buff_texture(t_game *game);
+void	draw_buff_texture(t_game *game, int col_screen, int it_inf, int it_sup);
 
 #endif
