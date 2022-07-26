@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 12:27:33 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/26 16:09:16 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/26 17:46:42 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,8 @@ void	draw_floor_or_sky(int *pixels, int size_line, int max, int color)
 
 /* Remplit la game win de pixels en fonction des murs sol ciel etc.
 	hpwall : Hauteur "percue" du mur (ratio hauteur mur / distance de celui ci)
-	min_line et max_line : en pixels! Interval entre le haut et le bas du mur.
+	it_inff et it_max : en pixels! Interval entre le haut et le bas du mur
+						(line min et line max a peindre).
 */
 void	draw_game(t_game *game)
 {
@@ -109,8 +110,11 @@ void	draw_game(t_game *game)
 
 		get_interval(&it_inf, &it_sup, game->img, hpwall);
 
-		draw_uni_walls(game->player.rays[col].hit_point.type, \
-		&(game->img.data[col + it_inf]), game->img.size_line, it_sup - it_inf);
+		if (game->player.rays[col].hit_point.type != nwall)
+			draw_uni_walls(game->player.rays[col].hit_point.type, \
+			&(game->img.data[col + it_inf]), game->img.size_line, it_sup - it_inf);
+		else
+			draw_buff_texture(game, col, it_inf, it_sup);
 
 		draw_floor_or_sky(&(game->img.data[col + it_sup]), \
 		game->img.size_line, img_pixl_max - it_sup, GREEN);
