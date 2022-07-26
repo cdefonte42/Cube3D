@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:32:55 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/26 16:21:24 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/26 17:44:38 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,10 @@ int	ft_exit(t_game *game)
 recalcul de tous les rayons. */
 void	refresh_game(t_game *game)
 {
-	cpy_img_pixels(game->map.grid, game->map.img);
 	raycasting(game);
+	cpy_img_pixels(game->map.grid, game->map.img);
 	draw_player(game);	// pour MINIMAP
-	draw_all_rays(game);	// pour MINIMAP (et DEBUG)
+//	draw_all_rays(game);	// pour MINIMAP (et DEBUG)
 	draw_game(game);
 	mlx_put_image_to_window(game->mlx_ptr, game->win, game->img.ptr, 0, 0);
 	mlx_put_image_to_window(game->mlx_ptr, game->map.win, game->map.img.ptr, 0, 0);
