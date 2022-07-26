@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:32:55 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/25 15:49:09 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/26 11:18:52 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,28 @@
 /*Appellee quand red cross clicked ou ESC press*/
 int	ft_exit(t_game *game)
 {
+	int	i;
 
+	i = 0;
 	if (!game)
 		return (0);
 	if (game->text)
+	{
+		while (i < nb_textures)
+		{
+			mlx_destroy_image(game->mlx_ptr, game->text[i].ptr);
+			++i;
+		}
 		free(game->text);
+	}
 	if (game->player.rays)
 		free(game->player.rays);
 	if (game->img.ptr)
 		mlx_destroy_image(game->mlx_ptr, game->img.ptr);
 	if (game->map.img.ptr)
 		mlx_destroy_image(game->mlx_ptr, game->map.img.ptr);
+	if (game->map.grid.ptr)
+		mlx_destroy_image(game->mlx_ptr, game->map.grid.ptr);
 	if (game->map.tab)
 		ft_free_map(game->map.tab);
 	if (game->win)
@@ -34,8 +45,8 @@ int	ft_exit(t_game *game)
 		mlx_destroy_window(game->mlx_ptr, game->map.win);
 	if (game->mlx_ptr)
 	{
-		//mlx_destroy_display(game->mlx_ptr);	//NON  DISPO SUR MAC
-		//mlx_loop_end(game->mlx_ptr);			//NON DISPO SUR MAC
+		mlx_destroy_display(game->mlx_ptr);	//NON  DISPO SUR MAC
+		mlx_loop_end(game->mlx_ptr);			//NON DISPO SUR MAC
 		free(game->mlx_ptr);
 	}
 	exit (0);
@@ -75,17 +86,29 @@ int	key_hook(int keycode, void *param)
 		//game->player.angle -= game->player.rot_speed;
 		refresh_game(game);
 	}
-	else if (keycode == UP_ARW && !check_for_colision(game, keycode))
+	else if (keycode == W_KEY && !check_for_colision(game, keycode))
 	{
 		game->player.pos.x += game->player.dir.x * game->player.mv_speed;
 		game->player.pos.y += game->player.dir.y * game->player.mv_speed;
 		refresh_game(game);
 	}
-	else if (keycode == DOWN_ARW)
+	else if (keycode == S_KEY)
 	{
 		game->player.pos.x -= game->player.dir.x * game->player.mv_speed;
 		game->player.pos.y -= game->player.dir.y * game->player.mv_speed;
 		refresh_game(game);
 	}
+//	else if (keycode == A_KEY)
+//	{
+//		game->player.pos.x += game->player.dir.y * game->player.mv_speed;
+//		game->player.pos.y += game->player.dir.x * game->player.mv_speed;
+//		refresh_game(game);
+//	}
+//	else if (keycode == D_KEY)
+//	{
+//		game->player.pos.x -= game->player.dir.y * game->player.mv_speed;
+//		game->player.pos.y -= game->player.dir.x * game->player.mv_speed;
+//		refresh_game(game);
+//	}
 	return (0);
 }
