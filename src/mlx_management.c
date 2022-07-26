@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:32:55 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/26 14:02:25 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/26 14:26:34 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,13 +77,13 @@ int	key_hook(int keycode, void *param)
 	if (keycode == R_ARW)
 	{
 		game->player.dir = rotate_vector_angle(game->player.dir, game->player.rot_speed);
-		game->player.angle += game->player.rot_speed;
+//		game->player.angle += game->player.rot_speed;
 		refresh_game(game);
 	}
 	else if (keycode == L_ARW)
 	{
 		game->player.dir = rotate_vector_angle(game->player.dir, -game->player.rot_speed);
-		game->player.angle -= game->player.rot_speed;
+//		game->player.angle -= game->player.rot_speed;
 		refresh_game(game);
 	}
 	else if (keycode == W_KEY && !check_for_colision(game, keycode))
@@ -95,7 +95,7 @@ int	key_hook(int keycode, void *param)
 	else if (keycode == S_KEY)
 	{
 		game->player.pos.x -= game->player.dir.x * game->player.mv_speed;
-		game->player.pos.y += game->player.dir.y * game->player.mv_speed;
+		game->player.pos.y -= game->player.dir.y * game->player.mv_speed;
 		refresh_game(game);
 	}
 	else if (keycode == A_KEY)
