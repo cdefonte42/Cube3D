@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 12:27:33 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/26 17:46:42 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/26 20:09:53 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ double	wall_height_ratio(t_ray ray, double distScreen, double cubeSize, double m
 		hpwall = distScreen * cubeSize / (ray.hit_point.dist);
 	else
 		hpwall = distScreen * cubeSize / (ray.hit_point.dist * cos(ray.angle));
+	
 	if (hpwall > max)
 		return (max);
 	return (hpwall);
@@ -110,11 +111,9 @@ void	draw_game(t_game *game)
 
 		get_interval(&it_inf, &it_sup, game->img, hpwall);
 
-		if (game->player.rays[col].hit_point.type != nwall)
-			draw_uni_walls(game->player.rays[col].hit_point.type, \
-			&(game->img.data[col + it_inf]), game->img.size_line, it_sup - it_inf);
-		else
-			draw_buff_texture(game, col, it_inf, it_sup);
+//		draw_uni_walls(game->player.rays[col].hit_point.type, \
+//		&(game->img.data[col + it_inf]), game->img.size_line, it_sup - it_inf);
+		draw_buff_texture(game, col, it_inf, it_sup, hpwall);
 
 		draw_floor_or_sky(&(game->img.data[col + it_sup]), \
 		game->img.size_line, img_pixl_max - it_sup, GREEN);

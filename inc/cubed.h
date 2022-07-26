@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/26 17:46:57 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/26 20:07:27 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@
 # endif
 
 # ifndef SCREEN_W		// should be pair
-#  define SCREEN_W 640
+#  define SCREEN_W 1280
 # endif
 # ifndef SCREEN_H
-#  define SCREEN_H 640	// should be pair
+#  define SCREEN_H 720	// should be pair
 # endif
 
 # ifndef CUBE_SIZE
@@ -243,6 +243,6 @@ void	draw_ray(t_game *game, t_ray ray, int color);
 void	draw_all_rays(t_game *game);
 
 /* ____ TEXTURE (tests)______*/
-void	draw_buff_texture(t_game *game, int col_screen, int it_inf, int it_sup);
+void	draw_buff_texture(t_game *game, int col_screen, int it_inf, int it_sup, double hpwall);
 
 #endif
