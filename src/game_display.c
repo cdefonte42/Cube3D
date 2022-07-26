@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 12:27:33 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/25 18:25:01 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/26 16:09:16 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 Correction du fish eye grace a la projection (cos(a)) de la distance du hit 
 point sur l'axe de view. */
 // ATTENTION floating point exception: car division par 0!!
-double	wall_height_ratio(t_ray ray, double distScreen, double cubeSize)
+double	wall_height_ratio(t_ray ray, double distScreen, double cubeSize, double max)
 {
 	double	hpwall;
 
@@ -24,6 +24,8 @@ double	wall_height_ratio(t_ray ray, double distScreen, double cubeSize)
 		hpwall = distScreen * cubeSize / (ray.hit_point.dist);
 	else
 		hpwall = distScreen * cubeSize / (ray.hit_point.dist * cos(ray.angle));
+	if (hpwall > max)
+		return (max);
 	return (hpwall);
 }
 
@@ -77,6 +79,7 @@ void	draw_floor_or_sky(int *pixels, int size_line, int max, int color)
 	int	i;
 
 	i = 0;
+
 	while (i < max)
 	{
 		pixels[i] = color;
@@ -93,22 +96,27 @@ void	draw_game(t_game *game)
 	double	hpwall;
 	int		nb_rays;
 	int		col;
-	int		min_line;
-	int		max_line;
+	int		it_inf;
+	int		it_sup;
+	int		img_pixl_max = game->img.height * game->img.size_line;
 
 	col = 0;
 	nb_rays = game->width;
 	while (col < nb_rays)
 	{
 		hpwall = wall_height_ratio(game->player.rays[col], \
-		game->player.dist_screen, game->cube_size);
-		get_interval(&min_line, &max_line, game->img, hpwall);
+		game->player.dist_screen, game->cube_size, img_pixl_max);
+
+		get_interval(&it_inf, &it_sup, game->img, hpwall);
+
 		draw_uni_walls(game->player.rays[col].hit_point.type, \
-		&(game->img.data[col + min_line]), game->img.size_line, max_line);
-		draw_floor_or_sky(&(game->img.data[col + max_line]), \
-		game->img.size_line, game->img.height * game->img.size_line, GREEN);
+		&(game->img.data[col + it_inf]), game->img.size_line, it_sup - it_inf);
+
+		draw_floor_or_sky(&(game->img.data[col + it_sup]), \
+		game->img.size_line, img_pixl_max - it_sup, GREEN);
+
 		draw_floor_or_sky(&(game->img.data[col]), game->img.size_line, \
-		min_line, CYAN);
+		it_inf, CYAN);
 		++col;
 	}
 }
