@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 14:13:54 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/25 17:00:22 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/26 20:07:46 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ int	init_player(t_game *game)
 	game->player.dir.y = -1.0;
 	game->player.dir.z = 0.0;
 	//game->player.angle = atan(game.player.dir.y / game.player.dir.x);
-	game->player.rot_speed = (4 * PI) / 180; // se tourne de 4 degres
-	game->player.mv_speed = 8.0 / game->cube_size; // se deplace de 5 pixels en appuyant 1 fois sur touche, sur l'axe du player
+	game->player.rot_speed = (1.5 * PI) / 180; // se tourne de 4 degres
+	game->player.mv_speed = 4.0 / game->cube_size; // se deplace de 5 pixels en appuyant 1 fois sur touche, sur l'axe du player
 	game->player.rays = malloc(sizeof(t_ray) * game->width);
 	if (!game->player.rays)
 		return (-1);

@@ -6,7 +6,7 @@
 #    By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/18 12:15:17 by cdefonte          #+#    #+#              #
-#    Updated: 2022/07/24 15:14:29 by Cyrielle         ###   ########.fr        #
+#    Updated: 2022/07/26 11:16:49 by cdefonte         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ LIBFT		=	$(LIBFT_DIR)libft.a
 
 CC			=	cc
 #CFLAGS		=	-Werror -Wall -Wextra -g3 -fsanitize=address
-CFLAGS		=	-Werror -Wall -Wextra
+CFLAGS		=	-Werror -Wall -Wextra -g3
 LIB_FLAGS	=	-L$(LIBFT_DIR) -lft $(MLXFLAGS) -lm
 INCLUDES	=	-I$(LIBFT_DIR) -I$(INC_DIR) -I$(LIBX_DIR)
 

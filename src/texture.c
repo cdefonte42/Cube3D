@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 13:42:49 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/26 20:49:59 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/26 20:54:40 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	draw_buff_texture(t_game *game, int col_screen, int it_inf, int it_sup, dou
 	int l = 0; // represente le nombre de lignes faites
 	while (line_screen < it_sup)
 	{
-		line_text = ((line_text_indent / hwall) % game->cube_size) + ((l / hwall) % game->cube_size);
+		line_text = ((line_text_indent / (int)hpwall) % game->cube_size) + ((l / hwall) % game->cube_size);
 		if (col_screen == 0 && l == 0)
 			printf("line texture = %d\n", line_text);
 		img->data[col_screen + line_screen] = text.data[col_text + line_text * text.size_line];
