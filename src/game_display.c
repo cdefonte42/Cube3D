@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 12:27:33 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/26 20:09:53 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/26 20:51:30 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 Correction du fish eye grace a la projection (cos(a)) de la distance du hit 
 point sur l'axe de view. */
 // ATTENTION floating point exception: car division par 0!!
-double	wall_height_ratio(t_ray ray, double distScreen, double cubeSize, double max)
+double	wall_height_ratio(t_ray ray, double distScreen, double cubeSize)
 {
 	double	hpwall;
 
@@ -25,8 +25,6 @@ double	wall_height_ratio(t_ray ray, double distScreen, double cubeSize, double m
 	else
 		hpwall = distScreen * cubeSize / (ray.hit_point.dist * cos(ray.angle));
 	
-	if (hpwall > max)
-		return (max);
 	return (hpwall);
 }
 
@@ -107,7 +105,7 @@ void	draw_game(t_game *game)
 	while (col < nb_rays)
 	{
 		hpwall = wall_height_ratio(game->player.rays[col], \
-		game->player.dist_screen, game->cube_size, img_pixl_max);
+		game->player.dist_screen, game->cube_size);
 
 		get_interval(&it_inf, &it_sup, game->img, hpwall);
 
