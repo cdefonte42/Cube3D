@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 13:42:49 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/26 21:18:10 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/26 22:50:30 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	draw_buff_texture(t_game *game, int col_screen, int it_inf, int it_sup, dou
 	if (hwall >= screen_size)
 	{
 		line_text_indent = (hpwall - screen_size) / 2;
+		line_text_indent *= game->cube_size;
 		hwall = screen_size;
 	}
 	else
@@ -38,13 +39,13 @@ void	draw_buff_texture(t_game *game, int col_screen, int it_inf, int it_sup, dou
 	line_text = 0;
 	line_screen = it_inf;
 
-	int l = 0; // represente le nombre de lignes faites
+	int numl = 0; // represente le nombre de lignes faites
 	while (line_screen < it_sup)
 	{
-		line_text = ((line_text_indent / (int)hpwall) % game->cube_size) + ((l / hwall) % game->cube_size);
+		line_text = ((numl + line_text_indent) / (int)hpwall) % game->cube_size;
 		img->data[col_screen + line_screen] = text.data[col_text + line_text * text.size_line];
 		line_screen += img->size_line;
-		l+= game->cube_size;
+		numl+= game->cube_size;
 	}
 	
 }
