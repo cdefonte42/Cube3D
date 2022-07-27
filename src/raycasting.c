@@ -6,7 +6,7 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 11:03:07 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/07/27 18:48:35 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/27 19:00:34 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,10 @@ void	set_ray_steps(t_game *game, t_ray *ray)
 		ray->stepY = - (modf(ray->pos[map].y, &int_part) * cube_size);
 }
 
-/* Eq droite: Or(t) = Op + t * Od Avec Or = infinite rays(t). Op = point origine ray.
-Od = vecteur directeur (du screen/plan de projection) = (last ray vector - first ray vector).
-t = longueur */ 
+/* Eq droite: Or(t) = Op + t * Od Avec Or = infinite rays(t). Op = point 
+origine ray.
+Od = vecteur directeur (du screen/plan de projection) = (last ray vector - 
+first ray vector). t = longueur */
 t_ray	get_mid_ray(t_game *game)
 {
 	t_ray	ray;
@@ -57,20 +58,23 @@ t_ray	get_mid_ray(t_game *game)
 rays du tableau. Ceci afin d'initialiser leur donnees et calculs (?) 
 Peut etre pas utile si on pouvait faire comme en c++ des membres static: 
 une seule et meme instance de variable commune a tous. Comment? En mettant la
-var dans le player, mais du coup devrait se balader avec le player partout... */
+var dans le player, mais du coup devrait se balader avec le player partout...*/
 void	cpy_ray(t_ray *tab, t_ray src, int nb_rays)
 {
 	while (--nb_rays >= 0)
 		tab[nb_rays] = src;
 }
 
-
 void	set_rays_angle(t_game *game, t_ray *rays, int nb_rays)
 {
-	int		index_mid_ray = nb_rays / 2 - 1;
-	int		i = index_mid_ray - 1;
-	int		n = 1;
-	while (i >= 0) // "rays de gauche" par rapport au mid ray => angle <0
+	int		index_mid_ray;
+	int		i;
+	int		n;
+
+	index_mid_ray = nb_rays / 2 - 1;
+	i = index_mid_ray - 1;
+	n = 1;
+	while (i >= 0)
 	{
 		rays[i].angle = -atan(n / game->player.dist_screen);
 		++n;
@@ -78,7 +82,7 @@ void	set_rays_angle(t_game *game, t_ray *rays, int nb_rays)
 	}
 	i = index_mid_ray + 1;
 	n = 1;
-	while (i < nb_rays) // "rays de droite" par rapport au mid ray => angle>0
+	while (i < nb_rays)
 	{
 		rays[i].angle = atan(n / game->player.dist_screen);
 		++n;
@@ -91,19 +95,21 @@ void	raycasting(t_game *game)
 	t_ray	mid_ray;
 	t_ray	*rays;
 	int		nb_rays;
+	int		i;
 
 	mid_ray = get_mid_ray(game);
 	nb_rays = game->width;
 	rays = game->player.rays;
 	cpy_ray(rays, mid_ray, nb_rays);
 	set_rays_angle(game, rays, nb_rays);
-	for (int i = 0; i < nb_rays; ++i)
+	i = 0;
+	while (i < nb_rays)
 	{
 		rays[i].dir[grid] = rotate_vector(mid_ray.dir[grid], rays[i].angle);
 		rays[i].dir[map] = rays[i].dir[grid];
 		set_ray_steps(game, &(rays[i]));
 		next_hit_point(&(rays[i]));
 		set_wall_hit_point(game, &(rays[i]));
+		++i;
 	}
 }
-
