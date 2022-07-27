@@ -6,7 +6,7 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 21:10:57 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/07/27 14:09:31 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/27 22:39:28 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ void	draw_square(t_game *game, t_pos origin, int size, int color)
 	int	max_line;
 	int	max_col;
 
-	line = ((int)origin.y - size / 2) * size_line;
-	col = (int)origin.x - (size / 2);
+	line = ((origin.y * game->map.ratio) - size / 2) * size_line;
+	col = (origin.x * game->map.ratio) - (size / 2);
 	max_line = line + size * size_line;
 	max_col = col + size;
 	while (line < max_line && line < game->map.img.height * size_line)
@@ -74,8 +74,8 @@ au player. */
 void	draw_player(t_game *game)
 {
 	int	size_line = game->map.grid.size_line;
-	int	origin_line = ((int)(game->player.pos.y * game->cube_size - 5) * size_line);
-	int	origin_col = (game->player.pos.x * game->cube_size - 5);
+	int	origin_line = ((int)(game->player.pos.y * game->map.rcube_size - 5) * size_line);
+	int	origin_col = (game->player.pos.x * game->map.rcube_size - 5);
 	int	max_line = origin_line + 10 * size_line;
 	int	max_col = origin_col + 10;
 	int	*pixels = game->map.img.data;
@@ -87,13 +87,5 @@ void	draw_player(t_game *game)
 			pixels[col + line] = ORANGE;
 
 		}
-	}
-	t_ray	*rays = game->player.rays;
-	int	i = 0;
-	int	len = game->cube_size / 4;
-	while (i < game->width - 1)
-	{
-		draw_sized_ray(game, rays[i], len, ORANGE);
-		i += 6;
 	}
 }

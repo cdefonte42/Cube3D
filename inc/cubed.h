@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/27 18:49:30 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/27 22:21:46 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,10 +92,6 @@ typedef struct s_ray
 						// toucher le premier horizontal wall
 	t_hit_point	hit_point;	// point qui touche une ligne, et a la fin du
 							// calcul un wall
-// Seul veritable truc qui nous interesse: la longueur du ray jusquau premier mur!
-// Donc en vrai les hitpoints on s'en fou un peu. On veut juste le premier "bon"
-// hit_point, et du coup en deduire la longueur: sqrt(pow2x + pow2y)
-	double	len_to_wall;		// 'till wall touched. en grid unit
 	double	angle;			// angle (en radian) representant la rotation du ray
 							// par rapport a la VIEW, cad angle entre ce ray et
 							// le "ray du mid"
@@ -148,6 +144,9 @@ typedef struct s_map	// AFFICHAGE DE LA MINIMAP
 					// Prend toute la window.
 	t_img	grid;	// img avec que la grille de remplit: permet d'eviter
 					// de recalculer les pixels pour wall etc a chaque frame
+	double	ratio;	// Taille des cubes de la map par rapport aux vrais cubes
+					// Permet de reduire taille de la map
+	int		rcube_size;
 }			t_map;
 
 typedef struct s_game

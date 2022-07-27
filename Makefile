@@ -6,7 +6,7 @@
 #    By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/18 12:15:17 by cdefonte          #+#    #+#              #
-#    Updated: 2022/07/27 18:49:51 by Cyrielle         ###   ########.fr        #
+#    Updated: 2022/07/27 22:12:49 by Cyrielle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,8 +26,8 @@ endif
 LIBFT		=	$(LIBFT_DIR)libft.a
 
 CC			=	cc
-#CFLAGS		=	-Werror -Wall -Wextra -g3 -MMD -MP -fsanitize=address
-CFLAGS		=	-Werror -Wall -Wextra -g3 -MMD -MP
+CFLAGS		=	-Werror -Wall -Wextra -g3 -MMD -MP -fsanitize=address
+#CFLAGS		=	-Werror -Wall -Wextra -g3 -MMD -MP
 ifeq ($(shell uname), Linux)
 CFLAGS		+=	-DLINUX
 endif

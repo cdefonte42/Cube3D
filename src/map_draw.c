@@ -6,7 +6,7 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 18:03:35 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/07/27 13:33:08 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/27 22:23:08 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@
 void	fill_cube(t_game *game, int y, int x, int color)
 {
 	int	*pixels = game->map.grid.data;
-	int	origin_line = y * game->cube_size * game->map.grid.size_line;
-	int	origin_col = x * game->cube_size;
-	int	max_line = origin_line + game->cube_size * game->map.grid.size_line;
-	int	max_col = origin_col + game->cube_size;;
+	int	origin_line = y * game->map.rcube_size * game->map.grid.size_line;
+	int	origin_col = x * game->map.rcube_size;
+	int	max_line = origin_line + game->map.rcube_size * game->map.grid.size_line;
+	int	max_col = origin_col + game->map.rcube_size;
 
 	for (int line = origin_line; line < max_line; line += game->map.grid.size_line)
 	{
@@ -49,14 +49,14 @@ void	draw_grid(t_game *game)
 {
 	int *pixels = game->map.grid.data;
 	int	size_line = game->map.grid.size_line;
-	int	max_line = size_line * game->cube_size * game->map.height;
+	int	max_line = size_line * game->map.rcube_size * game->map.height;
 
 	for (int line = 0; line <= max_line; line += size_line)
 	{
-		for (int col = 0; col < size_line; col += game->cube_size)
+		for (int col = 0; col < size_line; col += game->map.rcube_size)
 			pixels[col + line] = WHITE;	// lignes verticales
 	}
-	for (int line = 0; line <= max_line; line += game->cube_size * size_line)
+	for (int line = 0; line <= max_line; line += game->map.rcube_size * size_line)
 	{
 		for (int col = 0; col < size_line; ++col)
 			pixels[col + line] = WHITE;	// lignes horizontales

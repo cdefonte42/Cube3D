@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 14:13:54 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/27 18:43:57 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/27 22:27:03 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,15 @@ int	init_map(t_game *game, int argc, char **argv)
 	game->map.tab = ft_clean_map(argc, argv); // A PROTEGER
 	game->map.width = ft_strlen(game->map.tab[0]);
 	game->map.height = ft_tabtablen(game->map.tab);
-	nb_pixelX = game->map.width * game->cube_size + 1;
-	nb_pixelY = game->map.height * game->cube_size + 1;
+	game->map.ratio = 0.25;
+	game->map.rcube_size = game->map.ratio * game->cube_size;
+	nb_pixelX = game->map.width * game->map.rcube_size + 1;
+	nb_pixelY = game->map.height * game->map.rcube_size + 1;
+	/*
 	game->map.win = mlx_new_window(game->mlx_ptr, game->height / 4, game->height / 4,\
+	"Grid representation window");
+	*/
+	game->map.win = mlx_new_window(game->mlx_ptr, nb_pixelX, nb_pixelY,\
 	"Grid representation window");
 	if (!game->map.win)
 		return (-1);
@@ -50,8 +56,8 @@ int	init_player(t_game *game)
 {
 	game->player.fov = (60.0 * PI) / 180.0;
 	game->player.dist_screen = (game->width / 2) / tan(game->player.fov / 2);
-	game->player.pos.x = 5.5; //exprime en map unit, soit *64 pour pixels
-	game->player.pos.y = 6.5;
+	game->player.pos.x = 5.0; //exprime en map unit, soit *64 pour pixels
+	game->player.pos.y = 6.0;
 	game->player.pos.z = 0.0;
 	game->player.dir.x = 0.0; // ATTENTION compris entre -1 et 1!!! EXPRIME EN MAP
 	game->player.dir.y = 1.0;
