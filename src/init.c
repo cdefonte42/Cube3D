@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 14:13:54 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/27 22:27:03 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/28 00:24:23 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	init_map(t_game *game, int argc, char **argv)
 	game->map.tab = ft_clean_map(argc, argv); // A PROTEGER
 	game->map.width = ft_strlen(game->map.tab[0]);
 	game->map.height = ft_tabtablen(game->map.tab);
-	game->map.ratio = 0.25;
+	game->map.ratio = 0.125;
 	game->map.rcube_size = game->map.ratio * game->cube_size;
 	nb_pixelX = game->map.width * game->map.rcube_size + 1;
 	nb_pixelY = game->map.height * game->map.rcube_size + 1;
