@@ -102,6 +102,8 @@ bool	check_hit_point_is_wall(t_game *game, t_ray ray)
 		--x;
 	if ((ray.hit_point.type == hline || ray.hit_point.type == apex) && ray.stepY <= 0)
 		--y;
+	if ((x < 0 || x >= game->map.width) || (y < 0 || y >= game->map.height))
+		return (true);
 	if (game->map.tab[y][x] == '1')
 		return (true);
 	return (false);

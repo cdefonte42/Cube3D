@@ -12,6 +12,10 @@
 
 #include "cubed.h"
 
+#ifndef LINUX
+void	mlx_destroy_display(void *);
+#endif
+
 /*Appellee quand red cross clicked ou ESC press*/
 int	ft_exit(t_game *game)
 {
@@ -45,7 +49,9 @@ int	ft_exit(t_game *game)
 		mlx_destroy_window(game->mlx_ptr, game->map.win);
 	if (game->mlx_ptr)
 	{
-		//mlx_destroy_display(game->mlx_ptr);	//NON  DISPO SUR MAC
+		#ifdef __linux__
+		mlx_destroy_display(game->mlx_ptr);
+		#endif
 		//mlx_loop_end(game->mlx_ptr);			//NON DISPO SUR MAC
 		free(game->mlx_ptr);
 	}
