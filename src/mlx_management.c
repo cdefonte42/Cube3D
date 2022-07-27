@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:32:55 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/26 17:44:38 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/27 13:31:23 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ int	ft_exit(t_game *game)
 		mlx_destroy_window(game->mlx_ptr, game->map.win);
 	if (game->mlx_ptr)
 	{
-		mlx_destroy_display(game->mlx_ptr);	//NON  DISPO SUR MAC
-		mlx_loop_end(game->mlx_ptr);			//NON DISPO SUR MAC
+		//mlx_destroy_display(game->mlx_ptr);	//NON  DISPO SUR MAC
+		//mlx_loop_end(game->mlx_ptr);			//NON DISPO SUR MAC
 		free(game->mlx_ptr);
 	}
 	exit (0);
@@ -62,7 +62,7 @@ void	refresh_game(t_game *game)
 //	draw_all_rays(game);	// pour MINIMAP (et DEBUG)
 	draw_game(game);
 	mlx_put_image_to_window(game->mlx_ptr, game->win, game->img.ptr, 0, 0);
-	mlx_put_image_to_window(game->mlx_ptr, game->map.win, game->map.img.ptr, 0, 0);
+	mlx_put_image_to_window(game->mlx_ptr, game->map.win, game->map.img.ptr, -(game->player.pos.x * game->cube_size) + game->height / 8 , -(game->player.pos.y * game->cube_size) + game->height / 8);
 }
 
 /* Appellee quand mlx_key_hook declenchee */

@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 14:13:54 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/26 20:07:46 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/27 13:32:14 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	init_map(t_game *game, int argc, char **argv)
 	game->map.height = ft_tabtablen(game->map.tab);
 	nb_pixelX = game->map.width * game->cube_size + 1;
 	nb_pixelY = game->map.height * game->cube_size + 1;
-	game->map.win = mlx_new_window(game->mlx_ptr, nb_pixelX, nb_pixelY,\
+	game->map.win = mlx_new_window(game->mlx_ptr, game->height / 4, game->height / 4,\
 	"Grid representation window");
 	if (!game->map.win)
 		return (-1);
@@ -32,13 +32,13 @@ int	init_map(t_game *game, int argc, char **argv)
 	game->map.img.ptr = mlx_new_image(game->mlx_ptr, nb_pixelX, nb_pixelY);
 	if (!game->map.img.ptr)
 		return (-1);
-	game->map.grid.data = (int *)mlx_get_data_addr(game->map.grid.ptr, &game->map.grid.bpp, \
-	&game->map.grid.size_line, &game->map.grid.endian);
+	game->map.grid.data = (int *)mlx_get_data_addr(game->map.grid.ptr, \
+	&game->map.grid.bpp, &game->map.grid.size_line, &game->map.grid.endian);
 	game->map.grid.size_line /= 4;
 	game->map.grid.height = nb_pixelY;
 	game->map.grid.width = nb_pixelX;
-	game->map.img.data = (int *)mlx_get_data_addr(game->map.img.ptr, &game->map.img.bpp, \
-	&game->map.img.size_line, &game->map.img.endian);
+	game->map.img.data = (int *)mlx_get_data_addr(game->map.img.ptr, \
+	&game->map.img.bpp, &game->map.img.size_line, &game->map.img.endian);
 	game->map.img.size_line /= 4;
 	game->map.img.height = nb_pixelY;
 	game->map.img.width = nb_pixelX;
@@ -50,11 +50,11 @@ int	init_player(t_game *game)
 {
 	game->player.fov = (60.0 * PI) / 180.0;
 	game->player.dist_screen = (game->width / 2) / tan(game->player.fov / 2);
-	game->player.pos.x = 3.5; //exprime en map unit, soit *64 pour pixels
-	game->player.pos.y = 2.5;
+	game->player.pos.x = 5.5; //exprime en map unit, soit *64 pour pixels
+	game->player.pos.y = 6.5;
 	game->player.pos.z = 0.0;
 	game->player.dir.x = 0.0; // ATTENTION compris entre -1 et 1!!! EXPRIME EN MAP
-	game->player.dir.y = -1.0;
+	game->player.dir.y = 1.0;
 	game->player.dir.z = 0.0;
 	//game->player.angle = atan(game.player.dir.y / game.player.dir.x);
 	game->player.rot_speed = (1.5 * PI) / 180; // se tourne de 4 degres
@@ -76,31 +76,35 @@ int	init_textures(t_game *game)
 		return (-1);
 	
 	game->text[wwall].ptr = mlx_xpm_file_to_image(game->mlx_ptr, \
-"img/west_wall_64_64.xpm", &game->text[wwall].width, &game->text[wwall].height);
+"img/Stars_128.xpm", &game->text[wwall].width, &game->text[wwall].height);
 	if (!game->text[wwall].ptr)
 		return (printf("Error loading wall img\n"), -1);
-	game->text[wwall].data = (int *)mlx_get_data_addr(game->text[wwall].ptr, &game->text[wwall].bpp, &game->text[wwall].size_line, &game->text[wwall].endian);
+	game->text[wwall].data = (int *)mlx_get_data_addr(game->text[wwall].ptr, \
+	&game->text[wwall].bpp, &game->text[wwall].size_line, &game->text[wwall].endian);
 	game->text[wwall].size_line /= 4;
 
 	game->text[ewall].ptr = mlx_xpm_file_to_image(game->mlx_ptr, \
-"img/east_wall_64_64.xpm", &game->text[ewall].width, &game->text[ewall].height);
+"img/Stars_128.xpm", &game->text[ewall].width, &game->text[ewall].height);
 	if (!game->text[ewall].ptr)
 		return (printf("Error loading wall img\n"), -1);
-	game->text[ewall].data = (int *)mlx_get_data_addr(game->text[ewall].ptr, &game->text[ewall].bpp, &game->text[ewall].size_line, &game->text[ewall].endian);
+	game->text[ewall].data = (int *)mlx_get_data_addr(game->text[ewall].ptr, \
+	&game->text[ewall].bpp, &game->text[ewall].size_line, &game->text[ewall].endian);
 	game->text[ewall].size_line /= 4;
 
 	game->text[nwall].ptr = mlx_xpm_file_to_image(game->mlx_ptr, \
-"img/north_wall_64_64.xpm", &game->text[nwall].width, &game->text[nwall].height);
+"img/Bookshelf_colored_128.xpm", &game->text[nwall].width, &game->text[nwall].height);
 	if (!game->text[nwall].ptr)
 		return (printf("Error loading wall img\n"), -1);
-	game->text[nwall].data = (int *)mlx_get_data_addr(game->text[nwall].ptr, &game->text[nwall].bpp, &game->text[nwall].size_line, &game->text[nwall].endian);
+	game->text[nwall].data = (int *)mlx_get_data_addr(game->text[nwall].ptr, \
+	&game->text[nwall].bpp, &game->text[nwall].size_line, &game->text[nwall].endian);
 	game->text[nwall].size_line /= 4;
 
 	game->text[swall].ptr = mlx_xpm_file_to_image(game->mlx_ptr, \
-"img/south_wall_64_64.xpm", &game->text[swall].width, &game->text[swall].height);
+"img/Bookshelf_128.xpm", &game->text[swall].width, &game->text[swall].height);
 	if (!game->text[swall].ptr)
 		return (printf("Error loading wall img\n"), -1);
-	game->text[swall].data = (int *)mlx_get_data_addr(game->text[swall].ptr, &game->text[swall].bpp, &game->text[swall].size_line, &game->text[swall].endian);
+	game->text[swall].data = (int *)mlx_get_data_addr(game->text[swall].ptr, \
+	&game->text[swall].bpp, &game->text[swall].size_line, &game->text[swall].endian);
 	game->text[swall].size_line /= 4;
 	return (0);
 }
