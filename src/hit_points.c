@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 18:47:18 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/27 22:07:42 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/28 00:15:22 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ bool	check_hit_point_is_wall(t_game *game, t_ray ray)
 		--x;
 	if ((ray.hit_point.type == hline) && ray.stepY <= 0)
 		--y;
-	if ((x < 0 || x >= game->map.width) || (y < 0 || y >= game->map.height))
+	if (x <= 0 || x >= game->map.width || y <= 0 || y >= game->map.height)
 		return (true);
 	if (game->map.tab[y][x] == '1')
 		return (true);
@@ -43,14 +43,14 @@ void	next_hit_point(t_ray *ray)
 		ray->hit_point.dist += len_till_vline;
 		ray->hit_point.pos[grid].x = ray->pos[grid].x + ray->stepX;
 		ray->hit_point.pos[grid].y = ray->pos[grid].y + \
-		len_till_vline * ray->dir[grid].y;
+		len_till_vline * (ray->dir[grid].y);
 	}
 	else
 	{
 		ray->hit_point.type = hline;
 		ray->hit_point.dist += len_till_hline;
 		ray->hit_point.pos[grid].x = ray->pos[grid].x + \
-		len_till_hline * ray->dir[grid].x;
+		len_till_hline * (ray->dir[grid].x);
 		ray->hit_point.pos[grid].y = ray->pos[grid].y + ray->stepY;
 	}
 }
@@ -86,16 +86,16 @@ void	set_wall_hit_point(t_game *game, t_ray *ray)
 	{
 		if (ray->hit_point.type == vline)
 		{
-			if (ray->stepX < 0)
+			if (ray->stepX <= 0)
 				ray->stepX -= game->cube_size;
 			else
 				ray->stepX += game->cube_size;
 		}
 		else if (ray->hit_point.type == hline)
 		{
-			if (ray->stepY < 0)
+			if (ray->stepY <= 0)
 				ray->stepY -= game->cube_size;
-			else if (ray->stepY > 0)
+			else
 				ray->stepY += game->cube_size;
 		}
 		next_hit_point(ray);
