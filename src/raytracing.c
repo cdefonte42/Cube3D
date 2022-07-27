@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 18:33:19 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/25 17:03:18 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/27 13:50:18 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,4 +88,26 @@ void	draw_all_rays(t_game *game)
 	}
 	draw_ray(game, rays[index_mid_ray], YELLOW);
 	draw_square(game, rays[index_mid_ray].hit_point.pos[grid], 5, PINK);
+}
+
+void	draw_sized_ray(t_game *game, t_ray ray, int length, int color)
+{
+	int	max_line;
+	int	*pixels;
+	int	line;
+	int	col;
+	int t;
+
+	max_line = game->cube_size * game->map.height;
+	pixels = game->map.img.data;
+	line = 0;
+	col = 0;
+	t = 0;
+	while (t < length && (line < max_line && line >= 0) && (col < game->map.img.size_line && col >= 0))
+	{	
+		pixels[(line * game->map.img.size_line + col)] = color;
+		++t;
+		col = ray.pos[grid].x + t * ray.dir[grid].x;
+		line = ray.pos[grid].y + t * ray.dir[grid].y;
+	}
 }

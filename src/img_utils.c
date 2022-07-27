@@ -6,7 +6,7 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 21:10:57 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/07/25 17:05:56 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/27 14:09:31 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ void	erase_img(t_img *img)
 	}
 }
 
-/* Set les pixels de dest aux memes valeurs que ceux de src. ATTENTION, dest
-et src doivent avoir les memes dimensions! Permet de "sauvegarder" une img
+/* Set les pixels de to aux memes valeurs que ceux de from. ATTENTION, from
+et to doivent avoir les memes dimensions! Permet de "sauvegarder" une img
 temporairement par exemple. */
 void	cpy_img_pixels(t_img from, t_img to)
 {
@@ -66,5 +66,34 @@ void	draw_square(t_game *game, t_pos origin, int size, int color)
 			++col;
 		}
 		line += size_line;
+	}
+}
+
+/* Draw (fill pixels) sur l'image de la map 2D viewed les pixels correspondants
+au player. */
+void	draw_player(t_game *game)
+{
+	int	size_line = game->map.grid.size_line;
+	int	origin_line = ((int)(game->player.pos.y * game->cube_size - 5) * size_line);
+	int	origin_col = (game->player.pos.x * game->cube_size - 5);
+	int	max_line = origin_line + 10 * size_line;
+	int	max_col = origin_col + 10;
+	int	*pixels = game->map.img.data;
+
+	for (int line = origin_line; line < max_line; line += size_line)
+	{
+		for (int col = origin_col; col < max_col; ++col)
+		{
+			pixels[col + line] = ORANGE;
+
+		}
+	}
+	t_ray	*rays = game->player.rays;
+	int	i = 0;
+	int	len = game->cube_size / 4;
+	while (i < game->width - 1)
+	{
+		draw_sized_ray(game, rays[i], len, ORANGE);
+		i += 6;
 	}
 }

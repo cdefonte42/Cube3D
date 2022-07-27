@@ -6,7 +6,7 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 18:03:35 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/07/25 17:06:25 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/27 13:33:08 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,27 +60,6 @@ void	draw_grid(t_game *game)
 	{
 		for (int col = 0; col < size_line; ++col)
 			pixels[col + line] = WHITE;	// lignes horizontales
-	}
-}
-
-/* Draw (fill pixels) sur l'image de la map 2D viewed les pixels correspondants
-au player. */
-void	draw_player(t_game *game)
-{
-	int	size_line = game->map.grid.size_line;
-	int	origin_line = ((int)(game->player.pos.y * game->cube_size - 5) * size_line);
-	int	origin_col = (game->player.pos.x * game->cube_size - 5);
-	int	max_line = origin_line + 10 * size_line;
-	int	max_col = origin_col + 10;
-	int	*pixels = game->map.img.data;
-
-	for (int line = origin_line; line < max_line; line += size_line)
-	{
-		for (int col = origin_col; col < max_col; ++col)
-		{
-			pixels[col + line] = ORANGE;
-
-		}
 	}
 }
 

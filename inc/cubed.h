@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/26 20:07:27 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/27 14:08:41 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 # endif
 
 # ifndef CUBE_SIZE
-#  define CUBE_SIZE 64	// should be pair. (8 multiples top) AND same size than xpm
+#  define CUBE_SIZE 128	// should be pair. (8 multiples top) AND same size than xpm
 # endif
 
 # ifndef VIEW_HEIGHT
@@ -214,6 +214,7 @@ void	ft_free_map(char **map);
 void	erase_img(t_img *img);
 void	cpy_img_pixels(t_img from, t_img to);
 void	draw_square(t_game *game, t_pos origin, int size, int color);
+void	draw_player(t_game *game);
 
 /* __________ DISPLAY GAME ________ */
 void	draw_game(t_game *game);
@@ -223,7 +224,6 @@ void	fill_cube(t_game *game, int y, int x, int color);
 void	draw_grid(t_game *game);
 void	draw_walls(t_game *game);
 void	draw_map(t_game *game);
-void	draw_player(t_game *game);
 
 /*_______ COLISION _______*/
 bool	check_for_colision(t_game *game, int keycode);
@@ -241,6 +241,7 @@ void	draw_ray_until_first_Hline(t_game *game, t_ray ray, int color);
 void	draw_ray_until_first_Vline(t_game *game, t_ray ray, int color);
 void	draw_ray(t_game *game, t_ray ray, int color);
 void	draw_all_rays(t_game *game);
+void	draw_sized_ray(t_game *game, t_ray ray, int length, int color);
 
 /* ____ TEXTURE (tests)______*/
 void	draw_buff_texture(t_game *game, int col_screen, int it_inf, int it_sup, double hpwall);
