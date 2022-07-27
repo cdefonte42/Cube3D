@@ -6,7 +6,7 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 11:03:07 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/07/24 18:54:04 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/27 17:40:05 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,30 +64,29 @@ void	cpy_ray(t_ray *tab, t_ray src, int nb_rays)
 		tab[nb_rays] = src;
 }
 
-void	set_rays_dir(t_ray *rays, int nb_rays, double d_angle)
+void	set_rays_dir(t_game *game, t_ray *rays, int nb_rays)
 {
 	int		index_mid_ray = nb_rays / 2 - 1;
-	int		i = 0;
-	int		coeff = nb_rays / 2;
+	int		i = index_mid_ray - 1;
 	t_ray	mid_ray = rays[index_mid_ray];
-
-	while (i < index_mid_ray) // "rays de gauche" par rapport au mid ray => angle <0
+	int		n = 1;
+	while (i >= 0) // "rays de gauche" par rapport au mid ray => angle <0
 	{
-		rays[i].dir[grid] = rotate_vector_angle(mid_ray.dir[grid], coeff * -d_angle);
+		rays[i].angle = -atan(n / game->player.dist_screen);
+		rays[i].dir[grid] = rotate_vector_angle(mid_ray.dir[grid], rays[i].angle);
 		rays[i].dir[map] = rays[i].dir[grid];
-		rays[i].angle = coeff * -d_angle;
-		--coeff;
-		++i;
+		++n;
+		--i;
 	}
 	i = index_mid_ray + 1;
-	coeff = 1;
+	n = 1;
 	while (i < nb_rays) // "rays de droite" par rapport au mid ray => angle>0
 	{
-		rays[i].dir[grid] = rotate_vector_angle(rays[i].dir[grid], coeff * d_angle);
+		rays[i].angle = atan(n / game->player.dist_screen);
+		rays[i].dir[grid] = rotate_vector_angle(mid_ray.dir[grid], rays[i].angle);
 		rays[i].dir[map] = rays[i].dir[grid];
-		rays[i].angle = coeff * d_angle;
+		++n;
 		++i;
-		++coeff;
 	}
 }
 
@@ -191,7 +190,7 @@ void	raycasting(t_game *game)
 	nb_rays = game->width;
 	d_angle = atan(1 / game->player.dist_screen); // PAS BESOIN de calculer chaque fois
 	cpy_ray(game->player.rays, mid_ray, nb_rays);
-	set_rays_dir(game->player.rays, nb_rays, d_angle);
+	set_rays_dir(game, game->player.rays, nb_rays);
 	for (int i = 0; i < nb_rays; ++i)
 	{
 		set_ray_steps(game, &(game->player.rays[i]));
