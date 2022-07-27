@@ -26,8 +26,11 @@ endif
 LIBFT		=	$(LIBFT_DIR)libft.a
 
 CC			=	cc
-#CFLAGS		=	-Werror -Wall -Wextra -g3 -fsanitize=address
-CFLAGS		=	-Werror -Wall -Wextra -g3
+#CFLAGS		=	-Werror -Wall -Wextra -g3 -MMD -MP -fsanitize=address
+CFLAGS		=	-Werror -Wall -Wextra -g3 -MMD -MP
+ifeq ($(shell uname), Linux)
+CFLAGS		+=	-DLINUX
+endif
 LIB_FLAGS	=	-L$(LIBFT_DIR) -lft $(MLXFLAGS) -lm
 INCLUDES	=	-I$(LIBFT_DIR) -I$(INC_DIR) -I$(LIBX_DIR)
 
@@ -36,17 +39,17 @@ SRCS		=	$(addprefix $(SRC_DIR),\
 					mlx_management.c raycasting.c map_draw.c vectors_utils.c\
 					img_utils.c colision.c raytracing.c init.c game_display.c)
 OBJS		=	$(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRCS))
-HDRS		=	$(addprefix $(INC_DIR), cubed.h colors.h)
+DEPS		=	$(OBJS:.o=.d)
 
 all			:	$(NAME)
 
 
-$(NAME)		:	$(OBJS) $(LIBFT) $(HDRS)
+$(NAME)		:	$(OBJS) $(LIBFT)
 				$(shell $(SDK))
 				$(MAKE) -C $(LIBX_DIR)
 				$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LIB_FLAGS)
 
-$(OBJ_DIR)%.o : $(SRC_DIR)%.c $(HDRS)
+$(OBJ_DIR)%.o : $(SRC_DIR)%.c
 	@mkdir -p obj
 	$(CC) $(CFLAGS) -c $< -o $@ $(INCLUDES)
 
@@ -55,7 +58,7 @@ $(LIBFT)	:
 				make -C $(LIBFT_DIR)
 
 clean		:
-				rm -rf $(OBJS)
+				rm -rf $(OBJS) $(DEPS)
 				make clean -C $(LIBFT_DIR)
 
 
@@ -63,6 +66,10 @@ fclean		:	clean
 				rm -f $(NAME)
 				make fclean -C $(LIBFT_DIR)
 
-re			:	fclean all
+re			:	fclean
+				$(MAKE)
+
+-include $(DEPS)
+
 
 .PHONY: all clean run fclean
