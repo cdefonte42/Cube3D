@@ -6,7 +6,7 @@
 #    By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/18 12:15:17 by cdefonte          #+#    #+#              #
-#    Updated: 2022/07/26 11:16:49 by cdefonte         ###   ########.fr        #
+#    Updated: 2022/07/27 18:49:51 by Cyrielle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ LIB_FLAGS	=	-L$(LIBFT_DIR) -lft $(MLXFLAGS) -lm
 INCLUDES	=	-I$(LIBFT_DIR) -I$(INC_DIR) -I$(LIBX_DIR)
 
 SRCS		=	$(addprefix $(SRC_DIR),\
-					main.c parsing.c parsing2.c utils.c texture.c\
+					main.c parsing.c parsing2.c utils.c texture.c hit_points.c\
 					mlx_management.c raycasting.c map_draw.c vectors_utils.c\
 					img_utils.c colision.c raytracing.c init.c game_display.c)
 OBJS		=	$(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRCS))

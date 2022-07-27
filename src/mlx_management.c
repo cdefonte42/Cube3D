@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:32:55 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/27 13:31:23 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/27 18:39:38 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,13 +81,13 @@ int	key_hook(int keycode, void *param)
 		ft_exit(game);
 	if (keycode == R_ARW)
 	{
-		game->player.dir = rotate_vector_angle(game->player.dir, game->player.rot_speed);
+		game->player.dir = rotate_vector(game->player.dir, game->player.rot_speed);
 //		game->player.angle += game->player.rot_speed;
 		refresh_game(game);
 	}
 	else if (keycode == L_ARW)
 	{
-		game->player.dir = rotate_vector_angle(game->player.dir, -game->player.rot_speed);
+		game->player.dir = rotate_vector(game->player.dir, -game->player.rot_speed);
 //		game->player.angle -= game->player.rot_speed;
 		refresh_game(game);
 	}

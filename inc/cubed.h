@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/27 14:08:41 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/27 18:49:30 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,10 +231,13 @@ bool	check_for_colision(t_game *game, int keycode);
 /* _________ RAYCASTING ________ */
 t_ray	get_mid_ray(t_game *game);
 void	raycasting(t_game *game);
-bool	check_hit_point_is_wall(t_game *game, t_ray ray);
+
+/*____________ HIT POINTS CALCULS _______*/
+void	next_hit_point(t_ray *ray);
+void	set_wall_hit_point(t_game *game, t_ray *ray);
 
 /* _________ VECTORS UTILS _______*/
-struct s_coord	rotate_vector_angle(struct s_coord from, double angle);
+struct s_coord	rotate_vector(struct s_coord from, double angle);
 
 /*__________ RAYTRACING (DEBUG) _______*/
 void	draw_ray_until_first_Hline(t_game *game, t_ray ray, int color);

@@ -6,14 +6,14 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 19:09:58 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/07/24 14:49:35 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/27 18:38:56 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cubed.h"
 
 /* Matrice de rotation: x' = cos(alpha).x - sin(alpha).y et y' = sin(alpha).x + cos(alpha).y */
-struct s_coord	rotate_vector_angle(struct s_coord from, double angle)
+struct s_coord	rotate_vector(struct s_coord from, double angle)
 {
 	struct s_coord	res;
 
