@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:32:55 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/27 22:42:05 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/28 00:20:27 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,12 @@ recalcul de tous les rayons. */
 void	refresh_game(t_game *game)
 {
 	raycasting(game);
-//	cpy_img_pixels(game->map.grid, game->map.img);
-//	draw_player(game);	// pour MINIMAP
-//	draw_all_rays(game);	// pour MINIMAP (et DEBUG)
+	cpy_img_pixels(game->map.grid, game->map.img);
+	draw_player(game);	// pour MINIMAP
+	draw_all_rays(game);	// pour MINIMAP (et DEBUG)
 	draw_game(game);
 	mlx_put_image_to_window(game->mlx_ptr, game->win, game->img.ptr, 0, 0);
-//	mlx_put_image_to_window(game->mlx_ptr, game->map.win, game->map.img.ptr, 0,0);
+	mlx_put_image_to_window(game->mlx_ptr, game->map.win, game->map.img.ptr, 0,0);
 //	mlx_put_image_to_window(game->mlx_ptr, game->map.win, game->map.img.ptr, -(game->player.pos.x * game->cube_size) + game->height / 8 , -(game->player.pos.y * game->cube_size) + game->height / 8);
 }
 

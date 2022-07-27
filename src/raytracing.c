@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 18:33:19 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/27 22:35:43 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/28 00:20:56 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ specifique. */
 void	draw_all_rays(t_game *game)
 {
 	t_ray	*rays = game->player.rays;
-	int		index_mid_ray = game->width / 2;
+	int		index_mid_ray = game->width / 2 - 1;
 	int	i = 0;
 	while (i < game->width - 1)
 	{
