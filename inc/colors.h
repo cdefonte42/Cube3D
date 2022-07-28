@@ -6,7 +6,7 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 17:58:34 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/07/21 18:33:55 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/28 21:58:08 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # define BLACK 0x000000
 # define WHITE 0xFFFFFF
 # define GREY 0xC0C0C0
+# define DARK_GREY 0x4B4B4B
 # define RED 0xFF0000
 # define GREEN 0x008000
 # define BLUE 0x0000FF

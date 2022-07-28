@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/28 21:27:16 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/28 21:54:01 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 # endif
 
 # ifndef CUBE_SIZE
-#  define CUBE_SIZE 128	// should be pair. (8 multiples top) AND same size than xpm
+#  define CUBE_SIZE 64	// should be pair. (8 multiples top) AND same size than xpm
 # endif
 
 # ifndef VIEW_HEIGHT

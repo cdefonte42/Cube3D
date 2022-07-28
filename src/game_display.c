@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 12:27:33 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/26 20:51:30 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/28 21:58:20 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,10 +114,10 @@ void	draw_game(t_game *game)
 		draw_buff_texture(game, col, it_inf, it_sup, hpwall);
 
 		draw_floor_or_sky(&(game->img.data[col + it_sup]), \
-		game->img.size_line, img_pixl_max - it_sup, GREEN);
+		game->img.size_line, img_pixl_max - it_sup, GREY);
 
 		draw_floor_or_sky(&(game->img.data[col]), game->img.size_line, \
-		it_inf, CYAN);
+		it_inf, DARK_GREY);
 		++col;
 	}
 }
