@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 14:00:03 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/29 00:28:05 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/29 00:41:36 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	colisionX(t_game *game, int keycode)
 
 	if (fabs(dir_mvx) <= stepX / 4 || game->map.tab[(int)taby][(int)tabx] != '1')
 	{
-		if (fabs(dir_mvx) <= stepX / 8 || modf(game->player.pos.y, &int_part) > 5 / game->cube_size)
+		if (fabs(dir_mvx) <= stepX / 4 || modf(game->player.pos.y, &int_part) > 5 / game->cube_size)
 			game->player.pos.x += game->player.dir.x * keycode * game->player.mv_speed;
 		else if (game->map.tab[(int)--taby][(int)tabx] != '1')
 			game->player.pos.x += game->player.dir.x * keycode * game->player.mv_speed;
@@ -65,9 +65,9 @@ void	colisionY(t_game *game, int keycode)
 	else
 		stepY = modf(game->player.pos.y, &int_part);
 
-	if (fabs(dir_mvy) <= stepY / 8 || game->map.tab[(int)taby][(int)tabx] != '1')
+	if (fabs(dir_mvy) <= stepY / 4 || game->map.tab[(int)taby][(int)tabx] != '1')
 	{
-		if (fabs(dir_mvy) <= stepY / 8 || modf(game->player.pos.x, &int_part) > 5 / game->cube_size)
+		if (fabs(dir_mvy) <= stepY / 4 || modf(game->player.pos.x, &int_part) > 5 / game->cube_size)
 			game->player.pos.y += game->player.dir.y * keycode * game->player.mv_speed;
 		else if (game->map.tab[(int)taby][(int)--tabx] != '1')
 			game->player.pos.y += game->player.dir.y * keycode * game->player.mv_speed;
@@ -97,7 +97,12 @@ void	colision_sideX(t_game *game, int keycode)
 		stepX = modf(game->player.pos.x, &int_part);
 
 	if (fabs(dir_mvx) <= stepX / 4 || game->map.tab[(int)taby][(int)tabx] != '1')
-		game->player.pos.x += game->player.dir.y * keycode * game->player.mv_speed;
+	{
+		if (fabs(dir_mvx) <= stepX / 4 || modf(game->player.pos.y, &int_part) > 5 / game->cube_size)
+			game->player.pos.x += game->player.dir.y * keycode * game->player.mv_speed;
+		else if (game->map.tab[(int)--taby][(int)tabx] != '1')
+			game->player.pos.x += game->player.dir.y * keycode * game->player.mv_speed;
+	}
 }
 
 void	colision_sideY(t_game *game, int keycode)
@@ -122,8 +127,13 @@ void	colision_sideY(t_game *game, int keycode)
 	else
 		stepY = modf(game->player.pos.y, &int_part);
 
-	if (fabs(dir_mvy) <= stepY / 8 || game->map.tab[(int)taby][(int)tabx] != '1')
-		game->player.pos.y -= game->player.dir.x * keycode * game->player.mv_speed;
+	if (fabs(dir_mvy) <= stepY / 4 || game->map.tab[(int)taby][(int)tabx] != '1')
+	{
+		if (fabs(dir_mvy) <= stepY / 4 || modf(game->player.pos.x, &int_part) > 5 / game->cube_size)
+			game->player.pos.y -= game->player.dir.x * keycode * game->player.mv_speed;
+		else if (game->map.tab[(int)taby][(int)--tabx] != '1')
+			game->player.pos.y -= game->player.dir.x * keycode * game->player.mv_speed;
+	}
 }
 
 bool	set_colision_deltas(t_game *game, int way, int keycode)
