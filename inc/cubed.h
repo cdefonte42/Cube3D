@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/27 22:21:46 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/28 21:27:16 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,7 +225,7 @@ void	draw_walls(t_game *game);
 void	draw_map(t_game *game);
 
 /*_______ COLISION _______*/
-bool	check_for_colision(t_game *game, int keycode);
+bool	set_colision_deltas(t_game *game, int way, int keycode);
 
 /* _________ RAYCASTING ________ */
 t_ray	get_mid_ray(t_game *game);

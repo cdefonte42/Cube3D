@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:32:55 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/28 00:25:46 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/28 21:26:31 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,28 +93,24 @@ int	key_hook(int keycode, void *param)
 //		game->player.angle -= game->player.rot_speed;
 		refresh_game(game);
 	}
-	else if (keycode == W_KEY && !check_for_colision(game, keycode))
+	else if (keycode == W_KEY)
 	{
-		game->player.pos.x += game->player.dir.x * game->player.mv_speed;
-		game->player.pos.y += game->player.dir.y * game->player.mv_speed;
+		set_colision_deltas(game, 1, keycode);
 		refresh_game(game);
 	}
 	else if (keycode == S_KEY)
 	{
-		game->player.pos.x -= game->player.dir.x * game->player.mv_speed;
-		game->player.pos.y -= game->player.dir.y * game->player.mv_speed;
+		set_colision_deltas(game, -1, keycode);
 		refresh_game(game);
 	}
 	else if (keycode == A_KEY)
 	{
-		game->player.pos.x += game->player.dir.y * game->player.mv_speed;
-		game->player.pos.y -= game->player.dir.x * game->player.mv_speed;
+		set_colision_deltas(game, 1, keycode);
 		refresh_game(game);
 	}
 	else if (keycode == D_KEY)
 	{
-		game->player.pos.x -= game->player.dir.y * game->player.mv_speed;
-		game->player.pos.y += game->player.dir.x * game->player.mv_speed;
+		set_colision_deltas(game, -1, keycode);
 		refresh_game(game);
 	}
 	return (0);
