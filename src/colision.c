@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 14:00:03 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/29 00:56:10 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/29 01:11:20 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	colision_sidex(t_game *game, int keycode)
 	double	stepx;
 	double	mvx;
 
-	mvx = game->player.dir.y * keycode * game->player.mv_speed;
+	mvx = -game->player.dir.y * keycode * game->player.mv_speed;
 	modf(game->player.pos.x, &tabx);
 	modf(game->player.pos.y, &taby);
 	if (mvx >= 0)
