@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:32:55 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/28 21:26:31 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/28 21:56:01 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ int	ft_exit(t_game *game)
 	{
 		while (i < nb_textures)
 		{
-			mlx_destroy_image(game->mlx_ptr, game->text[i].ptr);
+			if (game->text[i].ptr)
+				mlx_destroy_image(game->mlx_ptr, game->text[i].ptr);
 			++i;
 		}
 		free(game->text);
