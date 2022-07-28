@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 14:00:03 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/28 21:27:12 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/28 23:12:00 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void	colision_sideY(t_game *game, int keycode)
 	modf(game->player.pos.x, &tabx);
 	modf(game->player.pos.y, &taby);
 	
-	double	dir_mvy = game->player.dir.y * keycode * game->player.mv_speed;
+	double	dir_mvy = -game->player.dir.x * keycode * game->player.mv_speed;
 
 	if (dir_mvy >= 0)
 		++taby;
