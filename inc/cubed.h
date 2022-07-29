@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/29 16:39:59 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/29 17:39:21 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,6 +227,7 @@ void	fill_cube(t_game *game, int y, int x, int color);
 void	draw_grid(t_game *game);
 void	draw_walls(t_game *game);
 void	draw_map(t_game *game);
+void	draw_minimap(t_game *game);
 
 /*_______ COLISION _______*/
 void	back_front_mvx(t_game *game, int keycode, double limit);

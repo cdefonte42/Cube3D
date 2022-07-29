@@ -6,7 +6,7 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 18:03:35 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/07/27 22:23:08 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/29 18:37:23 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,30 @@ void	draw_grid(t_game *game)
 	}
 }
 
-/* Cree une nouvelle window et son MLX image associee, pour dessiner pixels par
-pixels la map en top 2D view. Return 0 si OK, -1 si erreur de Malloc. */
-// NE PUT pas l'image dessinee
 void	draw_map(t_game *game)
 {
-	draw_walls(game);
-	draw_grid(game);
+	cpy_img_pixels(game->map.grid, game->map.img);
+	draw_player(game);
+//	draw_all_rays(game);
 }
 
+void	draw_minimap(t_game *game)
+{
+	erase_img(&(game->minimap));
+	double	x = game->player.pos.x;
+	double	y = game->player.pos.y;
+	int	nb_pixels_minimap = game->minimap.height * game->minimap.size_line;
+	int	i = 0;
+	double	col = (x * (double)game->map.rcube_size) / 2.0;
+	double	line = ((y * (double)game->map.rcube_size) / 2.0) * (double)game->map.img.size_line;
+	int	origin = (int)col + (int)line;
+	int	max_map = game->map.img.height * game->map.img.size_line;
 
+	while (i < nb_pixels_minimap && origin + i % game->minimap.size_line< max_map)
+	{
+		game->minimap.data[i] = game->map.img.data[origin + i % game->minimap.size_line];
+		++i;
+		if (i % game->minimap.size_line == 0)
+			origin += game->map.img.size_line;
+	}
+}

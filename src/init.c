@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 14:13:54 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/29 16:57:39 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/29 18:11:16 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,9 @@
 
 int	init_minimap(t_game *game)
 {
-	int		nb_pixel;
-
-	game->minimap.height = game->height * 0.25;
+	game->minimap.height = game->height * 0.25 + 1;
 	game->minimap.width = game->minimap.height;
-	nb_pixel = game->minimap.width * game->map.rcube_size + 1;
-	game->minimap.ptr = mlx_new_image(game->mlx_ptr, nb_pixel, nb_pixel);
+	game->minimap.ptr = mlx_new_image(game->mlx_ptr, game->minimap.width, game->minimap.height);
 	if (!game->minimap.ptr)
 		return (-1);
 	game->minimap.data = (int *)mlx_get_data_addr(game->minimap.ptr, \
@@ -60,7 +57,8 @@ int	init_map(t_game *game, int argc, char **argv)
 	game->map.img.size_line /= 4;
 	game->map.img.height = nb_pixelY;
 	game->map.img.width = nb_pixelX;
-
+	draw_grid(game);
+	draw_walls(game);
 	return (0);
 }
 
@@ -68,8 +66,8 @@ int	init_player(t_game *game)
 {
 	game->player.fov = (120.0 * PI) / 180.0;
 	game->player.dist_screen = (game->width / 2) / tan(game->player.fov / 2);
-	game->player.pos.x = 2.0; //exprime en map unit, soit *64 pour pixels
-	game->player.pos.y = 2.0;
+	game->player.pos.x = 8.5; //exprime en map unit, soit *64 pour pixels
+	game->player.pos.y = 5.5;
 	game->player.pos.z = 0.0;
 	game->player.dir.x = 0.0; // ATTENTION compris entre -1 et 1!!! EXPRIME EN MAP
 	game->player.dir.y = 1.0;
