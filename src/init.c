@@ -6,11 +6,27 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 14:13:54 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/29 15:14:25 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/29 16:57:39 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cubed.h"
+
+int	init_minimap(t_game *game)
+{
+	int		nb_pixel;
+
+	game->minimap.height = game->height * 0.25;
+	game->minimap.width = game->minimap.height;
+	nb_pixel = game->minimap.width * game->map.rcube_size + 1;
+	game->minimap.ptr = mlx_new_image(game->mlx_ptr, nb_pixel, nb_pixel);
+	if (!game->minimap.ptr)
+		return (-1);
+	game->minimap.data = (int *)mlx_get_data_addr(game->minimap.ptr, \
+	&game->minimap.bpp, &game->minimap.size_line, &game->minimap.endian);
+	game->minimap.size_line /= 4;
+	return (0);
+}
 
 int	init_map(t_game *game, int argc, char **argv)
 {
@@ -20,14 +36,10 @@ int	init_map(t_game *game, int argc, char **argv)
 	game->map.tab = ft_clean_map(argc, argv); // A PROTEGER
 	game->map.width = ft_strlen(game->map.tab[0]);
 	game->map.height = ft_tabtablen(game->map.tab);
-	game->map.ratio = 0.25;
-	game->map.rcube_size = game->map.ratio * game->cube_size;
+	game->map.rcube_size = 16;
+	game->map.ratio = (double)game->map.rcube_size / (double)game->cube_size;
 	nb_pixelX = game->map.width * game->map.rcube_size + 1;
 	nb_pixelY = game->map.height * game->map.rcube_size + 1;
-	/*
-	game->map.win = mlx_new_window(game->mlx_ptr, game->height / 4, game->height / 4,\
-	"Grid representation window");
-	*/
 	game->map.win = mlx_new_window(game->mlx_ptr, nb_pixelX, nb_pixelY,\
 	"Grid representation window");
 	if (!game->map.win)
@@ -137,6 +149,8 @@ int	init_game(t_game *game, int argc, char **argv)
 	game->img.height = SCREEN_H;
 	
 	if (init_map(game, argc, argv) == -1)
+		return (-1);
+	if (init_minimap(game) == -1)
 		return (-1);
 	if (init_player(game) == -1)
 		return (-1);

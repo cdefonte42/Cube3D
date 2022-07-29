@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/29 15:18:33 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/29 16:39:59 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ typedef struct s_map	// AFFICHAGE DE LA MINIMAP
 	int		width;	// nb de colonnes du tab
 	int		height;	// nb de lignes du tab
 	void	*win;	// window dans laquelle afficher la map
-	t_img	img;	// image a remplir pour afficher mini map et rays. 
+	t_img	img;	// image a remplir pour afficher map et rays. 
 					// Prend toute la window.
 	t_img	grid;	// img avec que la grille de remplit: permet d'eviter
 					// de recalculer les pixels pour wall etc a chaque frame
@@ -159,6 +159,8 @@ typedef struct s_game
 	t_img		img;		// image du jeu
 	t_player	player;
 	t_map		map;		// Tout ce qui est pour afficher la map
+	t_img		minimap;	// Copie de map mais en mini: centre sur le 
+							// joueur. A une taille de fenetre maxi!
 	t_texture	*text;		// tableau d'au moins 4 texture (Nord, Sud, Est, Ouest);
 	double		colision;	// distance max en map unit a laquelle le player
 							// peut s'approcher des murs
