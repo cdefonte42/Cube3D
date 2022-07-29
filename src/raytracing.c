@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 18:33:19 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/28 00:20:56 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/29 19:36:42 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	draw_all_rays(t_game *game)
 	{
 		draw_ray(game, rays[i], PURPLE);
 		draw_square(game, rays[i].hit_point.pos[grid], 5, LIME);
-		i += 8;
+		i += 30;
 	}
 	draw_ray(game, rays[index_mid_ray], YELLOW);
 	draw_square(game, rays[index_mid_ray].hit_point.pos[grid], 5, PINK);
