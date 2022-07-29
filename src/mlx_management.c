@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:32:55 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/29 20:41:03 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/29 21:51:35 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	refresh_game(t_game *game)
 	draw_map(game);
 	draw_game(game);
 	mlx_put_image_to_window(game->mlx_ptr, game->win, game->img.ptr, 0, 0);
-	if (game->map.state == off)
+	if (game->minimap.ptr != NULL && game->map.state == off)
 	{
 		draw_minimap(game);
 		mlx_put_image_to_window(game->mlx_ptr, game->win, game->minimap.ptr, 0,0);
@@ -96,7 +96,6 @@ int	key_hook(int keycode, void *param)
 	t_game *game;
 
 	game = param;
-	printf("%d\n", keycode);
 	if (keycode == ESC)
 		ft_exit(game);
 	if (keycode == R_ARW)

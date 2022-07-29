@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 14:13:54 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/29 20:40:23 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/29 21:54:38 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,19 @@
 
 int	init_minimap(t_game *game)
 {
-	game->minimap.height = game->height * 0.25;
-	game->minimap.width = game->minimap.height;
-	game->minimap.ptr = mlx_new_image(game->mlx_ptr, game->minimap.width, game->minimap.height);
-	if (!game->minimap.ptr)
-		return (-1);
-	game->minimap.data = (int *)mlx_get_data_addr(game->minimap.ptr, \
-	&game->minimap.bpp, &game->minimap.size_line, &game->minimap.endian);
-	game->minimap.size_line /= 4;
+	if (game->map.img.height > game->height * 0.25 || game->map.img.width > game->width * 0.25)
+	{
+		game->minimap.height = game->height * 0.25;
+		game->minimap.width = game->minimap.height;
+		game->minimap.ptr = mlx_new_image(game->mlx_ptr, game->minimap.width, game->minimap.height);
+		if (!game->minimap.ptr)
+			return (-1);
+		game->minimap.data = (int *)mlx_get_data_addr(game->minimap.ptr, \
+		&game->minimap.bpp, &game->minimap.size_line, &game->minimap.endian);
+		game->minimap.size_line /= 4;
+	}
+	else
+		game->minimap.ptr = NULL;
 	return (0);
 }
 
@@ -63,8 +68,8 @@ int	init_player(t_game *game)
 {
 	game->player.fov = (120.0 * PI) / 180.0;
 	game->player.dist_screen = (game->width / 2) / tan(game->player.fov / 2);
-	game->player.pos.x = 8.5; //exprime en map unit, soit *64 pour pixels
-	game->player.pos.y = 5.5;
+	game->player.pos.x = 2.5; //exprime en map unit, soit *64 pour pixels
+	game->player.pos.y = 2.5;
 	game->player.pos.z = 0.0;
 	game->player.dir.x = 0.0; // ATTENTION compris entre -1 et 1!!! EXPRIME EN MAP
 	game->player.dir.y = 1.0;
