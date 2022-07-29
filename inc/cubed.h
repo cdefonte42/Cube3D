@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/28 21:54:01 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/07/29 15:18:33 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,8 @@ typedef struct s_game
 	t_player	player;
 	t_map		map;		// Tout ce qui est pour afficher la map
 	t_texture	*text;		// tableau d'au moins 4 texture (Nord, Sud, Est, Ouest);
+	double		colision;	// distance max en map unit a laquelle le player
+							// peut s'approcher des murs
 }				t_game;
 
 # if defined(__APPLE__) && defined(__MACH__)
@@ -225,7 +227,10 @@ void	draw_walls(t_game *game);
 void	draw_map(t_game *game);
 
 /*_______ COLISION _______*/
-bool	set_colision_deltas(t_game *game, int way, int keycode);
+void	back_front_mvx(t_game *game, int keycode, double limit);
+void	back_front_mvy(t_game *game, int keycode, double limit);
+void	stepaside_mvx(t_game *game, int keycode, double limit);
+void	stepaside_mvy(t_game *game, int keycode, double limit);
 
 /* _________ RAYCASTING ________ */
 t_ray	get_mid_ray(t_game *game);

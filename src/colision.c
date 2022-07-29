@@ -6,20 +6,19 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 14:00:03 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/29 15:03:05 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/29 15:15:46 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cubed.h"
 
-void	colisionx(t_game *game, int keycode)
+void	back_front_mvx(t_game *game, int keycode, double limit)
 {
 	double	tabx;
 	double	taby;
 	double	int_part;
 	double	stepx;
 	double	mvx;
-	double	limit = 5 / game->cube_size;
 
 	mvx = game->player.dir.x * keycode * game->player.mv_speed;
 	modf(game->player.pos.x, &tabx);
@@ -42,14 +41,13 @@ void	colisionx(t_game *game, int keycode)
 	}
 }
 
-void	colisiony(t_game *game, int keycode)
+void	back_front_mvy(t_game *game, int keycode, double limit)
 {
 	double	tabx;
 	double	taby;
 	double	int_part;
 	double	stepy;
 	double	mvy;
-	double	limit = 5 / game->cube_size;
 
 	mvy = game->player.dir.y * keycode * game->player.mv_speed;
 	modf(game->player.pos.x, &tabx);
@@ -72,14 +70,13 @@ void	colisiony(t_game *game, int keycode)
 	}
 }
 
-void	colision_sidex(t_game *game, int keycode)
+void	stepaside_mvx(t_game *game, int keycode, double limit)
 {
 	double	tabx;
 	double	taby;
 	double	int_part;
 	double	stepx;
 	double	mvx;
-	double	limit = 5 / game->cube_size;
 
 	mvx = game->player.dir.y * keycode * game->player.mv_speed;
 	modf(game->player.pos.x, &tabx);
@@ -102,14 +99,13 @@ void	colision_sidex(t_game *game, int keycode)
 	}
 }
 
-void	colision_sidey(t_game *game, int keycode)
+void	stepaside_mvy(t_game *game, int keycode, double limit)
 {
 	double	tabx;
 	double	taby;
 	double	mvy;
 	double	int_part;
 	double	stepy;
-	double	limit = 5 / game->cube_size;
 
 	mvy = -game->player.dir.x * keycode * game->player.mv_speed;
 	modf(game->player.pos.x, &tabx);
@@ -130,19 +126,4 @@ void	colision_sidey(t_game *game, int keycode)
 		else if (game->map.tab[(int)taby][(int)--tabx] != '1')
 			game->player.pos.y += mvy;
 	}
-}
-
-bool	set_colision_deltas(t_game *game, int way, int keycode)
-{
-	if (keycode == W_KEY || keycode == S_KEY)
-	{
-		colisiony(game, way);
-		colisionx(game, way);
-	}
-	else
-	{
-		colision_sidex(game, way);
-		colision_sidey(game, way);
-	}
-	return (false);
 }
