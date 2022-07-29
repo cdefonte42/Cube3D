@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/29 17:39:21 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/29 20:40:38 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ typedef enum e_orientation
 
 /*	Nom des reperes; a rajouter si besoin d'un nouveau systeme (avant la size)*/
 enum e_sys_ids {view, grid, map, sys_ids_size};
+
+typedef enum e_state {off, on} t_state;
 
 typedef struct s_coord
 {
@@ -139,7 +141,6 @@ typedef struct s_map	// AFFICHAGE DE LA MINIMAP
 	char	**tab;	// tableau retourne par le parsing de fichier .cub
 	int		width;	// nb de colonnes du tab
 	int		height;	// nb de lignes du tab
-	void	*win;	// window dans laquelle afficher la map
 	t_img	img;	// image a remplir pour afficher map et rays. 
 					// Prend toute la window.
 	t_img	grid;	// img avec que la grille de remplit: permet d'eviter
@@ -147,6 +148,7 @@ typedef struct s_map	// AFFICHAGE DE LA MINIMAP
 	double	ratio;	// Taille des cubes de la map par rapport aux vrais cubes
 					// Permet de reduire taille de la map
 	int		rcube_size;
+	t_state	state;	// Permet de cacher / afficher si on / off la grde map
 }			t_map;
 
 typedef struct s_game
@@ -177,6 +179,7 @@ typedef struct s_game
 #  define W_KEY				13
 #  define ESC 				53
 #  define SPACE 			49
+#  define TAB				48
 
 # else
 #  define L_ARW				65361
@@ -202,6 +205,7 @@ char	**ft_remove_n(char **map);
 
 /*_____ MLX MANAGE __________*/
 int		key_hook(int keycode, void *param);
+int		tab_hook(int keycode, void *param);
 void	refresh_game(t_game *game);
 int		ft_exit(t_game *game);
 
