@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:07:19 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/29 15:20:09 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/29 19:34:17 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ int	main(int argc, char** argv)
 
 	if (init_game(&game, argc, argv) == -1)
 		return (printf("Error init mlx\n"), ft_exit(&game), 1);
-	draw_map(&game);
 	refresh_game(&game);
 
 	mlx_key_hook(game.win, key_hook, &game);
