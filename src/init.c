@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 14:13:54 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/29 18:11:16 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/29 20:40:23 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	init_minimap(t_game *game)
 {
-	game->minimap.height = game->height * 0.25 + 1;
+	game->minimap.height = game->height * 0.25;
 	game->minimap.width = game->minimap.height;
 	game->minimap.ptr = mlx_new_image(game->mlx_ptr, game->minimap.width, game->minimap.height);
 	if (!game->minimap.ptr)
@@ -33,14 +33,11 @@ int	init_map(t_game *game, int argc, char **argv)
 	game->map.tab = ft_clean_map(argc, argv); // A PROTEGER
 	game->map.width = ft_strlen(game->map.tab[0]);
 	game->map.height = ft_tabtablen(game->map.tab);
+	game->map.state = off;
 	game->map.rcube_size = 16;
 	game->map.ratio = (double)game->map.rcube_size / (double)game->cube_size;
 	nb_pixelX = game->map.width * game->map.rcube_size + 1;
 	nb_pixelY = game->map.height * game->map.rcube_size + 1;
-	game->map.win = mlx_new_window(game->mlx_ptr, nb_pixelX, nb_pixelY,\
-	"Grid representation window");
-	if (!game->map.win)
-		return (-1);
 	game->map.grid.ptr = mlx_new_image(game->mlx_ptr, nb_pixelX, nb_pixelY);
 	if (!game->map.grid.ptr)
 		return (-1);

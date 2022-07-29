@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:07:19 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/29 19:34:17 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/29 20:36:12 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,12 @@ int	main(int argc, char** argv)
 	refresh_game(&game);
 
 	mlx_key_hook(game.win, key_hook, &game);
-	mlx_key_hook(game.map.win, key_hook, &game);
+	mlx_key_hook(game.win, tab_hook, &game);
+//	mlx_key_hook(game.map.win, key_hook, &game);
 	mlx_hook(game.win, 17, 0, &ft_exit, &game);
-	mlx_hook(game.map.win, 17, 0, &ft_exit, &game);
+//	mlx_hook(game.map.win, 17, 0, &ft_exit, &game);
 	mlx_hook(game.win, 2, 1L<<0, &key_hook, &game);
-	mlx_hook(game.map.win, 2, 1L<<0, &key_hook, &game);
+//	mlx_hook(game.map.win, 2, 1L<<0, &key_hook, &game);
 	mlx_loop(game.mlx_ptr);
 	ft_exit(&game);
 	return (0);
