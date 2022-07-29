@@ -6,7 +6,7 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 18:03:35 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/07/29 19:52:53 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/29 20:02:32 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ void	draw_minimap(t_game *game)
 
 	int	max_map = game->map.img.height * game->map.img.size_line;
 
-//	printf("pos x = %f y = %f col = %d line = %d \n\n", x, y,(int) col, (int)line);
 	while (origin < 0)
 	{
 		game->minimap.data[i] = BLACK;
@@ -91,9 +90,12 @@ void	draw_minimap(t_game *game)
 		if (i % game->minimap.size_line == 0)
 			origin += game->map.img.size_line;
 	}
-	while (i < nb_pixels_minimap && origin + i % game->minimap.size_line< max_map)
+	while (i < nb_pixels_minimap && origin + i % game->minimap.size_line < max_map)
 	{
-		game->minimap.data[i] = game->map.img.data[origin + i % game->minimap.size_line];
+		if (col + i % game->minimap.size_line >= game->map.img.size_line || col + i % game->minimap.size_line <= 0)
+			game->minimap.data[i] = BLACK;
+		else
+			game->minimap.data[i] = game->map.img.data[origin + i % game->minimap.size_line];
 		++i;
 		if (i % game->minimap.size_line == 0)
 			origin += game->map.img.size_line;
