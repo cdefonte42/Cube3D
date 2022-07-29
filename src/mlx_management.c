@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:32:55 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/29 01:12:14 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/07/29 14:48:24 by Cyrielle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,12 +106,12 @@ int	key_hook(int keycode, void *param)
 	}
 	else if (keycode == A_KEY)
 	{
-		set_colision_deltas(game, -1, keycode);
+		set_colision_deltas(game, 1, keycode);
 		refresh_game(game);
 	}
 	else if (keycode == D_KEY)
 	{
-		set_colision_deltas(game, 1, keycode);
+		set_colision_deltas(game, -1, keycode);
 		refresh_game(game);
 	}
 	return (0);
