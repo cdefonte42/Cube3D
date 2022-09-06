@@ -191,7 +191,8 @@ typedef struct s_game
 #  define S_KEY				115
 #  define D_KEY				100
 #  define ESC				65307
-//#  define SPACE 			?????
+#  define TAB				0xff09
+#  define SPACE				0x0020
 # endif
 
 /*____ PARSING ____ */
