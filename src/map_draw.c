@@ -6,7 +6,7 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 18:03:35 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/07/29 20:13:55 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/09/08 13:04:12 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,25 @@
 /* Remplit la position (x, y) en map unit de 64(cube size) pixels de color. */
 void	fill_cube(t_game *game, int y, int x, int color)
 {
-	int	*pixels = game->map.grid.data;
-	int	origin_line = y * game->map.rcube_size * game->map.grid.size_line;
-	int	origin_col = x * game->map.rcube_size;
-	int	max_line = origin_line + game->map.rcube_size * game->map.grid.size_line;
-	int	max_col = origin_col + game->map.rcube_size;
+	int	origin_line;
+	int	max_line;
+	int	max_col;
+	int	line;
+	int	col;
 
-	for (int line = origin_line; line < max_line; line += game->map.grid.size_line)
+	origin_line = y * game->map.rcube_size * game->map.grid.size_line;
+	max_line = origin_line + game->map.rcube_size * game->map.grid.size_line;
+	max_col = x * game->map.rcube_size + game->map.rcube_size;
+	line = origin_line;
+	while (line < max_line)
 	{
-		for (int col = origin_col; col < max_col; ++col)
-			pixels[col + line] = color;
+		col = x * game->map.rcube_size;
+		while (col < max_col)
+		{
+			game->map.grid.data[col + line] = color;
+			++col;
+		}
+		line += game->map.grid.size_line;
 	}
 }
 
@@ -34,33 +43,73 @@ puis fait appel a fill_cube pour remplir cette case. Iter l'operation sur toutes
 les cases de la map. */
 void	draw_walls(t_game *game)
 {
-	for (int i = 0; i < game->map.height; ++i)
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < game->map.height)
 	{
-		for (int j = 0; j < game->map.width; ++j)
+		j = 0;
+		while (j < game->map.width)
 		{
 			if (game->map.tab[i][j] == '1')
 				fill_cube(game, i, j, GREY);
+			++j;
 		}
+		++i;
+	}
+}
+
+void	draw_vertical_lines(int *pixels, int size_line, int max_line, int rcube)
+{
+	int	line;
+	int	col;
+
+	line = 0;
+	while (line <= max_line)
+	{
+		col = 0;
+		while (col < size_line)
+		{
+			pixels[col + line] = WHITE;
+			col += rcube;
+		}
+		line += size_line;
+	}
+}
+
+void	draw_hrztl_lines(int *pixels, int size_line, int max_line, int rcube)
+{
+	int	line;
+	int	col;
+	int	line_inc;
+
+	line = 0;
+	line_inc = rcube * size_line;
+	while (line <= max_line)
+	{
+		col = 0;
+		while (col < size_line)
+		{
+			pixels[col + line] = WHITE;
+			++col;
+		}
+		line += line_inc;
 	}
 }
 
 /* Draw les lignes en blanc de la grille associee a la map */
 void	draw_grid(t_game *game)
 {
-	int *pixels = game->map.grid.data;
-	int	size_line = game->map.grid.size_line;
-	int	max_line = size_line * game->map.rcube_size * game->map.height;
+	int	*pixels;
+	int	size_line;
+	int	max_line;
 
-	for (int line = 0; line <= max_line; line += size_line)
-	{
-		for (int col = 0; col < size_line; col += game->map.rcube_size)
-			pixels[col + line] = WHITE;	// lignes verticales
-	}
-	for (int line = 0; line <= max_line; line += game->map.rcube_size * size_line)
-	{
-		for (int col = 0; col < size_line; ++col)
-			pixels[col + line] = WHITE;	// lignes horizontales
-	}
+	pixels = game->map.grid.data;
+	size_line = game->map.grid.size_line;
+	max_line = size_line * game->map.rcube_size * game->map.height;
+	draw_vertical_lines(pixels, size_line, max_line, game->map.rcube_size);
+	draw_hrztl_lines(pixels, size_line, max_line, game->map.rcube_size);
 }
 
 void	draw_map(t_game *game)
