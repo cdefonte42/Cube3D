@@ -19,9 +19,9 @@ bool	check_hit_point_is_wall(t_game *game, t_ray ray)
 
 	x = (int)ray.hit_point.pos[grid].x / game->cube_size;
 	y = (int)ray.hit_point.pos[grid].y / game->cube_size;
-	if ((ray.hit_point.type == vline) && ray.stepX <= 0)
+	if ((ray.hit_point.type == vline) && ray.step_x <= 0)
 		--x;
-	if ((ray.hit_point.type == hline) && ray.stepY <= 0)
+	if ((ray.hit_point.type == hline) && ray.step_y <= 0)
 		--y;
 	if (x <= 0 || x >= game->map.width || y <= 0 || y >= game->map.height)
 		return (true);
@@ -35,13 +35,13 @@ void	next_hit_point(t_ray *ray)
 	double	len_till_vline;
 	double	len_till_hline;
 
-	len_till_vline = fabs(ray->stepX / ray->dir[grid].x);
-	len_till_hline = fabs(ray->stepY / ray->dir[grid].y);
+	len_till_vline = fabs(ray->step_x / ray->dir[grid].x);
+	len_till_hline = fabs(ray->step_y / ray->dir[grid].y);
 	if (len_till_vline <= len_till_hline)
 	{
 		ray->hit_point.type = vline;
 		ray->hit_point.dist += len_till_vline;
-		ray->hit_point.pos[grid].x = ray->pos[grid].x + ray->stepX;
+		ray->hit_point.pos[grid].x = ray->pos[grid].x + ray->step_x;
 		ray->hit_point.pos[grid].y = ray->pos[grid].y + \
 		len_till_vline * (ray->dir[grid].y);
 	}
@@ -51,7 +51,7 @@ void	next_hit_point(t_ray *ray)
 		ray->hit_point.dist += len_till_hline;
 		ray->hit_point.pos[grid].x = ray->pos[grid].x + \
 		len_till_hline * (ray->dir[grid].x);
-		ray->hit_point.pos[grid].y = ray->pos[grid].y + ray->stepY;
+		ray->hit_point.pos[grid].y = ray->pos[grid].y + ray->step_y;
 	}
 }
 
@@ -86,17 +86,17 @@ void	set_wall_hit_point(t_game *game, t_ray *ray)
 	{
 		if (ray->hit_point.type == vline)
 		{
-			if (ray->stepX <= 0)
-				ray->stepX -= game->cube_size;
+			if (ray->step_x <= 0)
+				ray->step_x -= game->cube_size;
 			else
-				ray->stepX += game->cube_size;
+				ray->step_x += game->cube_size;
 		}
 		else if (ray->hit_point.type == hline)
 		{
-			if (ray->stepY <= 0)
-				ray->stepY -= game->cube_size;
+			if (ray->step_y <= 0)
+				ray->step_y -= game->cube_size;
 			else
-				ray->stepY += game->cube_size;
+				ray->step_y += game->cube_size;
 		}
 		next_hit_point(ray);
 	}

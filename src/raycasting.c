@@ -19,13 +19,13 @@ void	set_ray_steps(t_game *game, t_ray *ray)
 
 	cube_size = game->cube_size;
 	if (ray->dir[grid].x >= 0)
-		ray->stepX = cube_size - (modf(ray->pos[map].x, &int_part) * cube_size);
+		ray->step_x = cube_size - (modf(ray->pos[map].x, &int_part) * cube_size);
 	else
-		ray->stepX = - (modf(ray->pos[map].x, &int_part) * cube_size);
+		ray->step_x = - (modf(ray->pos[map].x, &int_part) * cube_size);
 	if (ray->dir[grid].y >= 0)
-		ray->stepY = cube_size - (modf(ray->pos[map].y, &int_part) * cube_size);
+		ray->step_y = cube_size - (modf(ray->pos[map].y, &int_part) * cube_size);
 	else
-		ray->stepY = - (modf(ray->pos[map].y, &int_part) * cube_size);
+		ray->step_y = - (modf(ray->pos[map].y, &int_part) * cube_size);
 }
 
 /* Eq droite: Or(t) = Op + t * Od Avec Or = infinite rays(t). Op = point 

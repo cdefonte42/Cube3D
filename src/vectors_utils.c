@@ -14,7 +14,7 @@
 
 /* Matrice de rotation: x' = cos(alpha).x - sin(alpha).y et 
 y' = sin(alpha).x + cos(alpha).y */
-struct s_coord	rotate_vector(struct s_coord from, double angle)
+t_pos	rotate_vector(struct s_coord from, double angle)
 {
 	struct s_coord	res;
 

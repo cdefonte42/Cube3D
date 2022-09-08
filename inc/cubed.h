@@ -33,11 +33,13 @@
 # endif
 
 # ifndef CUBE_SIZE
-#  define CUBE_SIZE 64	// should be pair. (8 multiples top) AND same size than xpm
+// should be pair. (8 multiples top) AND same size than xpm
+#  define CUBE_SIZE 64
 # endif
 
 # ifndef VIEW_HEIGHT
-#  define VIEW_HEIGHT 32	// player's sight height (usually 1/2 cubes's height)
+// player's sight height (usually 1/2 cubes's height)
+#  define VIEW_HEIGHT 32
 # endif
 
 /*
@@ -55,54 +57,83 @@ murs de texturises, plus tard si bonus portes et sprites il faudra les deplacer
 avant nb_textures). */
 typedef enum e_element_type
 {
-	wwall, ewall, nwall, swall, nb_textures, hline, vline, apex, sprite, door
+	wwall,
+	ewall,
+	nwall,
+	swall,
+	nb_textures,
+	hline,
+	vline,
+	apex,
+	sprite,
+	door
 }			t_type;
 
 typedef enum e_orientation
 {
-	south = 'S', north = 'N', west = 'W', east = 'E'
+	south = 'S',
+	north = 'N',
+	west = 'W',
+	east = 'E'
 }			t_orientation;
 
 /*	Nom des reperes; a rajouter si besoin d'un nouveau systeme (avant la size)*/
 enum e_sys_ids {view, grid, map, sys_ids_size};
+# define SYS_IDS_SIZE 3  
 
-typedef enum e_state {off, on} t_state;
+typedef enum e_state
+{
+	off,
+	on
+}			t_state;
 
+// z[view]=0 z[map]=0.5 et z[grid] = 1/2 * cube_size
+// permet d'exprimer soit une position, soit un vecteur de direction dans
+// un systeme donne. ATTENTION une dir ne peut prendre que des valeurs
+// entre -1 et 1 compris
 typedef struct s_coord
 {
-	double				x;
-	double				y;
-	double				z;	// z[view]=0 z[map]=0.5 et z[grid] = 1/2 * cube_size
-}				t_pos, t_dir, t_vec;	// permet d'exprimer soit une position, soit un vecteur de direction dans un systeme donne. ATTENTION une dir ne peut prendre que des valeurs entre -1 et 1 compris
+	double	x;
+	double	y;
+	double	z;
+}			t_pos;
 
+typedef struct s_coord	t_dir;
+typedef struct s_coord	t_vec;
+
+// type soit vertical soit horizontal wall/line; useless?
+// distance en grid unit entre le player (ou 
+// centre rayon c'est pareil) et le hitpoint. 
+// C'est CA qui permet de determiner combien de 
+// pixels de haut on va print sur l'ecran du game.
 typedef struct s_hit_point
 {
-	t_pos	pos[sys_ids_size];
-	t_type	type;				// soit vertical soit horizontal wall/line; useless?
-	double	dist;				// distance en grid unit entre le player (ou 
-								// centre rayon c'est pareil) et le hitpoint. 
-								// C'est CA qui permet de determiner combien de 
-								// pixels de haut on va print sur l'ecran du game.
+	t_pos	pos[SYS_IDS_SIZE];
+	t_type	type;
+	double	dist;
 }				t_hit_point;
 
-typedef struct s_ray
-{
-	t_pos	pos[sys_ids_size];
-	t_dir	dir[sys_ids_size];
-	double	stepX;		// longueur pour first vertical wall
-	double	stepY;		// longueur, en grid unit, a faire sur le ray pour 
-						// toucher le premier horizontal wall
-	t_hit_point	hit_point;	// point qui touche une ligne, et a la fin du
-							// calcul un wall
-	double	angle;			// angle (en radian) representant la rotation du ray
+// step_x: longueur pour first vertical wall
+// step_y: longueur, en grid unit, a faire sur le ray pour 
+// toucher le premier horizontal wall
+// hit_point: point qui touche une ligne, et a la fin du calcul un wall
+// angle (en radian): representant la rotation du ray
 							// par rapport a la VIEW, cad angle entre ce ray et
 							// le "ray du mid"
+typedef struct s_ray
+{
+	t_pos		pos[SYS_IDS_SIZE];
+	t_dir		dir[SYS_IDS_SIZE];
+	double		step_x;
+	double		step_y;
+	t_hit_point	hit_point;
+	double		angle;
 }				t_ray;
 
 typedef struct s_player
 {
 	double			fov;	// player filed of view in RADIANS;
-	double	dist_screen;	// distance between screen and player view 
+	double			dist_screen;	// distance between screen and player view 
 							// (fonction du FOV);
 	t_pos			pos;	// position du jouer, dans systeme de map
 	t_dir			dir;	// orientation du joueur, N/S/W/E, en sys map & grid;
@@ -134,7 +165,8 @@ typedef struct s_img
 	int		bpp;
 	int		size_line;
 	int		endian;
-}				t_texture, t_img;
+}				t_texture;
+typedef struct s_img	t_img;
 
 typedef struct s_map	// AFFICHAGE DE LA MINIMAP
 {
@@ -249,7 +281,7 @@ void	next_hit_point(t_ray *ray);
 void	set_wall_hit_point(t_game *game, t_ray *ray);
 
 /* _________ VECTORS UTILS _______*/
-struct s_coord	rotate_vector(struct s_coord from, double angle);
+t_pos	rotate_vector(struct s_coord from, double angle);
 
 /*__________ RAYTRACING (DEBUG) _______*/
 void	draw_ray_until_first_Hline(t_game *game, t_ray ray, int color);
@@ -259,6 +291,7 @@ void	draw_all_rays(t_game *game);
 void	draw_sized_ray(t_game *game, t_ray ray, int length, int color);
 
 /* ____ TEXTURE (tests)______*/
-void	draw_buff_texture(t_game *game, int col_screen, int it_inf, int it_sup, double hpwall);
+void	draw_buff_texture(t_game *game, int col_screen, int it_inf, \
+	int it_sup, double hpwall);
 
 #endif
