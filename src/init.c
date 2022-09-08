@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 14:13:54 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/29 21:54:38 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/09/08 13:08:26 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ int	init_map(t_game *game, int argc, char **argv)
 	game->map.img.size_line /= 4;
 	game->map.img.height = nb_pixelY;
 	game->map.img.width = nb_pixelX;
-	draw_grid(game);
 	draw_walls(game);
 	return (0);
 }

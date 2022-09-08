@@ -6,7 +6,7 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 18:03:35 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/09/08 13:04:12 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/08 13:06:09 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,58 +58,6 @@ void	draw_walls(t_game *game)
 		}
 		++i;
 	}
-}
-
-void	draw_vertical_lines(int *pixels, int size_line, int max_line, int rcube)
-{
-	int	line;
-	int	col;
-
-	line = 0;
-	while (line <= max_line)
-	{
-		col = 0;
-		while (col < size_line)
-		{
-			pixels[col + line] = WHITE;
-			col += rcube;
-		}
-		line += size_line;
-	}
-}
-
-void	draw_hrztl_lines(int *pixels, int size_line, int max_line, int rcube)
-{
-	int	line;
-	int	col;
-	int	line_inc;
-
-	line = 0;
-	line_inc = rcube * size_line;
-	while (line <= max_line)
-	{
-		col = 0;
-		while (col < size_line)
-		{
-			pixels[col + line] = WHITE;
-			++col;
-		}
-		line += line_inc;
-	}
-}
-
-/* Draw les lignes en blanc de la grille associee a la map */
-void	draw_grid(t_game *game)
-{
-	int	*pixels;
-	int	size_line;
-	int	max_line;
-
-	pixels = game->map.grid.data;
-	size_line = game->map.grid.size_line;
-	max_line = size_line * game->map.rcube_size * game->map.height;
-	draw_vertical_lines(pixels, size_line, max_line, game->map.rcube_size);
-	draw_hrztl_lines(pixels, size_line, max_line, game->map.rcube_size);
 }
 
 void	draw_map(t_game *game)
