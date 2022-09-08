@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 12:27:33 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/08 14:36:55 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/08 16:18:54 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	draw_game(t_game *game)
 	double	hpwall;
 	int		nb_rays;
 	int		col;
-	int		interval[2];
+	t_interval		interval;
 	int		img_pixl_max;
 
 	col = 0;
@@ -79,12 +79,12 @@ void	draw_game(t_game *game)
 	{
 		hpwall = wall_height_ratio(game->player.rays[col], \
 		game->player.dist_screen, game->cube_size);
-		get_interval(&(interval[inf]), &(interval[sup]), game->img, hpwall);
+		get_interval(&(interval.inf), &(interval.sup), game->img, hpwall);
 		draw_buff_texture(game, col, interval, hpwall);
-		draw_floor_or_sky(&(game->img.data[col + interval[sup]]), \
-		game->img.size_line, img_pixl_max - interval[sup], GREY);
+		draw_floor_or_sky(&(game->img.data[col + interval.sup]), \
+		game->img.size_line, img_pixl_max - interval.sup, GREY);
 		draw_floor_or_sky(&(game->img.data[col]), game->img.size_line, \
-		interval[inf], DARK_GREY);
+		interval.inf, DARK_GREY);
 		++col;
 	}
 }
