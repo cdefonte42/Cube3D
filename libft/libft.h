@@ -74,7 +74,7 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_memcmp(const void *s1, const void *s2, size_t n);
 int		ft_atoi(const char *nptr);
 char	*get_next_line(int fd);
-int		ft_isspace(char c);
+int		ft_isspace(int c);
 int		ft_stris(char *s, int (*f)(int));
 
 #endif
