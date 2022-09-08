@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/08 13:06:27 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/08 14:34:25 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,13 @@ typedef enum e_state
 	off,
 	on
 }			t_state;
+
+/* Enum pour une paire de int (int[2]) avec interval inf index 0 etc. */
+typedef enum e_interval
+{
+	inf,
+	sup
+}			t_interval;
 
 // z[view]=0 z[map]=0.5 et z[grid] = 1/2 * cube_size
 // permet d'exprimer soit une position, soit un vecteur de direction dans
@@ -290,7 +297,6 @@ void	draw_all_rays(t_game *game);
 void	draw_sized_ray(t_game *game, t_ray ray, int length, int color);
 
 /* ____ TEXTURE (tests)______*/
-void	draw_buff_texture(t_game *game, int col_screen, int it_inf, \
-	int it_sup, double hpwall);
+void	draw_buff_texture(t_game *game, int col_screen, int interval[2], double hpwall);
 
 #endif

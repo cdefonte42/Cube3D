@@ -6,13 +6,13 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 13:42:49 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/26 22:50:30 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/09/08 14:35:56 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cubed.h"
 
-void	draw_buff_texture(t_game *game, int col_screen, int it_inf, int it_sup, double hpwall)
+void	draw_buff_texture(t_game *game, int col_screen, int interval[2], double hpwall)
 {
 	int	col_text;
 	int	line_text;
@@ -37,10 +37,10 @@ void	draw_buff_texture(t_game *game, int col_screen, int it_inf, int it_sup, dou
 	else
 		line_text_indent =  0;
 	line_text = 0;
-	line_screen = it_inf;
+	line_screen = interval[inf];
 
 	int numl = 0; // represente le nombre de lignes faites
-	while (line_screen < it_sup)
+	while (line_screen < interval[sup])
 	{
 		line_text = ((numl + line_text_indent) / (int)hpwall) % game->cube_size;
 		img->data[col_screen + line_screen] = text.data[col_text + line_text * text.size_line];
