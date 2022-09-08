@@ -1,0 +1,3 @@
+#!/bin/bash
+
+cc  src/parsing.c -o parser libft/libft.a -Iinc -Ilibft -Imlx_linux -g3

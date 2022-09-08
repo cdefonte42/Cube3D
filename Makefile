@@ -6,11 +6,11 @@
 #    By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/18 12:15:17 by cdefonte          #+#    #+#              #
-#    Updated: 2022/07/27 22:12:49 by Cyrielle         ###   ########.fr        #
+#    Updated: 2022/09/08 14:36:29 by mbraets          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME		=	cubed
+NAME		=	cub3d
 
 SRC_DIR		=	src/
 OBJ_DIR		=	obj/
