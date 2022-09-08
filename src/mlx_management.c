@@ -6,15 +6,11 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:32:55 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/29 21:51:35 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/09/08 17:00:04 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cubed.h"
-
-#ifndef LINUX
-void	mlx_destroy_display(void *);
-#endif
 
 /*Appellee quand red cross clicked ou ESC press*/
 int	ft_exit(t_game *game)
@@ -48,10 +44,7 @@ int	ft_exit(t_game *game)
 		mlx_destroy_window(game->mlx_ptr, game->win);
 	if (game->mlx_ptr)
 	{
-		#ifdef __linux__
 		mlx_destroy_display(game->mlx_ptr);
-		#endif
-		//mlx_loop_end(game->mlx_ptr);			//NON DISPO SUR MAC
 		free(game->mlx_ptr);
 	}
 	exit (0);
@@ -68,15 +61,17 @@ void	refresh_game(t_game *game)
 	if (game->minimap.ptr != NULL && game->map.state == off)
 	{
 		draw_minimap(game);
-		mlx_put_image_to_window(game->mlx_ptr, game->win, game->minimap.ptr, 0,0);
+		mlx_put_image_to_window(game->mlx_ptr, game->win,
+			game->minimap.ptr, 0, 0);
 	}
 	else
-		mlx_put_image_to_window(game->mlx_ptr, game->win, game->map.img.ptr, 0,0);
+		mlx_put_image_to_window(game->mlx_ptr, game->win,
+			game->map.img.ptr, 0, 0);
 }
 
 int	tab_hook(int keycode, void *param)
 {
-	t_game *game;
+	t_game	*game;
 
 	game = param;
 	if (keycode == TAB)
@@ -90,49 +85,46 @@ int	tab_hook(int keycode, void *param)
 	return (0);
 }
 
-/* Appellee quand mlx_key_hook declenchee */
-int	key_hook(int keycode, void *param)
+void	dispatch_player_move(t_game *game, int keycode)
 {
-	t_game *game;
-
-	game = param;
-	if (keycode == ESC)
-		ft_exit(game);
-	if (keycode == R_ARW)
-	{
-		game->player.dir = rotate_vector(game->player.dir, game->player.rot_speed);
-//		game->player.angle += game->player.rot_speed;
-		refresh_game(game);
-	}
-	else if (keycode == L_ARW)
-	{
-		game->player.dir = rotate_vector(game->player.dir, -game->player.rot_speed);
-//		game->player.angle -= game->player.rot_speed;
-		refresh_game(game);
-	}
-	else if (keycode == W_KEY)
+	if (keycode == W_KEY)
 	{
 		back_front_mvx(game, 1, game->colision);
 		back_front_mvy(game, 1, game->colision);
-		refresh_game(game);
 	}
 	else if (keycode == S_KEY)
 	{
 		back_front_mvx(game, -1, game->colision);
 		back_front_mvy(game, -1, game->colision);
-		refresh_game(game);
 	}
 	else if (keycode == A_KEY)
 	{
 		stepaside_mvx(game, 1, game->colision);
 		stepaside_mvy(game, 1, game->colision);
-		refresh_game(game);
 	}
 	else if (keycode == D_KEY)
 	{
 		stepaside_mvx(game, -1, game->colision);
 		stepaside_mvy(game, -1, game->colision);
-		refresh_game(game);
 	}
+}
+
+/* Appellee quand mlx_key_hook declenchee */
+int	key_hook(int keycode, void *param)
+{
+	t_game	*game;
+
+	game = param;
+	if (keycode == ESC)
+		ft_exit(game);
+	if (keycode == R_ARW)
+		game->player.dir = rotate_vector(game->player.dir,
+				game->player.rot_speed);
+	else if (keycode == L_ARW)
+		game->player.dir = rotate_vector(game->player.dir,
+				-game->player.rot_speed);
+	else
+		dispatch_player_move(game, keycode);
+	refresh_game(game);
 	return (0);
 }
