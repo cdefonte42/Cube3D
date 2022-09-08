@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 12:27:33 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/08 16:18:54 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/08 16:50:27 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,11 @@ void	draw_floor_or_sky(int *pixels, int size_line, int max, int color)
 */
 void	draw_game(t_game *game)
 {
-	double	hpwall;
-	int		nb_rays;
-	int		col;
+	double			hpwall;
+	int				nb_rays;
+	int				col;
 	t_interval		interval;
-	int		img_pixl_max;
+	int				img_pixl_max;
 
 	col = 0;
 	nb_rays = game->width;
