@@ -76,5 +76,7 @@ int		ft_atoi(const char *nptr);
 char	*get_next_line(int fd);
 int		ft_isspace(int c);
 int		ft_stris(char *s, int (*f)(int));
+char	*ft_strtrim_free(char *s1, char const *set);
+
 
 #endif
