@@ -6,7 +6,7 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 18:03:35 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/09/08 13:06:09 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/08 14:26:25 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,32 +67,22 @@ void	draw_map(t_game *game)
 	draw_all_rays(game);
 }
 
-void	draw_minimap(t_game *game)
+void	draw_inner_minimap(int i, t_game *game, int origin, int col)
 {
-	erase_img(&(game->minimap));
-	double	x = game->player.pos.x;
-	double	y = game->player.pos.y;
-	int	nb_pixels_minimap = game->minimap.height * game->minimap.size_line;
-	int	i = 0;
-	int	col = x * game->map.rcube_size - game->minimap.size_line / 2.0;
-	int	line = y * game->map.rcube_size - game->minimap.size_line / 2.0;
-	int	origin = col + line * game->map.img.size_line;
+	int		max_map;
+	int		nb_pixels_minimap;
 
-	int	max_map = game->map.img.height * game->map.img.size_line;
-
-	while (origin < 0)
+	nb_pixels_minimap = game->minimap.height * game->minimap.size_line;
+	max_map = game->map.img.height * game->map.img.size_line;
+	while (i < nb_pixels_minimap
+		&& origin + i % game->minimap.size_line < max_map)
 	{
-		game->minimap.data[i] = BLACK;
-		++i;
-		if (i % game->minimap.size_line == 0)
-			origin += game->map.img.size_line;
-	}
-	while (i < nb_pixels_minimap && origin + i % game->minimap.size_line < max_map)
-	{
-		if (col + i % game->minimap.size_line >= game->map.img.size_line || col + i % game->minimap.size_line <= 0)
+		if (col + i % game->minimap.size_line >= game->map.img.size_line
+			|| col + i % game->minimap.size_line <= 0)
 			game->minimap.data[i] = BLACK;
 		else
-			game->minimap.data[i] = game->map.img.data[origin + i % game->minimap.size_line];
+			game->minimap.data[i] = game->map.img.data[origin
+				+ i % game->minimap.size_line];
 		++i;
 		if (i % game->minimap.size_line == 0)
 			origin += game->map.img.size_line;
@@ -102,4 +92,28 @@ void	draw_minimap(t_game *game)
 		game->minimap.data[i] = BLACK;
 		++i;
 	}
+}
+
+void	draw_minimap(t_game *game)
+{
+	int		i;
+	int		col;
+	int		line;
+	int		origin;
+
+	i = 0;
+	col = game->player.pos.x * game->map.rcube_size
+		- game->minimap.size_line / 2.0;
+	line = game->player.pos.y * game->map.rcube_size
+		- game->minimap.size_line / 2.0;
+	origin = col + line * game->map.img.size_line;
+	erase_img(&(game->minimap));
+	while (origin < 0)
+	{
+		game->minimap.data[i] = BLACK;
+		++i;
+		if (i % game->minimap.size_line == 0)
+			origin += game->map.img.size_line;
+	}
+	draw_inner_minimap(i, game, origin, col);
 }
