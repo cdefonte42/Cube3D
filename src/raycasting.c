@@ -6,7 +6,7 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 11:03:07 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/07/27 22:33:59 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/09/08 17:09:52 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,13 @@ void	set_ray_steps(t_game *game, t_ray *ray)
 
 	cube_size = game->cube_size;
 	if (ray->dir[grid].x >= 0)
-		ray->step_x = cube_size - (modf(ray->pos[map].x, &int_part) * cube_size);
+		ray->step_x = cube_size
+			- (modf(ray->pos[map].x, &int_part) * cube_size);
 	else
 		ray->step_x = - (modf(ray->pos[map].x, &int_part) * cube_size);
 	if (ray->dir[grid].y >= 0)
-		ray->step_y = cube_size - (modf(ray->pos[map].y, &int_part) * cube_size);
+		ray->step_y = cube_size
+			- (modf(ray->pos[map].y, &int_part) * cube_size);
 	else
 		ray->step_y = - (modf(ray->pos[map].y, &int_part) * cube_size);
 }
