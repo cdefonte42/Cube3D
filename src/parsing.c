@@ -53,7 +53,7 @@ static bool	is_color(int *color, char *line)
 	tmp = line + 1;
 	while (ft_isspace(*tmp))
 		tmp++;
-	i = 3; 
+	i = 3;
 	while (i--)
 	{
 		if (!ft_isdigit(*tmp))
@@ -81,7 +81,7 @@ static bool	is_path(t_game *game, int flag, char *line)
 		tmp++;
 	if (*tmp == '\0')
 		return (false);
-	path = ft_strdup(tmp);
+	path = ft_strndup(tmp, ft_strlen(tmp) - 1);
 	if (path == NULL)
 		return (error("malloc failed", NULL));
 	if (flag == NO)
@@ -130,7 +130,7 @@ static int	checkflags(t_game *game, int *flags, char *line)
 		return (error("Invalid path", line));
 	else if ((flag == F && !is_color(&(game->floor_color), line)) || \
 	(flag == C && !is_color(&(game->ceiling_color), line)))
-			return (error("Invalid color", line));
+		return (error("Invalid color", line));
 	flags_tmp |= flag;
 	(*flags) = flags_tmp;
 	return (true);
@@ -166,7 +166,6 @@ static bool	check_line(t_game *game, char *line, int *player)
 
 bool	map_check(t_game *game, char *line, int fd)
 {
-
 	int		player;
 
 	player = false;
@@ -236,15 +235,15 @@ bool	map_parsing(t_game *game, char *file)
 int	main(int ac, char **av)
 {
 	t_game	game;
+
 	if (ac != 2)
 		return (error("Invalid number of arguments", NULL));
 	game.text = ft_calloc(sizeof(t_texture), 4);
-
 	printf("%d\n", map_parsing(&game, av[1]));
 	for (size_t i = 0; i < 4; i++)
 	{
+		printf("path: %s.\n", game.text[i].path);
 		free(game.text[i].path);
-		
 	}
 	free(game.text);
 	return (0);
