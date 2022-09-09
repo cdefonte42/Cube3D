@@ -41,25 +41,57 @@ static bool	error(char *reason, char *suffix)
 
 static bool	is_wall(char *line)
 {
-	int	i;
-
-	i = 0;
-	while (line && line[i])
-	{
-		if (line[i] == '1' || line[i] == '0')
-			return (true);
-		i++;
-	}
-	return (false);
+	return (*line == '1' || (*line != '\n' && ft_isspace(*line)));
 }
 
-static bool	is_color(char *line)
+static bool	is_color(int *color, char *line)
 {
+	char	*tmp;
+	int		colors[3];
+	int		i;
+
+	tmp = line + 1;
+	while (ft_isspace(*tmp))
+		tmp++;
+	i = 3; 
+	while (i--)
+	{
+		if (!ft_isdigit(*tmp))
+			return (false);
+		colors[i] = ft_atoi(tmp);
+		if (colors[i] < 0 || colors[i] > 255)
+			return (false);
+		while (ft_isdigit(*tmp))
+			tmp++;
+		if (i && *tmp != ',')
+			return (false);
+		tmp++;
+	}
+	*color = (colors[0] << 16) + (colors[1] << 8) + colors[2];
 	return (true);
 }
 
-static bool	is_path(char *line)
+static bool	is_path(t_game *game, int flag, char *line)
 {
+	char	*tmp;
+	char	*path;
+
+	tmp = line + 2;
+	while (ft_isspace(*tmp))
+		tmp++;
+	if (*tmp == '\0')
+		return (false);
+	path = ft_strdup(tmp);
+	if (path == NULL)
+		return (error("malloc failed", NULL));
+	if (flag == NO)
+		game->text[nwall].path = path;
+	else if (flag == SO)
+		game->text[swall].path = path;
+	else if (flag == WE)
+		game->text[wwall].path = path;
+	else if (flag == EA)
+		game->text[ewall].path = path;
 	return (true);
 }
 
@@ -80,35 +112,76 @@ static int	isvalidflag(char *line)
 	return (0);
 }
 
-static int	checkflags(int *flags, char *line)
+static int	checkflags(t_game *game, int *flags, char *line)
 {
+	int	flags_tmp;
+	int	flag;
+
+	flag = isvalidflag(line);
 	if (line == NULL || line[0] == '\n')
-		return (1);
-	if (isvalidflag(line) == 0)
-	{
-		*flags = -1;
+		return (true);
+	flags_tmp = *flags;
+	(*flags) = -1;
+	if (flag == 0)
 		return (error("Invalid flag", line));
-	}
-	if (*flags & isvalidflag(line))
-	{
-		*flags = -1;
+	if (flags_tmp & flag)
 		return (error("Duplicate flag", line));
-	}
-	if (isvalidflag(line) == F || isvalidflag(line) == C)
-	{
-		if (!is_color(line))
+	if (flag >= NO && flag <= EA && !is_path(game, flag, line))
+		return (error("Invalid path", line));
+	else if ((flag == F && !is_color(&(game->floor_color), line)) || \
+	(flag == C && !is_color(&(game->ceiling_color), line)))
 			return (error("Invalid color", line));
-	}
-	else
-	{
-		if (!is_path(line))
-			return (error("Invalid path", line));
-	}
-	*flags |= isvalidflag(line);
+	flags_tmp |= flag;
+	(*flags) = flags_tmp;
 	return (true);
 }
 
-int	map_checkheader(char *file)
+static void	clean_parse(char *line, int fd)
+{
+	get_next_line(-1);
+	close(fd);
+}
+
+static bool	check_line(t_game *game, char *line, int *player)
+{
+	int	i;
+
+	i = 0;
+	if (line == NULL)
+		return (true);
+	while (line[i] != '\0')
+	{
+		if (!ft_isspace(line[i]) && !ft_strchr("01NSEW", line[i]))
+			return (error("Invalid character map", line));
+		if (ft_strchr("NSEW", line[i]))
+		{
+			if (*player)
+				return (error("Multiple player", line));
+			*player = true;
+		}
+		i++;
+	}
+	return (true);
+}
+
+bool	map_check(t_game *game, char *line, int fd)
+{
+
+	int		player;
+
+	player = false;
+	while (line != NULL)
+	{
+		if (!check_line(game, line, &player))
+			return (free(line), false);
+		free(line);
+		line = get_next_line(fd);
+	}
+	line = NULL;
+	return (true);
+}
+
+int	map_checkheader(t_game *game, char *file)
 {
 	int		fd;
 	char	*line;
@@ -123,19 +196,17 @@ int	map_checkheader(char *file)
 	{
 		if (is_wall(line))
 			break ;
-		if (!checkflags(&flags, line))
+		if (!checkflags(game, &flags, line))
 			break ;
 		free(line);
 		line = get_next_line(fd);
 	}
-	get_next_line(-1);
-	close(fd);
 	if (line == NULL)
-		return (error("Missing map", NULL));
-	free(line);
+		return (close(fd), error("Missing map", NULL));
 	if (flags != -1 && flags != 0b111111)
-		return (error("Missing flags", NULL));
-	return (flags);
+		return (clean_parse(line, fd), error("Missing flags", NULL));
+	flags = map_check(game, line, fd);
+	return (clean_parse(line, fd), flags);
 }
 
 bool	is_cub(char *file)
@@ -153,9 +224,9 @@ bool	is_cub(char *file)
 	return (false);
 }
 
-bool	map_parsing(char *file)
+bool	map_parsing(t_game *game, char *file)
 {
-	if (is_cub(file) && map_checkheader(file) > 0)
+	if (is_cub(file) && map_checkheader(game, file) > 0)
 		return (true);
 	return (false);
 }
@@ -164,8 +235,17 @@ bool	map_parsing(char *file)
 
 int	main(int ac, char **av)
 {
+	t_game	game;
 	if (ac != 2)
 		return (error("Invalid number of arguments", NULL));
-	printf("%d\n", map_parsing(av[1]));
+	game.text = ft_calloc(sizeof(t_texture), 4);
+
+	printf("%d\n", map_parsing(&game, av[1]));
+	for (size_t i = 0; i < 4; i++)
+	{
+		free(game.text[i].path);
+		
+	}
+	free(game.text);
 	return (0);
 }

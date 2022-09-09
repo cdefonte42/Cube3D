@@ -29,7 +29,10 @@ int	ft_exit(t_game *game)
 		while (i < nb_textures)
 		{
 			if (game->text[i].ptr)
+			{
+				free(game->text[i].path);
 				mlx_destroy_image(game->mlx_ptr, game->text[i].ptr);
+			}
 			++i;
 		}
 		free(game->text);

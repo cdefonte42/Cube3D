@@ -91,15 +91,15 @@ typedef enum e_state
 // permet d'exprimer soit une position, soit un vecteur de direction dans
 // un systeme donne. ATTENTION une dir ne peut prendre que des valeurs
 // entre -1 et 1 compris
-typedef struct s_coord
+struct s_coord
 {
 	double	x;
 	double	y;
 	double	z;
-}			t_pos;
+};
 
+typedef struct s_coord	t_pos;
 typedef struct s_coord	t_dir;
-typedef struct s_coord	t_vec;
 
 // type soit vertical soit horizontal wall/line; useless?
 // distance en grid unit entre le player (ou 
@@ -156,7 +156,7 @@ typedef struct s_player
 	endian		: little == 0; big endian == 1;
 NOTE: Peut etre ajouter un char *filename? Ne serait utile que pour les textures
 */
-typedef struct s_img
+struct s_img
 {
 	void	*ptr;
 	int		width;
@@ -165,8 +165,10 @@ typedef struct s_img
 	int		bpp;
 	int		size_line;
 	int		endian;
-}				t_texture;
+	char	*path; 
+};
 typedef struct s_img	t_img;
+typedef struct s_img	t_texture;
 
 typedef struct s_map	// AFFICHAGE DE LA MINIMAP
 {
@@ -197,7 +199,9 @@ typedef struct s_game
 							// joueur. A une taille de fenetre maxi!
 	t_texture	*text;		// tableau d'au moins 4 texture (Nord, Sud, Est, Ouest);
 	double		colision;	// distance max en map unit a laquelle le player
-							// peut s'approcher des murs
+							// peut s'approcher des murss
+	int			floor_color;
+	int			ceiling_color;
 }				t_game;
 
 # if defined(__APPLE__) && defined(__MACH__)
