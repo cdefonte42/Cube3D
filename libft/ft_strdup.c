@@ -33,3 +33,25 @@ char	*ft_strdup(const char *s)
 	cpy[i] = '\0';
 	return (cpy);
 }
+
+char	*ft_strndup(const char *s1, size_t n)
+{
+	size_t	size;
+	size_t	i;
+	char	*s2;
+
+	if (s1 == NULL)
+		return (NULL);
+	size = ft_strlen(s1);
+	s2 = ft_calloc(size, sizeof(char) + 1);
+	if (!s2)
+		return (NULL);
+	i = 0;
+	while (i < n && i < size)
+	{
+		s2[i] = s1[i];
+		i++;
+	}
+	s2[i] = '\0';
+	return (s2);
+}
