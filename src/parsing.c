@@ -144,7 +144,20 @@ static void	clean_parse(char *line, int fd)
 	close(fd);
 }
 
-static bool	check_line(t_game *game, char *line, int *player)
+static void set_direction(t_dir *dir, char c)
+{
+	
+	if (c == 'N')
+		ft_memcpy(dir, &(t_dir){.x = 0.f, .y = -1.f, .z = 0.f}, sizeof(t_dir)); // TODO: Cyrielle: check if this is correct
+	else if (c == 'S')
+		ft_memcpy(dir, &(t_dir){.x = 0.f, .y = 1.f, .z = 0.f}, sizeof(t_dir));
+	else if (c == 'W')
+		ft_memcpy(dir, &(t_dir){.x = -1.f, .y = 0.f, .z = 0.f}, sizeof(t_dir));
+	else if (c == 'E')
+		ft_memcpy(dir, &(t_dir){.x = 1.f, .y = 0.f, .z = 0.f}, sizeof(t_dir));
+}
+
+static bool	check_line(t_game *game, int y, char *line, int *player)
 {
 	int	i;
 
@@ -160,6 +173,9 @@ static bool	check_line(t_game *game, char *line, int *player)
 			if (*player)
 				return (error("Multiple player", line));
 			*player = true;
+			set_direction(&(game->player.dir), line[i]);
+			game->player.pos.y = y;
+			game->player.pos.x = i;
 		}
 		i++;
 	}
@@ -169,19 +185,20 @@ static bool	check_line(t_game *game, char *line, int *player)
 bool	map_checkcharacters(t_game *game, char *line, int fd)
 {
 	int		player;
+	int		y;
 
 	player = false;
 	game->map.height++;
 	while (line != NULL)
 	{
-
 		game->map.height++;
 		if (game->map.width < ft_strlen(line))
 			game->map.width = ft_strlen(line);
-		if (!check_line(game, line, &player))
+		if (!check_line(game, y, line, &player))
 			return (free(line), false);
 		free(line);
 		line = get_next_line(fd);
+		y++;
 	}
 	line = NULL;
 	return (true);
@@ -290,14 +307,40 @@ bool	map_fill(t_game *game, char *file)
 	return (true);
 }
 
-static	bool	isspace_null(char c)
+static bool	isspace_null(char c)
 {
 	if (c == '\0' || ft_isspace(c))
 		return (true);
 	return (false);
 }
+static bool	isplayer(char c)
+{
+	if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
+		return (true);
+	return (false);
+} 
 
-bool map_check(t_game *game) // TODO: Missing check in diagonal
+bool	check_diagonal(t_game *game, int y, int x)
+{
+	if (isspace_null(game->map.tab[y - 1][x - 1])
+		|| isspace_null(game->map.tab[y - 1][x + 1])
+		|| isspace_null(game->map.tab[y + 1][x - 1])
+		|| isspace_null(game->map.tab[y + 1][x + 1]))
+		return (true);
+	return (false);
+}
+
+bool	check_side(t_game *game, int y, int x)
+{
+	if (isspace_null(game->map.tab[y - 1][x])
+		|| isspace_null(game->map.tab[y + 1][x])
+		|| isspace_null(game->map.tab[y][x - 1])
+		|| isspace_null(game->map.tab[y][x + 1]))
+		return (true);
+	return (false);
+}
+
+bool map_check(t_game *game) // TODO: Removing debug info, Dont work with \t
 {
 	int	i;
 	int	j;
@@ -308,16 +351,17 @@ bool map_check(t_game *game) // TODO: Missing check in diagonal
 		j = 0;
 		while (j < game->map.width)
 		{
-			if (game->map.tab[i][j] == '0') //  || game->map.tab[i][j] == '2' pour bonus ?
+			if (game->map.tab[i][j] == '0' || isplayer(game->map.tab[i][j])) //  || game->map.tab[i][j] == '2' pour bonus ?
 			{
 				if (i == 0 || i == game->map.height - 1 || j == 0 || \
 				j == game->map.width - 1)
-					return (error("Map not closed", NULL), false);
-				if (isspace_null(game->map.tab[i - 1][j]) || \
-				isspace_null(game->map.tab[i + 1][j]) || \
-				isspace_null(game->map.tab[i][j - 1]) || \
-				isspace_null(game->map.tab[i][j + 1]))
-					return (error("Map not closed", NULL), false);
+					return (error("Map not closed", game->map.tab[i]), \
+					printf("%d\n%02d %s\n", j, i, game->map.tab[i], false));
+				if (check_diagonal(game, i, j) || check_side(game, i, j))
+					return (error("Map not closed", game->map.tab[i]), \
+					printf("%d\n%02d %s\n%02d %s\n%02d %s\n", j, i-1, \
+					game->map.tab[i-1], i, game->map.tab[i], \
+					i+1,game->map.tab[i+1]), false);
 			}
 			j++;
 		}
@@ -352,6 +396,8 @@ int	main(int ac, char **av)
 		return (error("Invalid number of arguments", NULL));
 	game.text = ft_calloc(sizeof(t_texture), 4);
 	printf("%d\n", map_parsing(&game, av[1]));
+
+	printf("Player spawn at x %f y %f\nLooking at x %f y %f\n", game.player.pos.x, game.player.pos.y, game.player.dir.x, game.player.dir.y);
 	for (size_t i = 0; i < 4; i++)
 	{
 		printf("path: %s.\n", game.text[i].path);
