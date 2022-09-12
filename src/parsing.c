@@ -41,6 +41,8 @@ static bool	error(char *reason, char *suffix)
 
 static bool	is_wall(char *line)
 {
+	if (line == NULL)
+		return (false);
 	return (*line == '1' || (*line != '\n' && ft_isspace(*line)));
 }
 
@@ -188,24 +190,41 @@ int	map_checkheader(t_game *game, char *file)
 
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
-		return (error("Invalid file", file));
+		return (error("Invalid file", file), false);
 	flags = 0;
 	line = get_next_line(fd);
 	while (line != NULL)
 	{
-		if (is_wall(line))
-			break ;
-		if (!checkflags(game, &flags, line))
+		if (is_wall(line) || !checkflags(game, &flags, line))
 			break ;
 		free(line);
 		line = get_next_line(fd);
 	}
 	if (line == NULL)
-		return (close(fd), error("Missing map", NULL));
-	if (flags != -1 && flags != 0b111111)
-		return (clean_parse(line, fd), error("Missing flags", NULL));
+		return (close(fd), error("Missing map", NULL), false);
+	if (flags == -1)
+		return (clean_parse(line, fd), false);
+	if (flags != 0 && flags != -1 && flags != 0b111111)
+		return (clean_parse(line, fd), error("Missing flags", NULL), false);
 	flags = map_check(game, line, fd);
 	return (clean_parse(line, fd), flags);
+}
+
+static bool	set_default_path(t_game *game)
+{
+	game->text[nwall].path = ft_strdup("./textures/north.xpm");
+	if (game->text[nwall].path == NULL)
+		return (error("malloc failed", NULL));
+	game->text[swall].path = ft_strdup("./textures/south.xpm");
+	if (game->text[swall].path == NULL)
+		return (error("malloc failed", NULL));
+	game->text[wwall].path = ft_strdup("./textures/west.xpm");
+	if (game->text[wwall].path == NULL)
+		return (error("malloc failed", NULL));
+	game->text[ewall].path = ft_strdup("./textures/east.xpm");
+	if (game->text[ewall].path == NULL)
+		return (error("malloc failed", NULL));
+	return (true);
 }
 
 bool	is_cub(char *file)
@@ -223,11 +242,14 @@ bool	is_cub(char *file)
 	return (false);
 }
 
+
 bool	map_parsing(t_game *game, char *file)
 {
-	if (is_cub(file) && map_checkheader(game, file) > 0)
-		return (true);
-	return (false);
+	if (is_cub(file) && map_checkheader(game, file) == false)
+		return (false);
+	if (game->text[nwall].path == NULL && !set_default_path(game))
+		return (false);
+	return (true);
 }
 
 #include <stdio.h>
@@ -236,6 +258,7 @@ int	main(int ac, char **av)
 {
 	t_game	game;
 
+	game = (t_game){0};
 	if (ac != 2)
 		return (error("Invalid number of arguments", NULL));
 	game.text = ft_calloc(sizeof(t_texture), 4);
