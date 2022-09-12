@@ -166,13 +166,18 @@ static bool	check_line(t_game *game, char *line, int *player)
 	return (true);
 }
 
-bool	map_check(t_game *game, char *line, int fd)
+bool	map_checkcharacters(t_game *game, char *line, int fd)
 {
 	int		player;
 
 	player = false;
+	game->map.height++;
 	while (line != NULL)
 	{
+
+		game->map.height++;
+		if (game->map.width < ft_strlen(line))
+			game->map.width = ft_strlen(line);
 		if (!check_line(game, line, &player))
 			return (free(line), false);
 		free(line);
@@ -206,7 +211,7 @@ int	map_checkheader(t_game *game, char *file)
 		return (clean_parse(line, fd), false);
 	if (flags != 0 && flags != -1 && flags != 0b111111)
 		return (clean_parse(line, fd), error("Missing flags", NULL), false);
-	flags = map_check(game, line, fd);
+	flags = map_checkcharacters(game, line, fd);
 	return (clean_parse(line, fd), flags);
 }
 
@@ -242,12 +247,66 @@ bool	is_cub(char *file)
 	return (false);
 }
 
+bool	map_init(t_game *game)
+{
+	int	i;
+
+	game->map.tab = ft_calloc(game->map.height, sizeof(char *));
+	if (!game->map.tab)
+		return (error("malloc failed", NULL));
+	i = 0;
+	while (i < game->map.height)
+	{
+		game->map.tab[i] = ft_calloc(game->map.width, sizeof(char));
+		if (!game->map.tab[i])
+			return (ft_free_map(game->map.tab), error("malloc failed", NULL));
+		i++;
+	}
+	return (true);
+}
+
+bool	map_fill(t_game *game, char *file)
+{
+	int		fd;
+	char	*line;
+	int		i;
+
+	fd = open(file, O_RDONLY);
+	if (fd < 0)
+		return (error("Invalid file", file), false);
+	line = get_next_line(fd);
+	i = 0;
+	while (line != NULL)
+	{
+		if (is_wall(line))
+		{
+			ft_strlcpy(game->map.tab[i], line, ft_strlen(line));
+			printf("%s]%zu[%s", game->map.tab[i], ft_strlen(line), line);
+			i++;	
+		}
+		free(line);
+		line = get_next_line(fd);
+	}
+	close(fd);
+	return (true);
+}
+
+bool map_check(t_game * game)
+{
+	return true;
+}
 
 bool	map_parsing(t_game *game, char *file)
 {
 	if (is_cub(file) && map_checkheader(game, file) == false)
 		return (false);
 	if (game->text[nwall].path == NULL && !set_default_path(game))
+		return (false);
+	if (!map_init(game))
+		return (false);
+	if (!map_fill(game, file))
+		return (false);
+	if (!map_check(game))
 		return (false);
 	return (true);
 }
@@ -269,5 +328,6 @@ int	main(int ac, char **av)
 		free(game.text[i].path);
 	}
 	free(game.text);
+	ft_free_map_i(game.map.tab, game.map.height);
 	return (0);
 }

@@ -23,3 +23,21 @@ void	ft_free_map(char **map)
 	if (map)
 		free(map);
 }
+
+void	ft_free_map_i(char **map, int height)
+{
+	int	i;
+
+	i = 0;
+	if (map != NULL)
+	{
+		while (i < height)
+		{
+			free(map[i]);
+			map[i] = NULL;
+			i++;
+		}
+		free(map);
+		map = NULL;
+	}
+}

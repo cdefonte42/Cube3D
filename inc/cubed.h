@@ -253,6 +253,8 @@ int		init_map(t_game *game, int argc, char **argv);
 
 /*_____ UTILS __________*/
 void	ft_free_map(char **map);
+void	ft_free_map_i(char **map, int height);
+
 
 /*______ IMG UTILS _______ */
 void	erase_img(t_img *img);
