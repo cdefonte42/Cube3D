@@ -144,9 +144,8 @@ static void	clean_parse(char *line, int fd)
 	close(fd);
 }
 
-static void set_direction(t_dir *dir, char c)
+static void	set_direction(t_dir *dir, char c)
 {
-	
 	if (c == 'N')
 		ft_memcpy(dir, &(t_dir){.x = 0.f, .y = -1.f, .z = 0.f}, sizeof(t_dir)); // TODO: Cyrielle: check if this is correct
 	else if (c == 'S')
@@ -298,7 +297,7 @@ bool	map_fill(t_game *game, char *file)
 		if (is_wall(line))
 		{
 			ft_strlcpy(game->map.tab[i], line, ft_strlen(line));
-			i++;	
+			i++;
 		}
 		free(line);
 		line = get_next_line(fd);
@@ -313,12 +312,13 @@ static bool	isspace_null(char c)
 		return (true);
 	return (false);
 }
+
 static bool	isplayer(char c)
 {
 	if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
 		return (true);
 	return (false);
-} 
+}
 
 bool	check_diagonal(t_game *game, int y, int x)
 {
@@ -340,7 +340,7 @@ bool	check_side(t_game *game, int y, int x)
 	return (false);
 }
 
-bool map_check(t_game *game) // TODO: Removing debug info, Dont work with \t
+bool	map_check(t_game *game) // TODO: Removing debug info, Dont work with \t
 {
 	int	i;
 	int	j;
