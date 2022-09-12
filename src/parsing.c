@@ -281,7 +281,6 @@ bool	map_fill(t_game *game, char *file)
 		if (is_wall(line))
 		{
 			ft_strlcpy(game->map.tab[i], line, ft_strlen(line));
-			printf("%s]%zu[%s", game->map.tab[i], ft_strlen(line), line);
 			i++;	
 		}
 		free(line);
@@ -291,9 +290,40 @@ bool	map_fill(t_game *game, char *file)
 	return (true);
 }
 
-bool map_check(t_game * game)
+static	bool	isspace_null(char c)
 {
-	return true;
+	if (c == '\0' || ft_isspace(c))
+		return (true);
+	return (false);
+}
+
+bool map_check(t_game *game)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < game->map.height)
+	{
+		j = 0;
+		while (j < game->map.width)
+		{
+			if (game->map.tab[i][j] == '0') //  || game->map.tab[i][j] == '2' pour bonus ?
+			{
+				if (i == 0 || i == game->map.height - 1 || j == 0 || \
+				j == game->map.width - 1)
+					return (error("Map not closed", NULL), false);
+				if (isspace_null(game->map.tab[i - 1][j]) || \
+				isspace_null(game->map.tab[i + 1][j]) || \
+				isspace_null(game->map.tab[i][j - 1]) || \
+				isspace_null(game->map.tab[i][j + 1]))
+					return (error("Map not closed", NULL), false);
+			}
+			j++;
+		}
+		i++;
+	}
+	return (true);
 }
 
 bool	map_parsing(t_game *game, char *file)
