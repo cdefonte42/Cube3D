@@ -297,7 +297,7 @@ static	bool	isspace_null(char c)
 	return (false);
 }
 
-bool map_check(t_game *game)
+bool map_check(t_game *game) // TODO: Missing check in diagonal
 {
 	int	i;
 	int	j;
