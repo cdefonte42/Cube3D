@@ -142,42 +142,56 @@ static void	clean_parse(char *line, int fd)
 {
 	get_next_line(-1);
 	close(fd);
+	if (line != NULL)
+	{
+		free(line);
+		line = NULL;
+	}
 }
 
-static void	set_direction(t_dir *dir, char c)
+static void	set_player_pos(t_player *p, char c, int x, int y)
 {
+	ft_memcpy(&p.pos, &(t_pos){.x = i, .y = y, 0}, sizeof(t_pos));
 	if (c == 'N')
-		ft_memcpy(dir, &(t_dir){.x = 0.f, .y = -1.f, .z = 0.f}, sizeof(t_dir)); // TODO: Cyrielle: check if this is correct
+		ft_memcpy(&p.dir, &(t_dir){.x = 0.f, .y = -1.f, .z = 0.f}, \
+				sizeof(t_dir)); // TODO: Cyrielle: check if this is correct
 	else if (c == 'S')
-		ft_memcpy(dir, &(t_dir){.x = 0.f, .y = 1.f, .z = 0.f}, sizeof(t_dir));
+		ft_memcpy(&p.dir, &(t_dir){.x = 0.f, .y = 1.f, .z = 0.f}, \
+				sizeof(t_dir));
 	else if (c == 'W')
-		ft_memcpy(dir, &(t_dir){.x = -1.f, .y = 0.f, .z = 0.f}, sizeof(t_dir));
+		ft_memcpy(&p.dir, &(t_dir){.x = -1.f, .y = 0.f, .z = 0.f}, \
+				sizeof(t_dir));
 	else if (c == 'E')
-		ft_memcpy(dir, &(t_dir){.x = 1.f, .y = 0.f, .z = 0.f}, sizeof(t_dir));
+		ft_memcpy(&p.dir, &(t_dir){.x = 1.f, .y = 0.f, .z = 0.f}, \
+				sizeof(t_dir));
 }
 
 static bool	check_line(t_game *game, int y, char *line, int *player)
 {
-	int	i;
+	int		i;
+	bool	valid_line;
 
 	i = 0;
+	valid_line = false;
 	if (line == NULL)
 		return (true);
 	while (line[i] != '\0')
 	{
 		if (!ft_isspace(line[i]) && !ft_strchr("01NSEW", line[i]))
 			return (error("Invalid character map", line));
+		if (ft_strchr("01NSEW", line[i]))
+			valid_line = true;
 		if (ft_strchr("NSEW", line[i]))
 		{
 			if (*player)
 				return (error("Multiple player", line));
 			*player = true;
-			set_direction(&(game->player.dir), line[i]);
-			game->player.pos.y = y;
-			game->player.pos.x = i;
+			set_player_pos(&game->player, line[i], i, y);
 		}
 		i++;
 	}
+	if (!valid_line)
+		return (error("Empty line in map", NULL));
 	return (true);
 }
 
@@ -195,12 +209,15 @@ bool	map_checkcharacters(t_game *game, char *line, int fd)
 		if (game->map.width < (int)ft_strlen(line))
 			game->map.width = ft_strlen(line);
 		if (!check_line(game, y, line, &player))
-			return (free(line), false);
+			return (clean_parse(line, fd), false);
 		free(line);
 		line = get_next_line(fd);
 		y++;
 	}
 	line = NULL;
+	if (!player)
+		return (error("Missing player", NULL));
+	close(fd);
 	return (true);
 }
 
@@ -227,13 +244,14 @@ int	map_checkheader(t_game *game, char *file)
 	if (flags == -1)
 		return (clean_parse(line, fd), false);
 	if (flags != 0 && flags != -1 && flags != 0b111111)
-		return (clean_parse(line, fd), error("Missing flags", NULL), false);
-	flags = map_checkcharacters(game, line, fd);
-	return (clean_parse(line, fd), flags);
+		return (clean_parse(line, fd), error("Missing flags", NULL));
+	return (map_checkcharacters(game, line, fd));
 }
 
-static bool	set_default_path(t_game *game)
+static bool	set_default_flags(t_game *game)
 {
+	game->ceiling_color = 0x432F1A;
+	game->floor_color = 0x432F1A;
 	game->text[nwall].path = ft_strdup("./textures/north.xpm");
 	if (game->text[nwall].path == NULL)
 		return (error("malloc failed", NULL));
@@ -276,7 +294,8 @@ bool	map_init(t_game *game)
 	{
 		game->map.tab[i] = ft_calloc(game->map.width, sizeof(char));
 		if (!game->map.tab[i])
-			return (ft_free_map(game->map.tab), error("malloc failed", NULL));
+			return (ft_free_map(game->map.tab), \
+					error("malloc failed", NULL));
 		i++;
 	}
 	return (true);
@@ -375,7 +394,7 @@ bool	map_parsing(t_game *game, char *file)
 {
 	if (is_cub(file) && map_checkheader(game, file) == false)
 		return (false);
-	if (game->text[nwall].path == NULL && !set_default_path(game))
+	if (game->text[nwall].path == NULL && !set_default_flags(game))
 		return (false);
 	if (!map_init(game))
 		return (false);
@@ -401,6 +420,7 @@ int	main(int ac, char **av)
 
 	printf("Player spawn at x %f y %f \n", game.player.pos.x, game.player.pos.y);
 	printf("Looking at x %f y %f \n", game.player.dir.x, game.player.dir.y);
+	printf("Floor color 0x%X\nCeiling color 0x%X\n", game.floor_color, game.ceiling_color);
 	for (size_t i = 0; i < 4; i++)
 	{
 		printf("path: %s.\n", game.text[i].path);
