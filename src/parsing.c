@@ -151,18 +151,18 @@ static void	clean_parse(char *line, int fd)
 
 static void	set_player_pos(t_player *p, char c, int x, int y)
 {
-	ft_memcpy(&p.pos, &(t_pos){.x = i, .y = y, 0}, sizeof(t_pos));
+	ft_memcpy(&p->pos, &(t_pos){.x = x, .y = y, 0}, sizeof(t_pos));
 	if (c == 'N')
-		ft_memcpy(&p.dir, &(t_dir){.x = 0.f, .y = -1.f, .z = 0.f}, \
+		ft_memcpy(&p->dir, &(t_dir){.x = 0.f, .y = -1.f, .z = 0.f}, \
 				sizeof(t_dir)); // TODO: Cyrielle: check if this is correct
 	else if (c == 'S')
-		ft_memcpy(&p.dir, &(t_dir){.x = 0.f, .y = 1.f, .z = 0.f}, \
+		ft_memcpy(&p->dir, &(t_dir){.x = 0.f, .y = 1.f, .z = 0.f}, \
 				sizeof(t_dir));
 	else if (c == 'W')
-		ft_memcpy(&p.dir, &(t_dir){.x = -1.f, .y = 0.f, .z = 0.f}, \
+		ft_memcpy(&p->dir, &(t_dir){.x = -1.f, .y = 0.f, .z = 0.f}, \
 				sizeof(t_dir));
 	else if (c == 'E')
-		ft_memcpy(&p.dir, &(t_dir){.x = 1.f, .y = 0.f, .z = 0.f}, \
+		ft_memcpy(&p->dir, &(t_dir){.x = 1.f, .y = 0.f, .z = 0.f}, \
 				sizeof(t_dir));
 }
 
