@@ -188,10 +188,11 @@ bool	map_checkcharacters(t_game *game, char *line, int fd)
 
 	player = false;
 	game->map.height++;
+	y = 0;
 	while (line != NULL)
 	{
 		game->map.height++;
-		if (game->map.width < ft_strlen(line))
+		if (game->map.width < (int)ft_strlen(line))
 			game->map.width = ft_strlen(line);
 		if (!check_line(game, y, line, &player))
 			return (free(line), false);
@@ -356,7 +357,7 @@ bool	map_check(t_game *game) // TODO: Removing debug info, Dont work with \t
 				if (i == 0 || i == game->map.height - 1 || j == 0 || \
 				j == game->map.width - 1)
 					return (error("Map not closed", game->map.tab[i]), \
-					printf("%d\n%02d %s\n", j, i, game->map.tab[i], false));
+					printf("%d\n%02d %s\n", j, i, game->map.tab[i]), false);
 				if (check_diagonal(game, i, j) || check_side(game, i, j))
 					return (error("Map not closed", game->map.tab[i]), \
 					printf("%d\n%02d %s\n%02d %s\n%02d %s\n", j, i-1, \
@@ -392,12 +393,14 @@ int	main(int ac, char **av)
 	t_game	game;
 
 	game = (t_game){0};
+	//ft_bzero(&game, sizeof(t_game));
 	if (ac != 2)
 		return (error("Invalid number of arguments", NULL));
 	game.text = ft_calloc(sizeof(t_texture), 4);
 	printf("%d\n", map_parsing(&game, av[1]));
 
-	printf("Player spawn at x %f y %f\nLooking at x %f y %f\n", game.player.pos.x, game.player.pos.y, game.player.dir.x, game.player.dir.y);
+	printf("Player spawn at x %f y %f \n", game.player.pos.x, game.player.pos.y);
+	printf("Looking at x %f y %f \n", game.player.dir.x, game.player.dir.y);
 	for (size_t i = 0; i < 4; i++)
 	{
 		printf("path: %s.\n", game.text[i].path);
