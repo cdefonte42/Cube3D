@@ -6,7 +6,7 @@
 #    By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/18 12:15:17 by cdefonte          #+#    #+#              #
-#    Updated: 2022/09/08 14:36:29 by mbraets          ###   ########.fr        #
+#    Updated: 2022/09/15 17:46:07 by mbraets          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,8 +26,8 @@ endif
 LIBFT		=	$(LIBFT_DIR)libft.a
 
 CC			=	cc
-CFLAGS		=	-Werror -Wall -Wextra -g3 -MMD -MP -fsanitize=address
-#CFLAGS		=	-Werror -Wall -Wextra -g3 -MMD -MP
+# CFLAGS		=	-Werror -Wall -Wextra -g3 -MMD -MP -fsanitize=address
+CFLAGS		=	-Werror -Wall -Wextra -g3 -MMD -MP
 ifeq ($(shell uname), Linux)
 CFLAGS		+=	-DLINUX
 endif
@@ -35,9 +35,11 @@ LIB_FLAGS	=	-L$(LIBFT_DIR) -lft $(MLXFLAGS) -lm
 INCLUDES	=	-I$(LIBFT_DIR) -I$(INC_DIR) -I$(LIBX_DIR)
 
 SRCS		=	$(addprefix $(SRC_DIR),\
-					main.c parsing.c parsing2.c utils.c texture.c hit_points.c\
+					main.c utils.c texture.c hit_points.c\
 					mlx_management.c raycasting.c map_draw.c vectors_utils.c\
-					img_utils.c colision.c raytracing.c init.c game_display.c)
+					img_utils.c colision.c raytracing.c init.c game_display.c\
+					parsing.c parsing_map.c parsing_map_check.c parsing_flags.c\
+					parsing_utils.c)
 OBJS		=	$(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRCS))
 DEPS		=	$(OBJS:.o=.d)
 

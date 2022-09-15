@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cubed.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/08 17:39:00 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/15 17:42:36 by mbraets          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -304,5 +304,9 @@ void	draw_sized_ray(t_game *game, t_ray ray, int length, int color);
 
 /* ____ TEXTURE (tests)______*/
 void	draw_buff_texture(t_game *game, int col_screen, t_interval interval, double hpwall);
+
+/* ____ PARSING ______*/
+bool	error(char *, char *);
+bool	map_parsing(t_game *, char *);
 
 #endif

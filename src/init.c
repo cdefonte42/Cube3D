@@ -3,17 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 14:13:54 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/08 13:08:26 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/15 17:50:38 by mbraets          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cubed.h"
-
-bool	error(char *, char *);
-bool	map_parsing(t_game *, char *);
 
 int	init_minimap(t_game *game)
 {
@@ -101,7 +98,7 @@ int	init_textures(t_game *game)
 		// return (-1);
 	
 	game->text[wwall].ptr = mlx_xpm_file_to_image(game->mlx_ptr, \
-"img/tech_wwall_64.xpm", &game->text[wwall].width, &game->text[wwall].height);
+game->text[wwall].path, &game->text[wwall].width, &game->text[wwall].height);
 	if (!game->text[wwall].ptr)
 		return (printf("Error loading wall img\n"), -1);
 	game->text[wwall].data = (int *)mlx_get_data_addr(game->text[wwall].ptr, \
@@ -109,7 +106,7 @@ int	init_textures(t_game *game)
 	game->text[wwall].size_line /= 4;
 
 	game->text[ewall].ptr = mlx_xpm_file_to_image(game->mlx_ptr, \
-"img/tech_ewall_64.xpm", &game->text[ewall].width, &game->text[ewall].height);
+game->text[ewall].path, &game->text[ewall].width, &game->text[ewall].height);
 	if (!game->text[ewall].ptr)
 		return (printf("Error loading wall img\n"), -1);
 	game->text[ewall].data = (int *)mlx_get_data_addr(game->text[ewall].ptr, \
@@ -117,7 +114,7 @@ int	init_textures(t_game *game)
 	game->text[ewall].size_line /= 4;
 
 	game->text[nwall].ptr = mlx_xpm_file_to_image(game->mlx_ptr, \
-"img/tech_nwall_64.xpm", &game->text[nwall].width, &game->text[nwall].height);
+game->text[nwall].path, &game->text[nwall].width, &game->text[nwall].height);
 	if (!game->text[nwall].ptr)
 		return (printf("Error loading wall img\n"), -1);
 	game->text[nwall].data = (int *)mlx_get_data_addr(game->text[nwall].ptr, \
@@ -125,7 +122,7 @@ int	init_textures(t_game *game)
 	game->text[nwall].size_line /= 4;
 
 	game->text[swall].ptr = mlx_xpm_file_to_image(game->mlx_ptr, \
-"img/tech_swall_64.xpm", &game->text[swall].width, &game->text[swall].height);
+game->text[swall].path, &game->text[swall].width, &game->text[swall].height);
 	if (!game->text[swall].ptr)
 		return (printf("Error loading wall img\n"), -1);
 	game->text[swall].data = (int *)mlx_get_data_addr(game->text[swall].ptr, \
