@@ -42,7 +42,7 @@ int	ft_exit(t_game *game)
 	if (game->map.grid.ptr)
 		mlx_destroy_image(game->mlx_ptr, game->map.grid.ptr);
 	if (game->map.tab)
-		ft_free_map(game->map.tab);
+		ft_free_map_i(game->map.tab, game->map.height);
 	if (game->win)
 		mlx_destroy_window(game->mlx_ptr, game->win);
 	if (game->mlx_ptr)

@@ -26,7 +26,7 @@ enum e_mapflags
 	C	= 0b100000,
 };
 
-static bool	error(char *reason, char *suffix)
+bool	error(char *reason, char *suffix)
 {
 	ft_putstr_fd("Error\n", 2);
 	ft_putstr_fd(reason, 2);
@@ -394,7 +394,8 @@ bool	map_parsing(t_game *game, char *file)
 {
 	if (is_cub(file) && map_checkheader(game, file) == false)
 		return (false);
-	if (game->text[nwall].path == NULL && !set_default_flags(game))
+	if (game->text != NULL && game->text[nwall].path == NULL \
+		&& !set_default_flags(game))
 		return (false);
 	if (!map_init(game))
 		return (false);
@@ -405,28 +406,28 @@ bool	map_parsing(t_game *game, char *file)
 	return (true);
 }
 
-#include <stdio.h>
+// #include <stdio.h>
 
-int	main(int ac, char **av)
-{
-	t_game	game;
+// int	main(int ac, char **av)
+// {
+// 	t_game	game;
 
-	game = (t_game){0};
-	//ft_bzero(&game, sizeof(t_game));
-	if (ac != 2)
-		return (error("Invalid number of arguments", NULL));
-	game.text = ft_calloc(sizeof(t_texture), 4);
-	printf("%d\n", map_parsing(&game, av[1]));
+// 	game = (t_game){0};
+// 	//ft_bzero(&game, sizeof(t_game));
+// 	if (ac != 2)
+// 		return (error("Invalid number of arguments", NULL));
+// 	game.text = ft_calloc(sizeof(t_texture), 4);
+// 	printf("%d\n", map_parsing(&game, av[1]));
 
-	printf("Player spawn at x %f y %f \n", game.player.pos.x, game.player.pos.y);
-	printf("Looking at x %f y %f \n", game.player.dir.x, game.player.dir.y);
-	printf("Floor color 0x%X\nCeiling color 0x%X\n", game.floor_color, game.ceiling_color);
-	for (size_t i = 0; i < 4; i++)
-	{
-		printf("path: %s.\n", game.text[i].path);
-		free(game.text[i].path);
-	}
-	free(game.text);
-	ft_free_map_i(game.map.tab, game.map.height);
-	return (0);
-}
+// 	printf("Player spawn at x %f y %f \n", game.player.pos.x, game.player.pos.y);
+// 	printf("Looking at x %f y %f \n", game.player.dir.x, game.player.dir.y);
+// 	printf("Floor color 0x%X\nCeiling color 0x%X\n", game.floor_color, game.ceiling_color);
+// 	for (size_t i = 0; i < 4; i++)
+// 	{
+// 		printf("path: %s.\n", game.text[i].path);
+// 		free(game.text[i].path);
+// 	}
+// 	free(game.text);
+// 	ft_free_map_i(game.map.tab, game.map.height);
+// 	return (0);
+// }

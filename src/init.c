@@ -12,6 +12,9 @@
 
 #include "cubed.h"
 
+bool	error(char *, char *);
+bool	map_parsing(t_game *, char *);
+
 int	init_minimap(t_game *game)
 {
 	if (game->map.img.height > game->height * 0.25 || game->map.img.width > game->width * 0.25)
@@ -35,9 +38,14 @@ int	init_map(t_game *game, int argc, char **argv)
 	int		nb_pixelX;
 	int		nb_pixelY;
 
-	game->map.tab = ft_clean_map(argc, argv); // A PROTEGER
-	game->map.width = ft_strlen(game->map.tab[0]);
-	game->map.height = ft_tabtablen(game->map.tab);
+	if (argc != 2)
+		return (error("Invalid number of arguments", NULL), -1);
+	
+	game->text = ft_calloc(sizeof(t_texture), 4);
+	map_parsing(game, argv[1]);
+	// game->map.tab = ft_clean_map(argc, argv); // A PROTEGER
+	// game->map.width = ft_strlen(game->map.tab[0]);
+	// game->map.height = ft_tabtablen(game->map.tab);
 	game->map.state = off;
 	game->map.rcube_size = 16;
 	game->map.ratio = (double)game->map.rcube_size / (double)game->cube_size;
@@ -88,9 +96,9 @@ remplit le int *data tableau contenant les pixels values. */
 // a la structure s_img 
 int	init_textures(t_game *game)
 {
-	game->text = malloc(sizeof(t_texture) * nb_textures);
-	if (!game->text)
-		return (-1);
+	// game->text = malloc(sizeof(t_texture) * nb_textures);
+	// if (!game->text)
+		// return (-1);
 	
 	game->text[wwall].ptr = mlx_xpm_file_to_image(game->mlx_ptr, \
 "img/tech_wwall_64.xpm", &game->text[wwall].width, &game->text[wwall].height);

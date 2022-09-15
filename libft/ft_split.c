@@ -16,7 +16,7 @@
 //seprarent 's' a l'aide du caractere 'c'. 
 //Le tableau doit etre termine par NULL.
 
-static char	*ft_strndup(char const *s, size_t size)
+static char	*ft_strndup_s(char const *s, size_t size)
 {
 	char	*ptr;
 	int		i;
@@ -83,7 +83,7 @@ static char	**lines(char const *s, char c, char **split)
 		j = 0;
 		while (s[i + j] && s[i + j] != c)
 			j++;
-		split[k] = ft_strndup(s + i, j + 1);
+		split[k] = ft_strndup_s(s + i, j + 1);
 		if (!split[k])
 		{
 			ft_fail(split, k);
