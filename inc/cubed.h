@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/29 20:40:38 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/09/08 17:39:00 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,13 @@ typedef enum e_state
 	off,
 	on
 }			t_state;
+
+/* Enum pour une paire de int (int[2]) avec interval inf index 0 etc. */
+typedef struct s_interval
+{
+	int	inf;
+	int	sup;
+}				t_interval;
 
 // z[view]=0 z[map]=0.5 et z[grid] = 1/2 * cube_size
 // permet d'exprimer soit une position, soit un vecteur de direction dans
@@ -267,7 +274,6 @@ void	draw_game(t_game *game);
 
 /* ______ MAP DRAWING ______ */
 void	fill_cube(t_game *game, int y, int x, int color);
-void	draw_grid(t_game *game);
 void	draw_walls(t_game *game);
 void	draw_map(t_game *game);
 void	draw_minimap(t_game *game);
@@ -290,14 +296,13 @@ void	set_wall_hit_point(t_game *game, t_ray *ray);
 t_pos	rotate_vector(struct s_coord from, double angle);
 
 /*__________ RAYTRACING (DEBUG) _______*/
-void	draw_ray_until_first_Hline(t_game *game, t_ray ray, int color);
-void	draw_ray_until_first_Vline(t_game *game, t_ray ray, int color);
+void	draw_ray_until_first_hline(t_game *game, t_ray ray, int color);
+void	draw_ray_until_first_vline(t_game *game, t_ray ray, int color);
 void	draw_ray(t_game *game, t_ray ray, int color);
 void	draw_all_rays(t_game *game);
 void	draw_sized_ray(t_game *game, t_ray ray, int length, int color);
 
 /* ____ TEXTURE (tests)______*/
-void	draw_buff_texture(t_game *game, int col_screen, int it_inf, \
-	int it_sup, double hpwall);
+void	draw_buff_texture(t_game *game, int col_screen, t_interval interval, double hpwall);
 
 #endif

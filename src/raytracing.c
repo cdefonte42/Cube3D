@@ -6,46 +6,56 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 18:33:19 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/29 19:36:42 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/09/08 17:47:18 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cubed.h"
 
-void	draw_ray_until_first_Hline(t_game *game, t_ray ray, int color)
+void	draw_ray_until_first_hline(t_game *game, t_ray ray, int color)
 {
-	int	max_line = game->map.rcube_size * game->map.ratio;
-	int	*pixels = game->map.img.data;
-	int	line = 0;
-	int	col = 0;
+	int		max_line;
+	int		line;
+	int		col;
+	double	dy;
+	int		length;
 
-	double	part_int;
-	double	Dy = game->map.rcube_size- modf(ray.pos[map].y, &part_int) * game->map.rcube_size;
-	int	length = 0;
-	while (fabs(length * ray.dir[grid].y) <= Dy && (line < max_line && line >= 0) && (col < game->map.img.size_line && col >= 0))
+	max_line = game->map.rcube_size * game->map.ratio;
+	line = 0;
+	col = 0;
+	length = 0;
+	dy = game->map.rcube_size
+		- modf(ray.pos[map].y, NULL) * game->map.rcube_size;
+	while (fabs(length * ray.dir[grid].y) <= dy && (line < max_line
+			&& line >= 0) && (col < game->map.img.size_line && col >= 0))
 	{	
-		pixels[line * game->map.img.size_line + col] = color;
+		game->map.img.data[line * game->map.img.size_line + col] = color;
 		++length;
-		col = ray.pos[grid].x * game->map.ratio + length * ray.dir[grid].x; // t: longeur de la ligne;
+		col = ray.pos[grid].x * game->map.ratio + length * ray.dir[grid].x;
 		line = ray.pos[grid].y * game->map.ratio + length * ray.dir[grid].y;
 	}
 }
 
-void	draw_ray_until_first_Vline(t_game *game, t_ray ray, int color)
+void	draw_ray_until_first_vline(t_game *game, t_ray ray, int color)
 {
-	int	max_line = game->map.rcube_size * game->map.height;
-	int	*pixels = game->map.img.data;
-	int	line = 0;
-	int	col = 0;
+	int		max_line;
+	int		line;
+	int		col;
+	double	dx;
+	int		length;
 
-	double	part_int;
-	double	Dx = game->map.rcube_size - modf(ray.pos[map].x, &part_int) * game->map.rcube_size;
-	int	length = 0;
-	while (fabs(length * ray.dir[grid].x) <= Dx && (line < max_line && line >= 0) && (col < game->map.img.size_line && col >= 0))
+	dx = game->map.rcube_size
+		- modf(ray.pos[map].x, NULL) * game->map.rcube_size;
+	max_line = game->map.rcube_size * game->map.height;
+	length = 0;
+	line = 0;
+	col = 0;
+	while (fabs(length * ray.dir[grid].x) <= dx && (line < max_line
+			&& line >= 0) && (col < game->map.img.size_line && col >= 0))
 	{	
-		pixels[line * game->map.img.size_line + col] = color;
+		game->map.img.data[line * game->map.img.size_line + col] = color;
 		++length;
-		col = ray.pos[grid].x * game->map.ratio + length * ray.dir[grid].x; // t: longeur de la ligne;
+		col = ray.pos[grid].x * game->map.ratio + length * ray.dir[grid].x;
 		line = ray.pos[grid].y * game->map.ratio + length * ray.dir[grid].y;
 	}
 }
@@ -56,14 +66,15 @@ void	draw_ray(t_game *game, t_ray ray, int color)
 	int	*pixels;
 	int	line;
 	int	col;
-	int t;
+	int	t;
 
 	max_line = game->map.rcube_size * game->map.height;
 	pixels = game->map.img.data;
 	line = 0;
 	col = 0;
 	t = 0;
-	while ((line < max_line && line >= 0) && (col < game->map.img.size_line && col >= 0))
+	while ((line < max_line && line >= 0)
+		&& (col < game->map.img.size_line && col >= 0))
 	{	
 		pixels[(line * game->map.img.size_line + col)] = color;
 		++t;
@@ -77,9 +88,13 @@ Le ray du milieu (direction view player) est dessine avec un code couleur
 specifique. */
 void	draw_all_rays(t_game *game)
 {
-	t_ray	*rays = game->player.rays;
-	int		index_mid_ray = game->width / 2 - 1;
-	int	i = 0;
+	t_ray	*rays;
+	int		index_mid_ray;
+	int		i;
+
+	index_mid_ray = game->width / 2 - 1;
+	rays = game->player.rays;
+	i = 0;
 	while (i < game->width - 1)
 	{
 		draw_ray(game, rays[i], PURPLE);
@@ -96,14 +111,15 @@ void	draw_sized_ray(t_game *game, t_ray ray, int length, int color)
 	int	*pixels;
 	int	line;
 	int	col;
-	int t;
+	int	t;
 
 	max_line = game->map.rcube_size * game->map.height;
 	pixels = game->map.img.data;
 	line = 0;
 	col = 0;
 	t = 0;
-	while (t < length && (line < max_line && line >= 0) && (col < game->map.img.size_line && col >= 0))
+	while (t < length && (line < max_line && line >= 0)
+		&& (col < game->map.img.size_line && col >= 0))
 	{	
 		pixels[(line * game->map.img.size_line + col)] = color;
 		++t;
