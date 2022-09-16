@@ -74,7 +74,9 @@ static bool	is_cub(char *file)
 
 bool	map_parsing(t_game *game, char *file)
 {
-	if (is_cub(file) && map_checkheader(game, file) == false)
+	if (!is_cub(file))
+		return (false);
+	if (map_checkheader(game, file) == false)
 		return (false);
 	if (game->text != NULL && game->text[nwall].path == NULL \
 		&& !set_default_flags(game))

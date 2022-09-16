@@ -18,7 +18,7 @@ int	main(int argc, char** argv)
 
 	ft_bzero(&game, sizeof(t_game));
 	if (init_game(&game, argc, argv) == -1)
-		return (printf("Error init mlx\n"), ft_exit(&game), 1);
+		return (ft_exit(&game), 1);
 	refresh_game(&game);
 
 	mlx_key_hook(game.win, key_hook, &game);
