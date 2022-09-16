@@ -39,7 +39,8 @@ int	init_map(t_game *game, int argc, char **argv)
 		return (error("Invalid number of arguments", NULL), -1);
 	
 	game->text = ft_calloc(sizeof(t_texture), 4);
-	map_parsing(game, argv[1]);
+	if (!map_parsing(game, argv[1]))
+		return (-1);
 	// game->map.tab = ft_clean_map(argc, argv); // A PROTEGER
 	// game->map.width = ft_strlen(game->map.tab[0]);
 	// game->map.height = ft_tabtablen(game->map.tab);
@@ -72,14 +73,14 @@ int	init_player(t_game *game)
 {
 	game->player.fov = (120.0 * PI) / 180.0;
 	game->player.dist_screen = (game->width / 2) / tan(game->player.fov / 2);
-	game->player.pos.x = 2.5; //exprime en map unit, soit *64 pour pixels
-	game->player.pos.y = 2.5;
+	// game->player.pos.x = 2.5; //exprime en map unit, soit *64 pour pixels
+	// game->player.pos.y = 2.5;
 	game->player.pos.z = 0.0;
-	game->player.dir.x = 0.0; // ATTENTION compris entre -1 et 1!!! EXPRIME EN MAP
-	game->player.dir.y = 1.0;
+	// game->player.dir.x = 0.0; // ATTENTION compris entre -1 et 1!!! EXPRIME EN MAP
+	// game->player.dir.y = 1.0;
 	game->player.dir.z = 0.0;
 	//game->player.angle = atan(game.player.dir.y / game.player.dir.x);
-	game->player.rot_speed = (4.0 * PI) / 180; // se tourne de 4 degres
+	game->player.rot_speed = (4.0 * PI) / 180; // se tou0rne de 4 degres
 	game->player.mv_speed = 8.0 / game->cube_size; // se deplace de 5 pixels en appuyant 1 fois sur touche, sur l'axe du player
 	game->player.rays = malloc(sizeof(t_ray) * game->width);
 	if (!game->player.rays)
