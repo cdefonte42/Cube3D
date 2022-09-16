@@ -46,7 +46,10 @@ bool	map_fill(t_game *game, char *file)
 	{
 		if (is_wall(line))
 		{
-			ft_strlcpy(game->map.tab[i], line, ft_strlen(line));
+			if (line[ft_strlen(line) - 1] != '\n')
+				ft_strlcpy(game->map.tab[i], line, ft_strlen(line) + 1); // +1 is cause problem unles the line is the last??
+			else
+				ft_strlcpy(game->map.tab[i], line, ft_strlen(line));
 			i++;
 		}
 		free(line);

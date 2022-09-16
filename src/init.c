@@ -73,8 +73,9 @@ int	init_player(t_game *game)
 {
 	game->player.fov = (120.0 * PI) / 180.0;
 	game->player.dist_screen = (game->width / 2) / tan(game->player.fov / 2);
-	// game->player.pos.x = 2.5; //exprime en map unit, soit *64 pour pixels
-	// game->player.pos.y = 2.5;
+	// Replace = 2.5 by += .5 to spawn in the middle
+	game->player.pos.x += 0.5; //exprime en map unit, soit *64 pour pixels
+	game->player.pos.y += 0.5;
 	game->player.pos.z = 0.0;
 	// game->player.dir.x = 0.0; // ATTENTION compris entre -1 et 1!!! EXPRIME EN MAP
 	// game->player.dir.y = 1.0;
