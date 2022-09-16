@@ -3,4 +3,5 @@
 *.d
 *.swp
 cubed
-
+cub3d
+parser
