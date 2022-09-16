@@ -24,11 +24,9 @@ int	ft_exit(t_game *game)
 	{
 		while (i < nb_textures)
 		{
+			free(game->text[i].path);
 			if (game->text[i].ptr)
-			{
-				free(game->text[i].path);
 				mlx_destroy_image(game->mlx_ptr, game->text[i].ptr);
-			}
 			++i;
 		}
 		free(game->text);
@@ -41,6 +39,8 @@ int	ft_exit(t_game *game)
 		mlx_destroy_image(game->mlx_ptr, game->map.img.ptr);
 	if (game->map.grid.ptr)
 		mlx_destroy_image(game->mlx_ptr, game->map.grid.ptr);
+	if (game->minimap.ptr)
+		mlx_destroy_image(game->mlx_ptr, game->minimap.ptr);
 	if (game->map.tab)
 		ft_free_map_i(game->map.tab, game->map.height);
 	if (game->win)
@@ -50,7 +50,7 @@ int	ft_exit(t_game *game)
 		mlx_destroy_display(game->mlx_ptr);
 		free(game->mlx_ptr);
 	}
-	exit (0);
+	exit(0);
 }
 
 /* Refresh les differents affichages (game screen, minimap). Implique le

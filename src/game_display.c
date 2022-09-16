@@ -82,9 +82,9 @@ void	draw_game(t_game *game)
 		get_interval(&(interval.inf), &(interval.sup), game->img, hpwall);
 		draw_buff_texture(game, col, interval, hpwall);
 		draw_floor_or_sky(&(game->img.data[col + interval.sup]), \
-		game->img.size_line, img_pixl_max - interval.sup, GREY);
+		game->img.size_line, img_pixl_max - interval.sup, game->floor_color);
 		draw_floor_or_sky(&(game->img.data[col]), game->img.size_line, \
-		interval.inf, DARK_GREY);
+		interval.inf, game->ceiling_color);
 		++col;
 	}
 }

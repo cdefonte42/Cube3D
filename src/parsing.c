@@ -40,8 +40,8 @@ bool	map_checkcharacters(t_game *game, char *line, int fd)
 
 static bool	set_default_flags(t_game *game)
 {
-	game->ceiling_color = 0x432F1A;
-	game->floor_color = 0x432F1A;
+	game->ceiling_color = DARK_GREY;
+	game->floor_color = GREY;
 	game->text[nwall].path = ft_strdup("img/tech_nwall_64.xpm");
 	if (game->text[nwall].path == NULL)
 		return (error("malloc failed", NULL));
