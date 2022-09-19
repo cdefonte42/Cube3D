@@ -12,7 +12,7 @@
 
 #include "cubed.h"
 
-int	main(int argc, char** argv)
+int	main(int argc, char **argv)
 {
 	t_game	game;
 
@@ -20,13 +20,12 @@ int	main(int argc, char** argv)
 	if (init_game(&game, argc, argv) == -1)
 		return (ft_exit(&game), 1);
 	refresh_game(&game);
-
 	mlx_key_hook(game.win, key_hook, &game);
 	mlx_key_hook(game.win, tab_hook, &game);
 //	mlx_key_hook(game.map.win, key_hook, &game);
 	mlx_hook(game.win, 17, 0, &ft_exit, &game);
 //	mlx_hook(game.map.win, 17, 0, &ft_exit, &game);
-	mlx_hook(game.win, 2, 1L<<0, &key_hook, &game);
+	mlx_hook(game.win, 2, 1L << 0, &key_hook, &game);
 //	mlx_hook(game.map.win, 2, 1L<<0, &key_hook, &game);
 	mlx_loop(game.mlx_ptr);
 	ft_exit(&game);

@@ -12,14 +12,11 @@
 
 #include "cubed.h"
 
-/*Appellee quand red cross clicked ou ESC press*/
-int	ft_exit(t_game *game)
+static void	clear_texture(t_game *game)
 {
 	int	i;
 
 	i = 0;
-	if (!game)
-		return (0);
 	if (game->text)
 	{
 		while (i < nb_textures)
@@ -31,6 +28,14 @@ int	ft_exit(t_game *game)
 		}
 		free(game->text);
 	}
+}
+
+/*Appellee quand red cross clicked ou ESC press*/
+int	ft_exit(t_game *game)
+{
+	if (!game)
+		return (0);
+	clear_texture(game);
 	if (game->player.rays)
 		free(game->player.rays);
 	if (game->img.ptr)
