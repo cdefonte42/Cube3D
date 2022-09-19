@@ -89,29 +89,3 @@ bool	map_parsing(t_game *game, char *file)
 		return (false);
 	return (true);
 }
-
-// #include <stdio.h>
-
-// int	main(int ac, char **av)
-// {
-// 	t_game	game;
-
-// 	game = (t_game){0};
-// 	//ft_bzero(&game, sizeof(t_game));
-// 	if (ac != 2)
-// 		return (error("Invalid number of arguments", NULL));
-// 	game.text = ft_calloc(sizeof(t_texture), 4);
-// 	printf("%d\n", map_parsing(&game, av[1]));
-
-// 	printf("Player spawn at x %f y %f \n", game.player.pos.x, game.player.pos.y);
-// 	printf("Looking at x %f y %f \n", game.player.dir.x, game.player.dir.y);
-// 	printf("Floor color 0x%X\nCeiling color 0x%X\n", game.floor_color, game.ceiling_color);
-// 	for (size_t i = 0; i < 4; i++)
-// 	{
-// 		printf("path: %s.\n", game.text[i].path);
-// 		free(game.text[i].path);
-// 	}
-// 	free(game.text);
-// 	ft_free_map_i(game.map.tab, game.map.height);
-// 	return (0);
-// }
