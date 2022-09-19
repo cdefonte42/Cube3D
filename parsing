@@ -1,3 +1,0 @@
-#!/bin/bash
-
-cc -Wall -Werror -Wextra src/parsing.c src/utils.c -o parser libft/libft.a -Iinc -Ilibft -Imlx_linux -g3
