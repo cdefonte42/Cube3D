@@ -6,7 +6,7 @@
 #    By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/18 12:15:17 by cdefonte          #+#    #+#              #
-#    Updated: 2022/09/15 17:46:07 by mbraets          ###   ########.fr        #
+#    Updated: 2022/09/21 18:01:42 by mbraets          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,9 +31,6 @@ ifeq ($(shell uname), Linux)
 	LIBX_DIR	=	mlx_linux/
 	MLXFLAGS	=	-L$(LIBX_DIR) -lmlx -lXext -lX11
 endif
-ifeq ($(BONUS),true)
-	CFLAGS		+=	-DBONUS
-endif
 
 LIB_FLAGS	=	-L$(LIBFT_DIR) -lft $(MLXFLAGS) -lm
 INCLUDES	=	-I$(LIBFT_DIR) -I$(INC_DIR) -I$(LIBX_DIR)
@@ -44,6 +41,13 @@ SRCS		=	$(addprefix $(SRC_DIR),\
 					img_utils.c colision.c raytracing.c init.c game_display.c\
 					parsing.c parsing_map.c parsing_map_check.c parsing_flags.c\
 					parsing_utils.c)
+
+ifeq ($(BONUS),true)
+	CFLAGS		+=	-DBONUS
+	SRCS		+=  $(addprefix $(SRC_DIR),\
+					hook_bonus.c)
+endif
+
 OBJS		=	$(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRCS))
 DEPS		=	$(OBJS:.o=.d)
 
@@ -75,7 +79,7 @@ fclean		:	clean
 re			:	fclean
 				$(MAKE)
 
-bonus		: fclean
+bonus		:
 				$(MAKE) BONUS=true
 
 -include $(DEPS)
