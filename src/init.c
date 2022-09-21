@@ -139,7 +139,7 @@ int	init_game(t_game *game, int argc, char **argv)
 	game->width = SCREEN_W;
 	game->height = SCREEN_H;
 	game->cube_size = CUBE_SIZE;
-	game->colision = 8 / game->cube_size;
+	game->colision = 8 / (double)game->cube_size;
 	game->mlx_ptr = mlx_init();
 	if (!game->mlx_ptr)
 		return (-1);
