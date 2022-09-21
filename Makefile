@@ -16,21 +16,25 @@ SRC_DIR		=	src/
 OBJ_DIR		=	obj/
 INC_DIR		=	inc/
 LIBFT_DIR	=	libft/
+
 LIBX_DIR	=	minilibx_mac/
 MLXFLAGS	=	-L$(LIBX_DIR) -lmlx -framework OpenGL -framework AppKit -lz
-ifeq ($(shell uname), Linux)
-LIBX_DIR	=	mlx_linux/
-MLXFLAGS	=	-L$(LIBX_DIR) -lmlx -lXext -lX11
-endif
 
 LIBFT		=	$(LIBFT_DIR)libft.a
 
 CC			=	cc
 # CFLAGS		=	-Werror -Wall -Wextra -g3 -MMD -MP -fsanitize=address
 CFLAGS		=	-Werror -Wall -Wextra -g3 -MMD -MP
+
 ifeq ($(shell uname), Linux)
-CFLAGS		+=	-DLINUX
+	CFLAGS		+=	-DLINUX
+	LIBX_DIR	=	mlx_linux/
+	MLXFLAGS	=	-L$(LIBX_DIR) -lmlx -lXext -lX11
 endif
+ifeq ($(BONUS),true)
+	CFLAGS		+=	-DBONUS
+endif
+
 LIB_FLAGS	=	-L$(LIBFT_DIR) -lft $(MLXFLAGS) -lm
 INCLUDES	=	-I$(LIBFT_DIR) -I$(INC_DIR) -I$(LIBX_DIR)
 
@@ -70,6 +74,9 @@ fclean		:	clean
 
 re			:	fclean
 				$(MAKE)
+
+bonus		: fclean
+				$(MAKE) BONUS=true
 
 -include $(DEPS)
 

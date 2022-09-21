@@ -60,9 +60,11 @@ int	main(int argc, char **argv)
 //	mlx_hook(game.map.win, 17, 0, &ft_exit, &game);
 	mlx_hook(game.win, 2, 1L << 0, &key_hook, &game);
 //	mlx_hook(game.map.win, 2, 1L<<0, &key_hook, &game);
+	#ifdef BONUS
     mlx_mouse_hide(game.mlx_ptr, game.win);
 	mlx_mouse_hook(game.win, NULL, NULL);
 	mlx_loop_hook(game.mlx_ptr, loop, &game);
+	#endif
 	mlx_loop(game.mlx_ptr);
 	ft_exit(&game);
 	return (0);

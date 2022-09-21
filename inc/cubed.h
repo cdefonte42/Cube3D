@@ -137,6 +137,17 @@ typedef struct s_ray
 	double		angle;
 }				t_ray;
 
+struct	s_keyboard
+{
+	bool	w;
+	bool	a;
+	bool	s;
+	bool	d;
+	bool	left;
+	bool	right;
+};
+typedef struct	s_keyboard	t_keyboard;
+
 typedef struct s_player
 {
 	double			fov;	// player filed of view in RADIANS;
@@ -150,6 +161,7 @@ typedef struct s_player
 								// pression touche droite ou gauche
 	double			mv_speed;	// inc (en map unit) pour le deplacement du jouer
 	t_ray			*rays;	// tableau de rays;
+	t_keyboard		keyboard;
 }				t_player;
 
 /* Structure contenant toutes les donnees d'une image mlx: 

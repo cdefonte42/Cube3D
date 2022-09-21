@@ -90,7 +90,9 @@ int	tab_hook(int keycode, void *param)
 			game->map.state = on;
 		else
 			game->map.state = off;
-		// refresh_game(game);
+		#ifndef BONUS
+		refresh_game(game);
+		#endif
 	}
 	return (0);
 }
@@ -135,6 +137,9 @@ int	key_hook(int keycode, void *param)
 				-game->player.rot_speed);
 	else
 		dispatch_player_move(game, keycode);
-	// refresh_game(game);
+
+	#ifndef BONUS
+	refresh_game(game);
+	#endif
 	return (0);
 }
