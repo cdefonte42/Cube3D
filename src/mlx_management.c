@@ -33,6 +33,8 @@ static void	clear_texture(t_game *game)
 /*Appellee quand red cross clicked ou ESC press*/
 int	ft_exit(t_game *game)
 {
+	if (game->mlx_ptr && game->win)
+		mlx_mouse_show(game->mlx_ptr, game->win);
 	if (!game)
 		return (0);
 	clear_texture(game);
@@ -88,7 +90,7 @@ int	tab_hook(int keycode, void *param)
 			game->map.state = on;
 		else
 			game->map.state = off;
-		refresh_game(game);
+		// refresh_game(game);
 	}
 	return (0);
 }
@@ -133,6 +135,6 @@ int	key_hook(int keycode, void *param)
 				-game->player.rot_speed);
 	else
 		dispatch_player_move(game, keycode);
-	refresh_game(game);
+	// refresh_game(game);
 	return (0);
 }
