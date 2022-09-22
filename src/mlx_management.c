@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mlx_management.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:32:55 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/08 17:00:04 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/22 15:12:13 by mbraets          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,6 @@ static void	clear_texture(t_game *game)
 /*Appellee quand red cross clicked ou ESC press*/
 int	ft_exit(t_game *game)
 {
-	if (game->mlx_ptr && game->win)
-		mlx_mouse_show(game->mlx_ptr, game->win);
 	if (!game)
 		return (0);
 	clear_texture(game);
@@ -50,6 +48,11 @@ int	ft_exit(t_game *game)
 		mlx_destroy_image(game->mlx_ptr, game->minimap.ptr);
 	if (game->map.tab)
 		ft_free_map_i(game->map.tab, game->map.height);
+	if (game->mlx_ptr && game->win)
+	{
+		mlx_mouse_show(game->mlx_ptr, game->win);
+		mlx_do_key_autorepeaton(game->mlx_ptr);
+	}
 	if (game->win)
 		mlx_destroy_window(game->mlx_ptr, game->win);
 	if (game->mlx_ptr)

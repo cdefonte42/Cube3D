@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/15 17:42:36 by mbraets          ###   ########.fr       */
+/*   Updated: 2022/09/22 12:45:29 by mbraets          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ typedef struct s_ray
 	double		angle;
 }				t_ray;
 
-struct	s_keyboard
+typedef struct	s_keyboard
 {
 	bool	w;
 	bool	a;
@@ -145,8 +145,8 @@ struct	s_keyboard
 	bool	d;
 	bool	left;
 	bool	right;
-};
-typedef struct	s_keyboard	t_keyboard;
+	bool	mouse;
+}			t_keyboard;
 
 typedef struct s_player
 {
