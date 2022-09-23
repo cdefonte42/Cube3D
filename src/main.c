@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:07:19 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/22 15:20:14 by mbraets          ###   ########.fr       */
+/*   Updated: 2022/09/23 12:47:04 by mbraets          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ int	main(int argc, char **argv)
 	mlx_key_hook(game.win, key_hook, &game);
 	mlx_key_hook(game.win, tab_hook, &game);
 //	mlx_key_hook(game.map.win, key_hook, &game);
-	mlx_hook(game.win, 17, 0, &ft_exit, &game);
+	mlx_hook(game.win, DestroyNotify, 0, &ft_exit, &game);
 //	mlx_hook(game.map.win, 17, 0, &ft_exit, &game);
-	mlx_hook(game.win, 2, 1L << 0, &key_hook, &game);
+	mlx_hook(game.win, KeyPress, 1L << 0, &key_hook, &game);
 	
 //	mlx_hook(game.map.win, 2, 1L<<0, &key_hook, &game);
 	#ifdef BONUS

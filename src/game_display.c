@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game_display.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 12:27:33 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/08 16:50:27 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/23 15:30:31 by mbraets          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,52 @@ void	get_interval(int *min_line, int *max_line, t_img img, double hpwall)
 /* Permet de colorier le ciel, ou le sol. pixels est l'adresse du premier pixel
 a colorier, size_line est la valeur a incrementer a chaque tour, et max est
 l'index du dernier pixels (a ne PAS colorier). */
+
+int	applied_color_by_percentage(int color, int fog, double percentage)
+{
+	int	red;
+	int	green;
+	int	blue;
+(void)fog;
+	red = (color >> 16) & 0xFF;
+	green = (color >> 8) & 0xFF;
+	blue = color & 0xFF;
+	red = (red * percentage) / 100;
+	green = (green * percentage) / 100;
+	blue = (blue * percentage) / 100;
+	return (red << 16 | green << 8 | blue);
+}
+
+void	draw_sky(int *pixels, int size_line, int max, int color)
+{
+	int	i;
+
+	i = max-1;
+	while (i > 0)
+	{
+		// printf("%d %f\n", i, (SCREEN_H-(i/size_line))/(double)(SCREEN_H)*100);
+		pixels[i] = applied_color_by_percentage(color, 0x000000, (SCREEN_H/2-(i/size_line))/(double)(SCREEN_H/2)*100);
+		i -= size_line;
+	}
+}
+
+
+void	draw_floor(int *pixels, int size_line, int max, int color)
+{
+	int	i;
+
+	i = 0;
+	(void)color;
+	while (i < max)
+	{
+		// printf("%f\n", 100-(SCREEN_H/2+(max/size_line-i/size_line))/(double)(SCREEN_H)*100);
+		pixels[i] = applied_color_by_percentage(color, 0x000000, 100-(SCREEN_H/2+(max/size_line-i/size_line))/(double)(SCREEN_H)*100);
+		// pixels[i] = i/size_line;
+		i += size_line;
+	}
+
+}
+
 void	draw_floor_or_sky(int *pixels, int size_line, int max, int color)
 {
 	int	i;
@@ -54,7 +100,11 @@ void	draw_floor_or_sky(int *pixels, int size_line, int max, int color)
 	i = 0;
 	while (i < max)
 	{
-		pixels[i] = color;
+		if (i < max/2)
+			pixels[i] = color;
+		else
+			pixels[i] = 0x000000;
+		// pixels[i] = color;
 		i += size_line;
 	}
 }
@@ -81,9 +131,9 @@ void	draw_game(t_game *game)
 		game->player.dist_screen, game->cube_size);
 		get_interval(&(interval.inf), &(interval.sup), game->img, hpwall);
 		draw_buff_texture(game, col, interval, hpwall);
-		draw_floor_or_sky(&(game->img.data[col + interval.sup]), \
+		draw_floor(&(game->img.data[col + interval.sup]), \
 		game->img.size_line, img_pixl_max - interval.sup, game->floor_color);
-		draw_floor_or_sky(&(game->img.data[col]), game->img.size_line, \
+		draw_sky(&(game->img.data[col]), game->img.size_line, \
 		interval.inf, game->ceiling_color);
 		++col;
 	}
