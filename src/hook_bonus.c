@@ -17,7 +17,7 @@ int	loop_hook(t_game *game)
 {
 	static clock_t	current_ticks;
 	static clock_t	delta_ticks;
-	static clock_t	fps = 0;
+	//static clock_t	fps = 0;
 	int				x;
 	int				y;
 
@@ -26,8 +26,8 @@ int	loop_hook(t_game *game)
 	refresh_game(game);
 
 	delta_ticks = clock() - current_ticks; //the time, in ms, that took to render
-	if (delta_ticks > 0)
-		fps = CLOCKS_PER_SEC / delta_ticks;
+	//if (delta_ticks > 0)
+		//fps = CLOCKS_PER_SEC / delta_ticks;
 	if (delta_ticks < CLOCKS_PER_SEC / 20) // Useless ?
 		usleep((CLOCKS_PER_SEC / 20 - delta_ticks));
 

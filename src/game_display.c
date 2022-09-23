@@ -86,7 +86,7 @@ void	draw_floor(int *pixels, int size_line, int max, int color)
 	while (i < max)
 	{
 		// printf("%f\n", 100-(SCREEN_H/2+(max/size_line-i/size_line))/(double)(SCREEN_H)*100);
-		pixels[i] = applied_color_by_percentage(color, 0x000000, 100-(SCREEN_H/2+(max/size_line-i/size_line))/(double)(SCREEN_H)*100);
+		pixels[i] = applied_color_by_percentage(color, 0x000000, 100-(SCREEN_H/2+(max-i)/size_line)/(double)(SCREEN_H)*100);
 		// pixels[i] = i/size_line;
 		i += size_line;
 	}
