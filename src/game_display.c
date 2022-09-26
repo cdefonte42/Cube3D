@@ -67,8 +67,8 @@ void	draw_sky(int *pixels, int size_line, int max, int color)
 {
 	int	i;
 
-	i = max-1;
-	while (i > 0)
+	i = max;
+	while (i >= 0)
 	{
 		// printf("%d %f\n", i, (SCREEN_H-(i/size_line))/(double)(SCREEN_H)*100);
 		pixels[i] = applied_color_by_percentage(color, 0x000000, (SCREEN_H/2-(i/size_line))/(double)(SCREEN_H/2)*100);
