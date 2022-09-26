@@ -67,16 +67,16 @@ void	set_htpt_type(t_ray *ray)
 	if (ray->hit_point.type == vline)
 	{
 		if (ray->dir[grid].x >= 0)
-			ray->hit_point.type = ewall;
-		else
 			ray->hit_point.type = wwall;
+		else
+			ray->hit_point.type = ewall;
 	}
 	else if (ray->hit_point.type == hline)
 	{
 		if (ray->dir[grid].y >= 0)
-			ray->hit_point.type = swall;
-		else
 			ray->hit_point.type = nwall;
+		else
+			ray->hit_point.type = swall;
 	}
 }
 

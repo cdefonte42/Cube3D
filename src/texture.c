@@ -64,7 +64,6 @@ double hpwall)
 	while (interval.inf < interval.sup)
 	{
 		line_text = (line_text_indent / (int)hpwall) % game->cube_size;
-
 		game->img.data[col_screen + interval.inf] = applied_fog(text.data[col_text + line_text * game->cube_size], ray->hit_point.dist);
 			// text.data[col_text + line_text * text.size_line];
 		interval.inf += game->img.size_line;
