@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:07:19 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/23 12:47:04 by mbraets          ###   ########.fr       */
+/*   Updated: 2022/09/26 15:04:54 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int	main(int argc, char **argv)
 	ft_bzero(&game, sizeof(t_game));
 	if (init_game(&game, argc, argv) == -1)
 		return (ft_exit(&game), 1);
+	init_sprites_text(&game);
 	refresh_game(&game);
 	mlx_key_hook(game.win, key_hook, &game);
 	mlx_key_hook(game.win, tab_hook, &game);

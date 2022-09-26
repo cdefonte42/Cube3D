@@ -58,7 +58,7 @@ static void	set_player_pos(t_player *p, char c, int x, int y)
 	ft_memcpy(&p->pos, &(t_pos){.x = x, .y = y, 0}, sizeof(t_pos));
 	if (c == 'N')
 		ft_memcpy(&p->dir, &(t_dir){.x = 0., .y = -1., .z = 0.}, \
-				sizeof(t_dir)); // TODO: Cyrielle: check if this is correct
+				sizeof(t_dir));	
 	else if (c == 'S')
 		ft_memcpy(&p->dir, &(t_dir){.x = 0., .y = 1., .z = 0.}, \
 				sizeof(t_dir));

@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/22 12:45:29 by mbraets          ###   ########.fr       */
+/*   Updated: 2022/09/26 19:11:49 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,10 @@ typedef enum e_element_type
 	nwall,
 	swall,
 	nb_textures,
+	sprite,
 	hline,
 	vline,
 	apex,
-	sprite,
 	door
 }			t_type;
 
@@ -171,7 +171,7 @@ typedef struct s_player
 	data	:	filled by mlx_get_data_addr(); !!! Casted en int * au lieu de 
 				char *. Contient les bits de pixels;
 	bpp		:	bits per pixel also called the depth of the image
-	size_line	: number of bytes used to store one line of the image in memor
+    :x
 	endian		: little == 0; big endian == 1;
 NOTE: Peut etre ajouter un char *filename? Ne serait utile que pour les textures
 */
@@ -217,6 +217,8 @@ typedef struct s_game
 	t_img		minimap;	// Copie de map mais en mini: centre sur le 
 							// joueur. A une taille de fenetre maxi!
 	t_texture	*text;		// tableau d'au moins 4 texture (Nord, Sud, Est, Ouest);
+	t_texture	text_sprite[4];
+	t_pos		*sprites;
 	double		colision;	// distance max en map unit a laquelle le player
 							// peut s'approcher des murss
 	int			floor_color;
@@ -320,5 +322,8 @@ void	draw_buff_texture(t_game *game, int col_screen, t_interval interval, double
 /* ____ PARSING ______*/
 bool	error(char *, char *);
 bool	map_parsing(t_game *, char *);
+
+/* ______ Init bonus ____*/
+int	init_sprites_text(t_game *game);
 
 #endif

@@ -6,7 +6,7 @@
 #    By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/18 12:15:17 by cdefonte          #+#    #+#              #
-#    Updated: 2022/09/21 18:01:42 by mbraets          ###   ########.fr        #
+#    Updated: 2022/09/26 16:10:02 by cdefonte         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ SRCS		=	$(addprefix $(SRC_DIR),\
 					mlx_management.c raycasting.c map_draw.c vectors_utils.c\
 					img_utils.c colision.c raytracing.c init.c game_display.c\
 					parsing.c parsing_map.c parsing_map_check.c parsing_flags.c\
-					parsing_utils.c)
+					parsing_utils.c init_bonus.c)
 
 ifeq ($(BONUS),true)
 	CFLAGS		+=	-DBONUS

@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 11:50:01 by mbraets           #+#    #+#             */
-/*   Updated: 2022/09/15 17:47:10 by mbraets          ###   ########.fr       */
+/*   Updated: 2022/09/26 12:39:19 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ bool	map_checkcharacters(t_game *game, char *line, int fd)
 	if (!player)
 		return (error("Missing player", NULL));
 	close(fd);
+	if (game->map.width >= 1500 || game->map.height >= 1500)
+		return (error("Map too big", NULL));
 	return (true);
 }
 
