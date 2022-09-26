@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_draw.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 18:03:35 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/09/08 14:26:25 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/26 12:07:49 by mbraets          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void	draw_minimap(t_game *game)
 	line = game->player.pos.y * game->map.rcube_size
 		- game->minimap.size_line / 2.0;
 	origin = col + line * game->map.img.size_line;
-	erase_img(&(game->minimap));
+	// erase_img(&(game->minimap));
 	while (origin < 0)
 	{
 		game->minimap.data[i] = BLACK;

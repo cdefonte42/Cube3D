@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 12:27:33 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/23 15:30:31 by mbraets          ###   ########.fr       */
+/*   Updated: 2022/09/26 12:06:49 by mbraets          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,8 @@ void	draw_game(t_game *game)
 	{
 		hpwall = wall_height_ratio(game->player.rays[col], \
 		game->player.dist_screen, game->cube_size);
+		if (hpwall < 1.0)
+			hpwall = 1.0;
 		get_interval(&(interval.inf), &(interval.sup), game->img, hpwall);
 		draw_buff_texture(game, col, interval, hpwall);
 		draw_floor(&(game->img.data[col + interval.sup]), \
