@@ -50,21 +50,6 @@ void	get_interval(int *min_line, int *max_line, t_img img, double hpwall)
 a colorier, size_line est la valeur a incrementer a chaque tour, et max est
 l'index du dernier pixels (a ne PAS colorier). */
 
-int	applied_color_by_percentage(int color, int fog, double percentage)
-{
-	int	red;
-	int	green;
-	int	blue;
-(void)fog;
-	red = (color >> 16) & 0xFF;
-	green = (color >> 8) & 0xFF;
-	blue = color & 0xFF;
-	red = (red * percentage) / 100;
-	green = (green * percentage) / 100;
-	blue = (blue * percentage) / 100;
-	return (red << 16 | green << 8 | blue);
-}
-
 void	draw_sky(int *pixels, int size_line, int max, int color)
 {
 	int	i;
@@ -73,7 +58,7 @@ void	draw_sky(int *pixels, int size_line, int max, int color)
 	while (i >= 0)
 	{
 		// printf("%d %f\n", i, (SCREEN_H-(i/size_line))/(double)(SCREEN_H)*100);
-		pixels[i] = applied_color_by_percentage(color, 0x000000, (SCREEN_H/2-(i/size_line))/(double)(SCREEN_H/2)*100);
+		pixels[i] = fog_percentage(color, 0x000000, (SCREEN_H/2-(i/size_line))/(double)(SCREEN_H/2)*100);
 		i -= size_line;
 	}
 }
@@ -88,13 +73,13 @@ void	draw_floor(int *pixels, int size_line, int max, int color)
 	while (i <= max)
 	{
 		// printf("%f\n", 100-(SCREEN_H/2+(max/size_line-i/size_line))/(double)(SCREEN_H)*100);
-		pixels[i] = applied_color_by_percentage(color, 0x000000, 100-(SCREEN_H/2+(max-i)/size_line)/(double)(SCREEN_H)*100);
+		pixels[i] = fog_percentage(color, 0x000000, 100-(SCREEN_H/2+(max-i)/size_line)/(double)(SCREEN_H)*100);
 		// pixels[i] = i/size_line;
 		i += size_line;
 	}
 
 }
-
+// TODO: Useless need to remove !!!!!
 void	draw_floor_or_sky(int *pixels, int size_line, int max, int color)
 {
 	int	i;
@@ -144,6 +129,8 @@ void	draw_game(t_game *game)
 	draw_sprites(game);
 }
 
+
+// TODO: Rename the function and move it to utils.c
 void	my_mlx_pixel_put(t_img *data, int x, int y, int color)
 {
 	int	*dst;
@@ -161,8 +148,8 @@ void	draw_sprites(t_game *game)
 	double	sprite_dir = atan2(distY, distX);
 	double	angle = atan2(game->player.dir.y, game->player.dir.x);
 
-	while (sprite_dir - angle >  M_PI) sprite_dir -= 2*M_PI; 
-    while (sprite_dir - angle < -M_PI) sprite_dir += 2*M_PI;
+	while (sprite_dir - angle >  PI) sprite_dir -= 2*PI; 
+    while (sprite_dir - angle < -PI) sprite_dir += 2*PI;
 	
 	distX = game->player.pos.x - game->sprites[0].x;
 	distY = game->player.pos.y - game->sprites[0].y;
@@ -185,7 +172,7 @@ void	draw_sprites(t_game *game)
 			if (v_offset + j < 0 || v_offset + j >= SCREEN_H) continue;
 			int color = game->text_sprite[0].data[i * 32 / sprite_screen_size +  (j * 32 / sprite_screen_size) * game->text_sprite[0].size_line];
 			if (((color >> 24) & 0xFF) != 0xFF)
-				my_mlx_pixel_put(&game->img, h_offset+i, v_offset+j, color);
+				my_mlx_pixel_put(&game->img, h_offset+i, v_offset+j, fog_texture(color, sprite_dist * game->cube_size));
 		}
 	}
 }

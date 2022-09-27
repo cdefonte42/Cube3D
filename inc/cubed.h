@@ -328,6 +328,14 @@ bool	error(char *, char *);
 bool	map_parsing(t_game *, char *);
 
 /* ______ Init bonus ____*/
-int	init_sprites_text(t_game *game);
+int		init_sprites_text(t_game *game);
+
+/* 			FOG			*/
+
+/* Applied black by dist */
+int		fog_texture(int texture_color, float dist);
+/* Applied black by percentage */
+int		fog_percentage(int color, int fog, double percentage);
+
 
 #endif
