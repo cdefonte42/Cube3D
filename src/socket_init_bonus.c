@@ -56,7 +56,7 @@ bool	get_pos(t_game *game)
 		{
 			printf("Delete player with id %d !\n", ft_atoi(game->buf+2));
 		}
-		else if (game->buf[0] == '0' || game->buf[0] == '1')
+		else if (game->buf[0] == 'p')
 		{
 			// int id = atoi(game->buf);
 			int id = 0;

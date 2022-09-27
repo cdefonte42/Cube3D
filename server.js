@@ -45,10 +45,10 @@ var server = net.createServer(function(socket) {
 
 	if (clients.length > 4)
 		return ;
-	var client = new Client(socket);
+	let client = new Client(socket);
 	if (clients.length > 0) {
 		client.id = clients[clients.length - 1].id + 1;
-		var message = 'n:' + client.id;
+		let message = `n:${client.id}`;
 		sendMessageToAllClients(message, client);
 	}
 	clients.push(client);
@@ -71,7 +71,7 @@ var server = net.createServer(function(socket) {
 		
 		if (clients.length > 1) {
 			
-			var message = client.id + ':' + data;
+			let message = `p:${client.id}:${data}`;
 			sendMessageToAllClients(message, client);
 		}
 	});
@@ -91,7 +91,7 @@ var server = net.createServer(function(socket) {
 		console.log(C.Red+'Client disconnected: ' + socket.remoteAddress + ':' + socket.remotePort);
 	});
 
-	socket.write('Hello');
+	socket.write('w');
 	socket.pipe(socket);
 }).listen(1977, function() {
 	console.log('Server started');
