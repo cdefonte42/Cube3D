@@ -6,11 +6,17 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 17:06:35 by mbraets           #+#    #+#             */
-/*   Updated: 2022/09/15 17:48:21 by mbraets          ###   ########.fr       */
+/*   Updated: 2022/09/27 18:02:11 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
+
+#ifdef BONUS 
+# define OK_CHARS "01NSEWX"
+#else
+# define OK_CHARS "01NSEW"
+#endif
 
 static int	isvalidflag(char *line)
 {
@@ -81,9 +87,9 @@ bool	check_line(t_game *game, int y, char *line, int *player)
 		return (true);
 	while (line[i] != '\0')
 	{
-		if (!ft_isspace(line[i]) && !ft_strchr("01NSEW", line[i]))
+		if (!ft_isspace(line[i]) && !ft_strchr(OK_CHARS, line[i]))
 			return (error("Invalid character map", line));
-		if (ft_strchr("01NSEW", line[i]))
+		if (ft_strchr(OK_CHARS, line[i]))
 			valid_line = true;
 		if (ft_strchr("NSEW", line[i]))
 		{
@@ -92,7 +98,7 @@ bool	check_line(t_game *game, int y, char *line, int *player)
 			*player = true;
 			set_player_pos(&game->player, line[i], i, y);
 		}
-		i++;
+		++i;
 	}
 	if (!valid_line)
 		return (error("Empty line in map", NULL));

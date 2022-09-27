@@ -6,7 +6,7 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 14:12:21 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/09/27 16:56:54 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/27 18:17:32 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,10 @@ int	init_sprites_text(t_game *game)
 		++i;
 	}
 	// A CHANGER SELON PARSING MAP NB ENNEMIES
-	game->nb_sprites = 2;
-	game->sprites = ft_calloc(2, sizeof(t_sprite));
-	game->sort_sprite = ft_calloc(2, sizeof(int *));
-	ft_memcpy(&game->sprites[0], &(t_sprite){.pos.x = 4.5, .pos.y = 2.5, .pos.z = 0.0, .dist = 0.0, .dir = 0.0}, sizeof(t_sprite));
-	ft_memcpy(&game->sprites[1], &(t_sprite){.pos.x = 6.5, .pos.y = 2.5, .pos.z = 0.0, .dist = 0.0, .dir = 0.0}, sizeof(t_sprite));
+//	game->nb_sprites = 2;
+//	game->sprites = ft_calloc(2, sizeof(t_sprite));
+//	game->sort_sprite = ft_calloc(2, sizeof(int *));
+//	ft_memcpy(&game->sprites[0], &(t_sprite){.pos.x = 4.5, .pos.y = 2.5, .pos.z = 0.0, .dist = 0.0, .dir = 0.0}, sizeof(t_sprite));
+//	ft_memcpy(&game->sprites[1], &(t_sprite){.pos.x = 6.5, .pos.y = 2.5, .pos.z = 0.0, .dist = 0.0, .dir = 0.0}, sizeof(t_sprite));
 	return (0);
 }

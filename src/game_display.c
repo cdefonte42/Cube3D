@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 12:27:33 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/27 17:01:34 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/27 18:43:47 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ void	draw_sky(int *pixels, int size_line, int max, int color)
 	i = max;
 	while (i >= 0)
 	{
-		// printf("%d %f\n", i, (SCREEN_H-(i/size_line))/(double)(SCREEN_H)*100);
 		pixels[i] = fog_percentage(color, 0x000000, (SCREEN_H/2-(i/size_line))/(double)(SCREEN_H/2)*100);
 		i -= size_line;
 	}
@@ -74,7 +73,6 @@ void	draw_floor(int *pixels, int size_line, int max, int color)
 	(void)color;
 	while (i <= max)
 	{
-		// printf("%f\n", 100-(SCREEN_H/2+(max/size_line-i/size_line))/(double)(SCREEN_H)*100);
 		pixels[i] = fog_percentage(color, 0x000000, 100-(SCREEN_H/2+(max-i)/size_line)/(double)(SCREEN_H)*100);
 		// pixels[i] = i/size_line;
 		i += size_line;
@@ -199,13 +197,6 @@ void	sort_sprites(t_game *game)
 		game->sort_sprite[i] = id;
 		++i;
 	}
-	i = 0;
-	while (i < game->nb_sprites)
-	{
-		printf("index sorted sprite = %d ", game->sort_sprite[i]);
-		++i;
-	}
-	printf("\n");
 }
 
 void	draw_sprite(t_game *game, t_sprite sprite, double angle)
