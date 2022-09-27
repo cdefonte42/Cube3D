@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 12:27:33 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/27 18:43:47 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/27 20:34:11 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,24 +177,36 @@ de chaque sprite par rapport au joueur). Tri du plus loin (premier index) au
 plus proche. */
 void	sort_sprites(t_game *game)
 {
-	int			i;
-	int			j;
-	int			id;
+	int			l;
+	int			p;
+	int			idell;
 
+	l = 0;
+	while (l < game->nb_sprites)
+	{
+		p = 0;
+		idell = 0;
+		while (p < game->nb_sprites)
+		{
+			if (game->sprites[l].dist > game->sprites[p].dist && l != p)
+			{
+				++idell;
+			}
+			else if (fabs(game->sprites[l].dist - game->sprites[p].dist) < 0.0000001 && l > p)
+				++idell;
+			printf("%d dist = %f j%d dist = %f, id = %d\n", l, game->sprites[l].dist, p, game->sprites[p].dist, idell);
+			++p;
+		}
+		game->sort_sprite[l] = idell;
+		++l;
+	}
+	int		i;
+	int		j;
 	i = 0;
 	while (i < game->nb_sprites)
 	{
-		j = 0;
-		id = 0;
-		while (j < game->nb_sprites)
-		{
-			if (game->sprites[i].dist > game->sprites[j].dist && i != j)
-			{
-				++id;
-			}
-			++j;
-		}
-		game->sort_sprite[i] = id;
+		j = game->sort_sprite[i];
+		printf("i%d sprite N*%d dist = %f\n", i, j, game->sprites[j].dist);
 		++i;
 	}
 }
