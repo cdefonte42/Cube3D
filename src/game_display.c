@@ -154,16 +154,16 @@ void	draw_sprites(t_game *game)
 	distX = game->player.pos.x - game->sprites[0].x;
 	distY = game->player.pos.y - game->sprites[0].y;
 
-	printf("distX = %f Y = %f\n", distX, distY);
+	// printf("distX = %f Y = %f\n", distX, distY);
 
 	double	sprite_dist = sqrt(pow(distX, 2.0) + pow(distY, 2.0));
 
 	int sprite_screen_size = fmin(SCREEN_H, SCREEN_H/(sprite_dist * 2));
 
 	int h_offset = (sprite_dir - angle)*(SCREEN_W) + SCREEN_W/2 - sprite_screen_size/2;
-    int v_offset = SCREEN_H/2;// - sprite_screen_size/2;
+    int v_offset = SCREEN_H/2;// + sprite_screen_size/2;
 
-	printf("dist = %f, %f, sprite size = %d , h %d v %d \n", game->player.rays[v_offset + 0].hit_point.dist, sprite_dist, sprite_screen_size, h_offset, v_offset);
+	// printf("dist = %f, %f, sprite size = %d , h %d v %d \n", game->player.rays[v_offset + 0].hit_point.dist, sprite_dist, sprite_screen_size, h_offset, v_offset);
 	for (int i=0; i<sprite_screen_size; i++)
 	{
 		if (h_offset + i<0 ||h_offset + i>=SCREEN_W) continue;

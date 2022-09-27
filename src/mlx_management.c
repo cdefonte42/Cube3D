@@ -12,6 +12,8 @@
 
 #include "cubed.h"
 
+#include "socket.h"
+
 static void	clear_texture(t_game *game)
 {
 	int	i;
@@ -35,6 +37,11 @@ int	ft_exit(t_game *game)
 {
 	if (!game)
 		return (0);
+	if (game->sock > 0)
+	{
+		free(game->buf);
+		close(game->sock);
+	}
 	clear_texture(game);
 	if (game->player.rays)
 		free(game->player.rays);

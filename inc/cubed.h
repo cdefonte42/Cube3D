@@ -227,6 +227,10 @@ typedef struct s_game
 							// peut s'approcher des murss
 	int			floor_color;
 	int			ceiling_color;
+
+	int			sock;
+	fd_set		rdfs;
+	char		*buf;
 }				t_game;
 
 # if defined(__APPLE__) && defined(__MACH__)

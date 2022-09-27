@@ -13,6 +13,8 @@
 #include "cubed.h"
 #include "X11/X.h"
 
+#include "socket.h"
+
 int	loop_hook(t_game *game);
 int	press_hook(int key, t_game *game);
 int	in_hook(t_game *game);
@@ -36,6 +38,8 @@ int	main(int argc, char **argv)
 	
 //	mlx_hook(game.map.win, 2, 1L<<0, &key_hook, &game);
 	#ifdef BONUS
+	game.sock = init_connection(&game, "127.0.0.1");
+
     mlx_mouse_hide(game.mlx_ptr, game.win);
 	mlx_hook(game.win, KeyPress, KeyPressMask, &press_hook, &game);
 	mlx_hook(game.win, KeyRelease, KeyReleaseMask, &press_hook, &game);
@@ -46,6 +50,7 @@ int	main(int argc, char **argv)
 	mlx_loop_hook(game.mlx_ptr, loop_hook, &game);
 	#endif
 	mlx_loop(game.mlx_ptr);
+
 	ft_exit(&game);
 	return (0);
 }

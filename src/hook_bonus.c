@@ -13,6 +13,13 @@
 #include "cubed.h"
 #include <time.h>
 
+#include "socket.h"
+
+static inline bool is_press_key(t_keyboard keyboard)
+{
+	return (keyboard.w == true || keyboard.d  == true || keyboard.a  == true || keyboard.s  == true );
+}
+
 int	loop_hook(t_game *game)
 {
 	static clock_t	current_ticks;
@@ -21,6 +28,15 @@ int	loop_hook(t_game *game)
 	int				x;
 	int				y;
 
+	if (!get_pos(game))
+		return (ft_exit(game));
+
+	if ( is_press_key(game->player.keyboard))
+	{
+		if (!send_pos(game))
+			return (ft_exit(game));
+	}
+	
 	current_ticks = clock();
 
 	refresh_game(game);
