@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 12:27:33 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/27 21:17:46 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/27 21:47:28 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ void	draw_game(t_game *game)
 	}
 	double	angle = atan2(game->player.dir.y, game->player.dir.x);
 	set_sprites_datas(game, angle);
+	printf("angle = %f, sprite[0].dir = %f dist = %f\n", angle, game->sprites[0].dir, game->sprites[0].dist);
 	sort_sprites(game);
 	int		i = game->nb_sprites - 1;
 	while (i >= 0)
@@ -164,9 +165,9 @@ void	set_sprites_datas(t_game *game, double angle)
 		head = &(game->sprites[i]);
 		head->dir = atan2(head->pos.y - py, head->pos.x - px);
 		while (head->dir - angle > PI)
-			head->dir -= 2*PI; 
+			head->dir -= 2.0*PI; 
 		while (head->dir - angle < -PI)
-			head->dir += 2*PI;
+			head->dir += 2.0*PI;
 		head->dist = sqrt(pow(px - head->pos.x, 2.0) + pow(py - head->pos.y, 2.0));
 		++i;
 	}
@@ -219,12 +220,12 @@ void	draw_sprite(t_game *game, t_sprite sprite, double angle)
 {
 	int sprite_screen_size = fmin(SCREEN_H, SCREEN_H/(sprite.dist * 2));
 
-	int h_offset = (sprite.dir - angle)*(SCREEN_W) + SCREEN_W/2 - sprite_screen_size/2;
+	int h_offset = (sprite.dir - angle)*(SCREEN_W)/game->player.fov + SCREEN_W/2 - sprite_screen_size/2;
     int v_offset = SCREEN_H/2;
 
-	for (int i=0; i < sprite_screen_size; i++)
+	for (int i=0; i < sprite_screen_size; ++i)
 	{
-		if (h_offset + i<0 || h_offset + i >= SCREEN_W) continue;
+		if (h_offset + i < 0 || h_offset + i >= SCREEN_W) continue;
 		if (game->player.rays[h_offset + i].hit_point.dist < sprite.dist * game->cube_size) continue;
 		for (int j=0; j < sprite_screen_size; j++)
 		{
