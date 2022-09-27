@@ -90,6 +90,30 @@ int	init_player(t_game *game)
 	return (0);
 }
 
+static void	revert_texture(t_game *game, int i)
+{
+	int			j;
+	int			k;
+	int			tmp;
+	t_texture	*text;
+
+	text = &game->text[i];
+	j = 0;
+	while (j < text->width / 2)
+	{
+	k = 0;
+		while (k < text->height)
+		{
+			tmp = text->data[k * text->width + j];
+			text->data[k * text->width + j] = text->data[k * text->width + \
+			text->width - j - 1];
+			text->data[k * text->width + text->width - j - 1] = tmp;
+			k++;
+		}
+		j++;
+	}
+}
+
 /* Cree les pointeurs images sur des xpm files avec mlx_xpm_file_to_image(), et
 remplit le int *data tableau contenant les pixels values. */
 // NOTE : pas beau, copie colle, d'ou l'interet de rajouter un char *filename
@@ -110,6 +134,9 @@ int	init_textures(t_game *game)
 		game->text[i].size_line /= 4;
 		i++;
 	}
+	revert_texture(game, wwall);
+	revert_texture(game, swall);
+
 	return (0);
 }
 
