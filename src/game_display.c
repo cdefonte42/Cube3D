@@ -6,11 +6,12 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 12:27:33 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/27 21:47:28 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/27 21:59:37 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cubed.h"
+#include <time.h>
 
 void	draw_sprite(t_game *game, t_sprite sprite, double angle);
 void	set_sprites_datas(t_game *game, double angle);
@@ -128,7 +129,6 @@ void	draw_game(t_game *game)
 	}
 	double	angle = atan2(game->player.dir.y, game->player.dir.x);
 	set_sprites_datas(game, angle);
-	printf("angle = %f, sprite[0].dir = %f dist = %f\n", angle, game->sprites[0].dir, game->sprites[0].dist);
 	sort_sprites(game);
 	int		i = game->nb_sprites - 1;
 	while (i >= 0)
@@ -218,6 +218,8 @@ void	sort_sprites(t_game *game)
 
 void	draw_sprite(t_game *game, t_sprite sprite, double angle)
 {
+	clock_t		tick = clock();
+//	time_t		tmp = time(NULL);
 	int sprite_screen_size = fmin(SCREEN_H, SCREEN_H/(sprite.dist * 2));
 
 	int h_offset = (sprite.dir - angle)*(SCREEN_W)/game->player.fov + SCREEN_W/2 - sprite_screen_size/2;
@@ -230,7 +232,9 @@ void	draw_sprite(t_game *game, t_sprite sprite, double angle)
 		for (int j=0; j < sprite_screen_size; j++)
 		{
 			if (v_offset + j < 0 || v_offset + j >= SCREEN_H) continue;
-			int color = game->text_sprite[0].data[i * 32 / sprite_screen_size +  (j * 32 / sprite_screen_size) * game->text_sprite[0].size_line];
+			int		time_id = tick % 4;
+//			int		time_id = tmp % 4;
+			int color = game->text_sprite[time_id].data[i * 32 / sprite_screen_size +  (j * 32 / sprite_screen_size) * game->text_sprite[time_id].size_line];
 			if (((color >> 24) & 0xFF) != 0xFF)
 				my_mlx_pixel_put(&game->img, h_offset+i, v_offset+j, fog_texture(color, sprite.dist * game->cube_size));
 		}
