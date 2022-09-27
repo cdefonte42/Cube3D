@@ -65,6 +65,7 @@ int	ft_exit(t_game *game)
 
 /* Refresh les differents affichages (game screen, minimap). Implique le
 recalcul de tous les rayons. */
+#ifdef BONUS
 void	refresh_game(t_game *game)
 {
 	raycasting(game);
@@ -81,6 +82,14 @@ void	refresh_game(t_game *game)
 		mlx_put_image_to_window(game->mlx_ptr, game->win,
 			game->map.img.ptr, 0, 0);
 }
+#else
+void	refresh_game(t_game *game)
+{
+	raycasting(game);
+	draw_game(game);
+	mlx_put_image_to_window(game->mlx_ptr, game->win, game->img.ptr, 0, 0);
+}
+#endif
 
 int	tab_hook(int keycode, void *param)
 {

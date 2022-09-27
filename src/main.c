@@ -27,7 +27,6 @@ int	main(int argc, char **argv)
 		return (ft_exit(&game), 1);
 	refresh_game(&game);
 	mlx_key_hook(game.win, key_hook, &game);
-	mlx_key_hook(game.win, tab_hook, &game);
 //	mlx_key_hook(game.map.win, key_hook, &game);
 	mlx_hook(game.win, DestroyNotify, 0, &ft_exit, &game);
 //	mlx_hook(game.map.win, 17, 0, &ft_exit, &game);
@@ -35,6 +34,7 @@ int	main(int argc, char **argv)
 	
 //	mlx_hook(game.map.win, 2, 1L<<0, &key_hook, &game);
 	#ifdef BONUS
+	mlx_key_hook(game.win, tab_hook, &game); // Useless because line 39 overwrite
     mlx_mouse_hide(game.mlx_ptr, game.win);
 	mlx_hook(game.win, KeyPress, KeyPressMask, &press_hook, &game);
 	mlx_hook(game.win, KeyRelease, KeyReleaseMask, &press_hook, &game);

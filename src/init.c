@@ -12,6 +12,7 @@
 
 #include "cubed.h"
 
+#ifdef BONUS
 int	init_minimap(t_game *game)
 {
 	if (game->map.img.height > game->height * 0.25 || \
@@ -31,7 +32,16 @@ int	init_minimap(t_game *game)
 		game->minimap.ptr = NULL;
 	return (0);
 }
+#else
+int	init_minimap(t_game *game)
+{
+	(void)game;
+	return (0);
+}
+#endif
 
+
+#ifdef BONUS
 int	init_map(t_game *game, int argc, char **argv)
 {
 	int		nb_pixel_x;
@@ -69,6 +79,20 @@ int	init_map(t_game *game, int argc, char **argv)
 	draw_walls(game);
 	return (0);
 }
+#else
+int	init_map(t_game *game, int argc, char **argv)
+{
+	if (argc != 2)
+		return (error("Invalid number of arguments", NULL), -1);
+	game->text = ft_calloc(sizeof(t_texture), 4);
+	if (!map_parsing(game, argv[1]))
+		return (-1);
+	// game->map.tab = ft_clean_map(argc, argv); // A PROTEGER
+	// game->map.width = ft_strlen(game->map.tab[0]);
+	// game->map.height = ft_tabtablen(game->map.tab);
+	return (0);
+}
+#endif
 
 int	init_player(t_game *game)
 {

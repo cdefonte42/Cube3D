@@ -37,15 +37,15 @@ INCLUDES	=	-I$(LIBFT_DIR) -I$(INC_DIR) -I$(LIBX_DIR)
 
 SRCS		=	$(addprefix $(SRC_DIR),\
 					main.c utils.c texture.c hit_points.c\
-					mlx_management.c raycasting.c map_draw.c vectors_utils.c\
-					img_utils.c colision.c raytracing.c init.c game_display.c\
+					mlx_management.c raycasting.c vectors_utils.c\
+					colision.c init.c game_display.c\
 					parsing.c parsing_map.c parsing_map_check.c parsing_flags.c\
 					parsing_utils.c)
 
 ifeq ($(BONUS),true)
 	CFLAGS		+=	-DBONUS
 	SRCS		+=  $(addprefix $(SRC_DIR),\
-					hook_bonus.c)
+					hook_bonus.c img_utils_bonus.c map_draw_bonus.c raytracing_bonus.c)
 endif
 
 OBJS		=	$(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRCS))
