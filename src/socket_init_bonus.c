@@ -4,9 +4,7 @@
 #include <string.h>
 
 #include "socket.h"
-
 #include "cubed.h"
-
 
 static int	read_server(SOCKET sock, char *buffer);
 static void	write_server(SOCKET sock, const char *buffer);
@@ -60,8 +58,8 @@ bool	get_pos(t_game *game)
 		{
 			// int id = atoi(game->buf);
 			int id = 0;
-			game->sprites[id].x = atof(game->buf+2);
-			game->sprites[id].y = atof(ft_strchr(game->buf+2, ':')+1);
+			game->sprites[id].x = ft_atof(game->buf+2);
+			game->sprites[id].y = ft_atof(ft_strchr(game->buf+2, ':')+1);
 		}
 	}
 	ft_bzero(game->buf, sizeof(char)*50);
