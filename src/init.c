@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 14:13:54 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/26 14:14:21 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/27 14:55:47 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	init_map(t_game *game, int argc, char **argv)
 
 int	init_player(t_game *game)
 {
-	game->player.fov = (120.0 * PI) / 180.0;
+	game->player.fov = (70.0 * PI) / 180.0;
 	game->player.dist_screen = (game->width / 2) / tan(game->player.fov / 2);
 	// Replace = 2.5 by += .5 to spawn in the middle
 	game->player.pos.x += 0.5; //exprime en map unit, soit *64 pour pixels

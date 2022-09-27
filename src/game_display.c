@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 12:27:33 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/27 13:03:23 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/27 15:13:21 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,7 @@ void	draw_game(t_game *game)
 	}
 	draw_sprites(game);
 }
+
 void	my_mlx_pixel_put(t_img *data, int x, int y, int color)
 {
 	int	*dst;
@@ -151,29 +152,6 @@ void	my_mlx_pixel_put(t_img *data, int x, int y, int color)
 		return ;
 	dst = data->data + (y * data->size_line + x * (data->bpp / 32));
 	*(unsigned int*)dst = color;
-}
-
-void	put_sprite(t_game *game, int x, int y, int size)
-{
-	int		size_line = game->img.size_line;
-	int		col;
-	int		line = 0;
-	int		line_indent = 0;
-	
-	while (line < 31)
-	{
-		line = (line_indent / size) % 32;
-		col = 0;
-		while (col < 32)
-		{
-			if (x + col < 0 || x + col >= game->img.width || y + line < 0 || y + line >= game->img.height)
-				return ;
-			game->img.data[x + col + (y + line) * size_line] = game->text_sprite[0].data[col + line * game->text_sprite[0].size_line];
-			++col;
-		}
-		++y;
-		line_indent += 32;
-	}
 }
 
 void	draw_sprites(t_game *game)
@@ -189,44 +167,25 @@ void	draw_sprites(t_game *game)
 	distX = game->player.pos.x - game->sprites[0].x;
 	distY = game->player.pos.y - game->sprites[0].y;
 
+	printf("distX = %f Y = %f\n", distX, distY);
+
 	double	sprite_dist = sqrt(pow(distX, 2.0) + pow(distY, 2.0));
-//	printf("angle = %f et dist = %f\n", sprite_dir, sprite_dist);
 
-	int sprite_screen_size = fmin(2000, SCREEN_H/sprite_dist);
+	int sprite_screen_size = fmin(SCREEN_H, SCREEN_H/(sprite_dist * 2));
 
-	int h_offset = (sprite_dir - angle)*(SCREEN_W/2) + SCREEN_W/2;// - sprite_screen_size/2;
+	int h_offset = (sprite_dir - angle)*(SCREEN_W) + SCREEN_W/2 - sprite_screen_size/2;
     int v_offset = SCREEN_H/2;// - sprite_screen_size/2;
 
-	printf("sprite size = %d , h %d v %d \n", sprite_screen_size, h_offset, v_offset);
-
-    for (int i=0; i<sprite_screen_size; i++) {
-        if (i<0 || i>=SCREEN_W/2) continue;
-        for (int j=0; j<sprite_screen_size; j++) {
-            if (j<0 || j>=SCREEN_H) continue;
-            int color = game->text_sprite[0].data[i * 32 / sprite_screen_size +  (j * 32 / sprite_screen_size) * game->text_sprite[0].size_line];
+	printf("dist = %f, %f, sprite size = %d , h %d v %d \n", game->player.rays[v_offset + 0].hit_point.dist, sprite_dist, sprite_screen_size, h_offset, v_offset);
+	for (int i=0; i<sprite_screen_size; i++)
+	{
+		if (h_offset + i<0 ||h_offset + i>=SCREEN_W) continue;
+		if (game->player.rays[h_offset + i].hit_point.dist < sprite_dist * game->cube_size) continue;
+		for (int j=0; j<sprite_screen_size; j++) {
+			if (v_offset + j < 0 || v_offset + j >= SCREEN_H) continue;
+			int color = game->text_sprite[0].data[i * 32 / sprite_screen_size +  (j * 32 / sprite_screen_size) * game->text_sprite[0].size_line];
 			if (((color >> 24) & 0xFF) != 0xFF)
 				my_mlx_pixel_put(&game->img, h_offset+i, v_offset+j, color);
-//	put_sprite(game, h_offset, v_offset, sprite_screen_size * game->cube_size);
-//			game->img.data[SCREEN_H/2 + h_offset+i + v_offset+(j*game->img.bpp/4)] = 0xFF0000;
-        }
-    }
+		}
+	}
 }
-
-////	t_ray	rays = game->player.rays;
-//
-//	double	distX = game->sprites[0].x - game->player.pos.x;
-//	double	distY = game->sprites[0].y - game->player.pos.y;
-//
-//	// distant du sprite au player
-////	double len = sqrt(distX * distX + distY * distY);
-//
-//	printf("distX = %f distY = %f\n", distX, distY);
-//	printf("dirX = %f dirY = %f\n", game->player.dir.x, game->player.dir.y);
-//
-////	double	projX = len * game->player.dir.x;
-////	double	projY = len * game->player.dir.y;
-//
-//	double	projX = distX + distY * game->player.dir.y;
-//	double	projY = distY + distX * game->player.dir.x;
-//	printf("proj X = %f proj Y = %f\n", projX, projY);
-//	printf("\n");

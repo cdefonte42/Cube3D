@@ -6,7 +6,7 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 14:12:21 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/09/27 12:33:15 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/27 14:50:22 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,6 @@ int	init_sprites_text(t_game *game)
 		++i;
 	}
 	game->sprites = ft_calloc(1, sizeof(t_pos));
-	ft_memcpy(&game->sprites[0], &(t_pos){.x = 3.5, .y = 3.5, .z = 0.0}, sizeof(t_pos));
+	ft_memcpy(&game->sprites[0], &(t_pos){.x = 4.5, .y = 3.5, .z = 0.0}, sizeof(t_pos));
 	return (0);
 }
