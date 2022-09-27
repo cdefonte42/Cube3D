@@ -22,7 +22,11 @@
 # include <stdio.h>
 
 # ifndef PI
-#  define PI 3.142857
+#  ifndef M_PI
+#   define PI 3.14159265358979323846
+#  else
+#   define PI M_PI
+#  endif
 # endif
 
 # ifndef SCREEN_W		// should be pair

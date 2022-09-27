@@ -25,14 +25,19 @@ int	loop_hook(t_game *game)
 
 	refresh_game(game);
 
-	delta_ticks = clock() - current_ticks; //the time, in ms, that took to render
+	delta_ticks = clock() - current_ticks; //the time, in us, that took to render
 	//if (delta_ticks > 0)
 		//fps = CLOCKS_PER_SEC / delta_ticks;
+	// while (clock() < current_ticks + CLOCKS_PER_SEC / 30)
+        // ;
 	if (delta_ticks < CLOCKS_PER_SEC / 20) // Useless ?
 		usleep((CLOCKS_PER_SEC / 20 - delta_ticks));
-
+	// printf(" %ld, %ld\n", CLOCKS_PER_SEC / delta_ticks, delta_ticks);
 	// printf("FPS : %ld\n", fps);
     // mlx_mouse_show(game->mlx_ptr, game->win);
+
+	// printf("FPS : %f\n", game->player.mv_speed );
+	// game->player.mv_speed = 0.1;
 
 	mlx_mouse_get_pos(game->mlx_ptr, game->win, &x, &y);
 	if (game->player.keyboard.mouse && x != SCREEN_W/2)

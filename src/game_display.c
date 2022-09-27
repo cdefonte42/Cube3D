@@ -160,8 +160,8 @@ void	draw_sprites(t_game *game)
 	double	sprite_dir = atan2(distY, distX);
 	double	angle = atan2(game->player.dir.y, game->player.dir.x);
 
-	while (sprite_dir - angle >  M_PI) sprite_dir -= 2*M_PI; 
-    while (sprite_dir - angle < -M_PI) sprite_dir += 2*M_PI;
+	while (sprite_dir - angle >  PI) sprite_dir -= 2*PI; 
+    while (sprite_dir - angle < -PI) sprite_dir += 2*PI;
 	
 	distX = game->player.pos.x - game->sprites[0].x;
 	distY = game->player.pos.y - game->sprites[0].y;
