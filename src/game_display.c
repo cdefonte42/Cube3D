@@ -147,6 +147,8 @@ void	my_mlx_pixel_put(t_img *data, int x, int y, int color)
 {
 	int	*dst;
 
+	if (x < 0 || x >= data->width || y < 0 || y >= data->height)
+		return ;
 	dst = data->data + (y * data->size_line + x * (data->bpp / 32));
 	*(unsigned int*)dst = color;
 }
@@ -169,7 +171,7 @@ void	draw_sprites(t_game *game)
 
 	int sprite_screen_size = fmin(500, SCREEN_H/sprite_dist);
 
-	int h_offset = (sprite_dir - angle)*(SCREEN_W/2)/(M_PI) + (SCREEN_W/2)/2 - sprite_screen_size/2;
+	int h_offset = (sprite_dir - angle)*(SCREEN_W/2) + (SCREEN_W/2)/2 - sprite_screen_size/2;
     int v_offset = SCREEN_H/2 - sprite_screen_size/2;
 
 	printf("sprite size = %d , h %d v %d \n", sprite_screen_size, h_offset, v_offset);
