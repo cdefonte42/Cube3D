@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 12:27:33 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/26 19:10:26 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/27 13:03:23 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,29 @@ void	my_mlx_pixel_put(t_img *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
+void	put_sprite(t_game *game, int x, int y, int size)
+{
+	int		size_line = game->img.size_line;
+	int		col;
+	int		line = 0;
+	int		line_indent = 0;
+	
+	while (line < 31)
+	{
+		line = (line_indent / size) % 32;
+		col = 0;
+		while (col < 32)
+		{
+			if (x + col < 0 || x + col >= game->img.width || y + line < 0 || y + line >= game->img.height)
+				return ;
+			game->img.data[x + col + (y + line) * size_line] = game->text_sprite[0].data[col + line * game->text_sprite[0].size_line];
+			++col;
+		}
+		++y;
+		line_indent += 32;
+	}
+}
+
 void	draw_sprites(t_game *game)
 {
 	double	distX = game->sprites[0].x - game->player.pos.x;
@@ -166,13 +189,13 @@ void	draw_sprites(t_game *game)
 	distX = game->player.pos.x - game->sprites[0].x;
 	distY = game->player.pos.y - game->sprites[0].y;
 
-	double	sprite_dist = sqrt(pow(distX, 2.0) + pow (distY, 2.0));
+	double	sprite_dist = sqrt(pow(distX, 2.0) + pow(distY, 2.0));
 //	printf("angle = %f et dist = %f\n", sprite_dir, sprite_dist);
 
-	int sprite_screen_size = fmin(500, SCREEN_H/sprite_dist);
+	int sprite_screen_size = fmin(2000, SCREEN_H/sprite_dist);
 
-	int h_offset = (sprite_dir - angle)*(SCREEN_W/2) + (SCREEN_W/2)/2 - sprite_screen_size/2;
-    int v_offset = SCREEN_H/2 - sprite_screen_size/2;
+	int h_offset = (sprite_dir - angle)*(SCREEN_W/2) + SCREEN_W/2;// - sprite_screen_size/2;
+    int v_offset = SCREEN_H/2;// - sprite_screen_size/2;
 
 	printf("sprite size = %d , h %d v %d \n", sprite_screen_size, h_offset, v_offset);
 
@@ -180,8 +203,11 @@ void	draw_sprites(t_game *game)
         if (i<0 || i>=SCREEN_W/2) continue;
         for (int j=0; j<sprite_screen_size; j++) {
             if (j<0 || j>=SCREEN_H) continue;
-            my_mlx_pixel_put(&game->img, SCREEN_H/2 + h_offset+i, v_offset+j, RED);
-			//game->img.data[SCREEN_H/2 + h_offset+i + v_offset+(j*game->img.bpp/4)] = 0xFF0000;
+            int color = game->text_sprite[0].data[i * 32 / sprite_screen_size +  (j * 32 / sprite_screen_size) * game->text_sprite[0].size_line];
+			if (((color >> 24) & 0xFF) != 0xFF)
+				my_mlx_pixel_put(&game->img, h_offset+i, v_offset+j, color);
+//	put_sprite(game, h_offset, v_offset, sprite_screen_size * game->cube_size);
+//			game->img.data[SCREEN_H/2 + h_offset+i + v_offset+(j*game->img.bpp/4)] = 0xFF0000;
         }
     }
 }
