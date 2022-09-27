@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/26 19:11:49 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/27 16:50:49 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,6 +208,13 @@ typedef struct s_map	// AFFICHAGE DE LA MINIMAP
 	t_state	state;	// Permet de cacher / afficher si on / off la grde map
 }			t_map;
 
+typedef struct s_sprite
+{
+	t_pos	pos;
+	double	dist;
+	double	dir;
+}				t_sprite;
+
 typedef struct s_game
 {
 	void		*mlx_ptr;
@@ -222,7 +229,9 @@ typedef struct s_game
 							// joueur. A une taille de fenetre maxi!
 	t_texture	*text;		// tableau d'au moins 4 texture (Nord, Sud, Est, Ouest);
 	t_texture	text_sprite[4];
-	t_pos		*sprites;
+	t_sprite	*sprites;
+	int			nb_sprites;
+	int			*sort_sprite;
 	double		colision;	// distance max en map unit a laquelle le player
 							// peut s'approcher des murss
 	int			floor_color;

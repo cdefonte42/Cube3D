@@ -6,13 +6,15 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 12:27:33 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/27 15:13:21 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/27 17:01:34 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cubed.h"
 
-void	draw_sprites(t_game *game);
+void	draw_sprite(t_game *game, t_sprite sprite, double angle);
+void	set_sprites_datas(t_game *game, double angle);
+void	sort_sprites(t_game *game);
 
 /* Calcule la hauteur "percue" du mur (si loin, petit, et inversement).
 Correction du fish eye grace a la projection (cos(a)) de la distance du hit 
@@ -126,7 +128,15 @@ void	draw_game(t_game *game)
 		interval.inf, game->ceiling_color);
 		++col;
 	}
-	draw_sprites(game);
+	double	angle = atan2(game->player.dir.y, game->player.dir.x);
+	set_sprites_datas(game, angle);
+	sort_sprites(game);
+	int		i = game->nb_sprites - 1;
+	while (i >= 0)
+	{
+		draw_sprite(game, game->sprites[game->sort_sprite[i]], angle);
+		--i;
+	}
 }
 
 
@@ -141,38 +151,80 @@ void	my_mlx_pixel_put(t_img *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-void	draw_sprites(t_game *game)
+void	set_sprites_datas(t_game *game, double angle)
 {
-	double	distX = game->sprites[0].x - game->player.pos.x;
-	double	distY = game->sprites[0].y - game->player.pos.y;
-	double	sprite_dir = atan2(distY, distX);
-	double	angle = atan2(game->player.dir.y, game->player.dir.x);
+	t_sprite	*head;
+	double		px;
+	double		py;
+	int			i;
 
-	while (sprite_dir - angle >  PI) sprite_dir -= 2*PI; 
-    while (sprite_dir - angle < -PI) sprite_dir += 2*PI;
-	
-	distX = game->player.pos.x - game->sprites[0].x;
-	distY = game->player.pos.y - game->sprites[0].y;
-
-	printf("distX = %f Y = %f\n", distX, distY);
-
-	double	sprite_dist = sqrt(pow(distX, 2.0) + pow(distY, 2.0));
-
-	int sprite_screen_size = fmin(SCREEN_H, SCREEN_H/(sprite_dist * 2));
-
-	int h_offset = (sprite_dir - angle)*(SCREEN_W) + SCREEN_W/2 - sprite_screen_size/2;
-    int v_offset = SCREEN_H/2;// - sprite_screen_size/2;
-
-	printf("dist = %f, %f, sprite size = %d , h %d v %d \n", game->player.rays[v_offset + 0].hit_point.dist, sprite_dist, sprite_screen_size, h_offset, v_offset);
-	for (int i=0; i<sprite_screen_size; i++)
+	px = game->player.pos.x;
+	py = game->player.pos.y;
+	i = 0;
+	while (i < game->nb_sprites)
 	{
-		if (h_offset + i<0 ||h_offset + i>=SCREEN_W) continue;
-		if (game->player.rays[h_offset + i].hit_point.dist < sprite_dist * game->cube_size) continue;
-		for (int j=0; j<sprite_screen_size; j++) {
+		head = &(game->sprites[i]);
+		head->dir = atan2(head->pos.y - py, head->pos.x - px);
+		while (head->dir - angle > PI)
+			head->dir -= 2*PI; 
+		while (head->dir - angle < -PI)
+			head->dir += 2*PI;
+		head->dist = sqrt(pow(px - head->pos.x, 2.0) + pow(py - head->pos.y, 2.0));
+		++i;
+	}
+}
+
+/* Remplit un tableau d'index, tries par rapport a la distance des sprites (dist
+de chaque sprite par rapport au joueur). Tri du plus loin (premier index) au 
+plus proche. */
+void	sort_sprites(t_game *game)
+{
+	int			i;
+	int			j;
+	int			id;
+
+	i = 0;
+	while (i < game->nb_sprites)
+	{
+		j = 0;
+		id = 0;
+		while (j < game->nb_sprites)
+		{
+			if (game->sprites[i].dist > game->sprites[j].dist && i != j)
+			{
+				++id;
+			}
+			++j;
+		}
+		game->sort_sprite[i] = id;
+		++i;
+	}
+	i = 0;
+	while (i < game->nb_sprites)
+	{
+		printf("index sorted sprite = %d ", game->sort_sprite[i]);
+		++i;
+	}
+	printf("\n");
+}
+
+void	draw_sprite(t_game *game, t_sprite sprite, double angle)
+{
+	int sprite_screen_size = fmin(SCREEN_H, SCREEN_H/(sprite.dist * 2));
+
+	int h_offset = (sprite.dir - angle)*(SCREEN_W) + SCREEN_W/2 - sprite_screen_size/2;
+    int v_offset = SCREEN_H/2;
+
+	for (int i=0; i < sprite_screen_size; i++)
+	{
+		if (h_offset + i<0 || h_offset + i >= SCREEN_W) continue;
+		if (game->player.rays[h_offset + i].hit_point.dist < sprite.dist * game->cube_size) continue;
+		for (int j=0; j < sprite_screen_size; j++)
+		{
 			if (v_offset + j < 0 || v_offset + j >= SCREEN_H) continue;
 			int color = game->text_sprite[0].data[i * 32 / sprite_screen_size +  (j * 32 / sprite_screen_size) * game->text_sprite[0].size_line];
 			if (((color >> 24) & 0xFF) != 0xFF)
-				my_mlx_pixel_put(&game->img, h_offset+i, v_offset+j, fog_texture(color, sprite_dist * game->cube_size));
+				my_mlx_pixel_put(&game->img, h_offset+i, v_offset+j, fog_texture(color, sprite.dist * game->cube_size));
 		}
 	}
 }
