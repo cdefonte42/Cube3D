@@ -6,7 +6,7 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 14:12:21 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/09/27 18:17:32 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/28 10:40:02 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 int	init_sprites_text(t_game *game)
 {
 	int		i;
-	char	*path[4];
+	char	*path[6];
 
 	i = 0;
-	ft_memcpy(path, (char *[4]){"img/sprites_1.xpm", "img/sprites_2.xpm", \
-	"img/sprites_3.xpm", "img/sprites_4.xpm"}, sizeof(char *) * 4);
-	while (i < 4)
+	ft_memcpy(path, (char *[6]){"img/GoldCoinSprite/coin1.xpm", "img/GoldCoinSprite/coin2.xpm", \
+	"img/GoldCoinSprite/coin3.xpm", "img/GoldCoinSprite/coin4.xpm", "img/GoldCoinSprite/coin5.xpm", "img/GoldCoinSprite/coin6.xpm"}, sizeof(char *) * 6);
+	while (i < 6)
 	{
 		game->text_sprite[i].ptr = mlx_xpm_file_to_image(game->mlx_ptr, \
 		path[i], &game->text_sprite[i].width, &game->text_sprite[i].height);
@@ -31,11 +31,5 @@ int	init_sprites_text(t_game *game)
 		game->text_sprite[i].size_line /= 4;
 		++i;
 	}
-	// A CHANGER SELON PARSING MAP NB ENNEMIES
-//	game->nb_sprites = 2;
-//	game->sprites = ft_calloc(2, sizeof(t_sprite));
-//	game->sort_sprite = ft_calloc(2, sizeof(int *));
-//	ft_memcpy(&game->sprites[0], &(t_sprite){.pos.x = 4.5, .pos.y = 2.5, .pos.z = 0.0, .dist = 0.0, .dir = 0.0}, sizeof(t_sprite));
-//	ft_memcpy(&game->sprites[1], &(t_sprite){.pos.x = 6.5, .pos.y = 2.5, .pos.z = 0.0, .dist = 0.0, .dir = 0.0}, sizeof(t_sprite));
 	return (0);
 }

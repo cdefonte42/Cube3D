@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/27 16:50:49 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/28 10:40:36 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,7 +228,7 @@ typedef struct s_game
 	t_img		minimap;	// Copie de map mais en mini: centre sur le 
 							// joueur. A une taille de fenetre maxi!
 	t_texture	*text;		// tableau d'au moins 4 texture (Nord, Sud, Est, Ouest);
-	t_texture	text_sprite[4];
+	t_texture	text_sprite[6];
 	t_sprite	*sprites;
 	int			nb_sprites;
 	int			*sort_sprite;

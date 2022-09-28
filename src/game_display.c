@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 12:27:33 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/27 21:59:37 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/28 10:40:13 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,7 +232,7 @@ void	draw_sprite(t_game *game, t_sprite sprite, double angle)
 		for (int j=0; j < sprite_screen_size; j++)
 		{
 			if (v_offset + j < 0 || v_offset + j >= SCREEN_H) continue;
-			int		time_id = tick % 4;
+			int		time_id = tick % 6;
 //			int		time_id = tmp % 4;
 			int color = game->text_sprite[time_id].data[i * 32 / sprite_screen_size +  (j * 32 / sprite_screen_size) * game->text_sprite[time_id].size_line];
 			if (((color >> 24) & 0xFF) != 0xFF)
