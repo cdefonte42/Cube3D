@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 17:54:24 by mbraets           #+#    #+#             */
-/*   Updated: 2022/09/28 16:08:07 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/28 17:25:07 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,9 @@ void	change_state_door(t_game *game, t_ray ray)
 
 	x = (int)ray.hit_point.pos[grid].x / game->cube_size;
 	y = (int)ray.hit_point.pos[grid].y / game->cube_size;
-	if ((ray.hit_point.type == vline) && ray.step_x <= 0)
+	if (ray.step_y == 0 && ray.step_x <= 0)
 		--x;
-	if ((ray.hit_point.type == hline) && ray.step_y <= 0)
+	if (ray.step_x == 0 && ray.step_y <= 0)
 		--y;
 	if (game->map.tab[y][x] == 'O')
 		game->map.tab[y][x] = 'C';
@@ -100,13 +100,15 @@ void	space_hook(t_game *game)
 
 	ray = game->player.rays[SCREEN_W / 2 -1];
 	if (ray.hit_point.type == door && ray.hit_point.dist <= game->cube_size)
-	{
 		change_state_door(game, ray);
-	}
 	else
 	{
 		set_ray_steps(game, &ray);
 		next_hit_point(&ray);
+		if (ray.hit_point.type == vline)
+			ray.step_y = 0;
+		else
+			ray.step_x = 0;
 		if (check_hit_point_is_door(game, ray) == true)
 			change_state_door(game, ray);
 	}

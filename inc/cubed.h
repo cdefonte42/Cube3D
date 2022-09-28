@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/28 15:18:09 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/28 17:18:45 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -324,6 +324,7 @@ void	set_ray_steps(t_game *game, t_ray *ray);
 void	next_hit_point(t_ray *ray);
 void	set_wall_hit_point(t_game *game, t_ray *ray);
 bool	check_hit_point_is_door(t_game *game, t_ray ray);
+void	set_htpt_dist(t_ray *ray);
 
 /* _________ VECTORS UTILS _______*/
 t_pos	rotate_vector(struct s_coord from, double angle);
