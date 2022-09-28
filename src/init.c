@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 14:13:54 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/27 14:55:47 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/28 14:31:12 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	init_map(t_game *game, char **argv)
 	int		nb_pixel_x;
 	int		nb_pixel_y;
 
-	game->text = ft_calloc(sizeof(t_texture), 4);
+	game->text = ft_calloc(sizeof(t_texture), nb_textures);
 	if (!map_parsing(game, argv[1]))
 		return (-1);
 	// game->map.tab = ft_clean_map(argc, argv); // A PROTEGER
@@ -121,7 +121,7 @@ int	init_textures(t_game *game)
 	int	i;
 
 	i = 0;
-	while (i < 4)
+	while (i < door)
 	{
 		game->text[i].ptr = mlx_xpm_file_to_image(game->mlx_ptr, \
 	game->text[i].path, &game->text[i].width, &game->text[i].height);
@@ -132,6 +132,14 @@ int	init_textures(t_game *game)
 		game->text[i].size_line /= 4;
 		i++;
 	}
+	// TODO: Replace by cb_new_img : init_bonus
+	game->text[i].ptr = mlx_xpm_file_to_image(game->mlx_ptr, \
+game->text[i].path, &game->text[i].width, &game->text[i].height);
+	if (!game->text[i].ptr)
+		return (error("loading wall img", NULL), -1);
+	game->text[i].data = (int *)mlx_get_data_addr(game->text[i].ptr, \
+	&game->text[i].bpp, &game->text[i].size_line, &game->text[i].endian);
+	game->text[i].size_line /= 4;
 	revert_texture(game, wwall);
 	revert_texture(game, swall);
 

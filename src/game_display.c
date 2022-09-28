@@ -122,6 +122,7 @@ void	draw_game(t_game *game)
 			hpwall = 1.0;
 		get_interval(&(interval.inf), &(interval.sup), game->img, hpwall);
 		draw_buff_texture(game, col, interval, hpwall);
+//		draw_door(game, col, interval, hpwall);
 		draw_floor(&(game->img.data[col + interval.sup]), \
 		game->img.size_line, img_pixl_max - interval.sup, game->floor_color);
 		draw_sky(&(game->img.data[col]), game->img.size_line, \

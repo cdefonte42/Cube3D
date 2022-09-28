@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:07:19 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/26 15:04:54 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/28 16:01:28 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 int	loop_hook(t_game *game);
 int	press_hook(int key, t_game *game);
+int	release_hook(int key, t_game *game);
 int	in_hook(t_game *game);
 int	out_hook(t_game *game);
 
@@ -62,7 +63,7 @@ int	main(int argc, char **argv)
 		return (ft_exit(&game), 1);
     // mlx_mouse_hide(game.mlx_ptr, game.win);
 	mlx_hook(game.win, KeyPress, KeyPressMask, &press_hook, &game);
-	mlx_hook(game.win, KeyRelease, KeyReleaseMask, &press_hook, &game);
+	mlx_hook(game.win, KeyRelease, KeyReleaseMask, &release_hook, &game);
 	mlx_hook(game.win, FocusIn, FocusChangeMask, &in_hook, &game);
 	mlx_hook(game.win, FocusOut, FocusChangeMask, &out_hook, &game);
 	mlx_mouse_hook(game.win, NULL, NULL);
