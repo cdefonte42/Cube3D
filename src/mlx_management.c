@@ -14,35 +14,27 @@
 
 #include "socket.h"
 
-static void	clear_texture(t_game *game)
+static void	clear_texture(void *mlx_ptr, t_texture *textures, int size, bool al)
 {
 	int	i;
 
 	i = 0;
-	if (game->text)
+	while (i < size)
 	{
-		while (i < nb_textures)
-		{
-			free(game->text[i].path);
-			if (game->text[i].ptr)
-				mlx_destroy_image(game->mlx_ptr, game->text[i].ptr);
-			++i;
-		}
-		free(game->text);
+		if (textures[i].path != NULL)
+			free(textures[i].path);
+		if (textures[i].ptr)
+			mlx_destroy_image(mlx_ptr, textures[i].ptr);
+		++i;
 	}
+	if (al)
+		free(textures);
 }
 
 static void	exit_bonus(t_game *game)
 {
-	int	i;
-
-	i = 0;
-	while (i < 6)
-	{
-		if (game->bonus.text_sp[i].ptr)
-			mlx_destroy_image(game->mlx_ptr, game->bonus.text_sp[i].ptr);
-		++i;
-	}
+	clear_texture(game->mlx_ptr, game->bonus.text_sp[player], 1, false);
+	clear_texture(game->mlx_ptr, game->bonus.text_sp[coin], 6, false);
 	if (game->bonus.sort_sp)
 		free(game->bonus.sort_sp);
 	if (game->bonus.sps)
@@ -64,7 +56,7 @@ int	ft_exit(t_game *game)
 	if (!game)
 		return (0);
 	exit_bonus(game);
-	clear_texture(game);
+	clear_texture(game->mlx_ptr, game->text, nb_textures, true);
 	if (game->player.rays)
 		free(game->player.rays);
 	if (game->img.ptr)

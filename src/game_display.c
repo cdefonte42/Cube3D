@@ -14,7 +14,7 @@
 #include <sys/time.h>
 #include <time.h>
 
-void	draw_sprite(t_game *game, t_sprite sprite, double angle, int anim_id);
+void	draw_sprite(t_game *game, t_sprite *sprite, double angle);
 void	set_sprites_datas(t_game *game, double angle);
 void	sort_sprites(t_game *game);
 
@@ -132,10 +132,9 @@ void	draw_game(t_game *game)
 	set_sprites_datas(game, angle);
 	sort_sprites(game);
 	int		i = game->bonus.nb_sp - 1;
-	game->bonus.anim_id = (game->bonus.anim_id+1) % 6;
 	while (i >= 0)
 	{
-		draw_sprite(game, game->bonus.sps[game->bonus.sort_sp[i]], angle, game->bonus.anim_id);
+		draw_sprite(game, &game->bonus.sps[game->bonus.sort_sp[i]], angle);
 		--i;
 	}
 }
@@ -200,25 +199,23 @@ void sort_sprites(t_game *game)
 	}
 }
 
-void	draw_sprite(t_game *game, t_sprite sprite, double angle, int anim_id)
+void	draw_sprite(t_game *game, t_sprite *sprite, double angle)
 {
-	int sprite_screen_size = fmin(SCREEN_H, SCREEN_H/(sprite.dist * 2));
+	int sprite_screen_size = fmin(SCREEN_H, SCREEN_H/(sprite->dist * 2));
 
-	int h_offset = (sprite.dir - angle)*(SCREEN_W)/game->player.fov + SCREEN_W/2 - sprite_screen_size/2;
+	int h_offset = (sprite->dir - angle)*(SCREEN_W)/game->player.fov + SCREEN_W/2 - sprite_screen_size/2;
     int v_offset = SCREEN_H/2 + 24;
-
+	sprite->anim_id = (sprite->anim_id+1) % sprite->anim_size;
 	for (int i=0; i < sprite_screen_size; ++i)
 	{
 		if (h_offset + i < 0 || h_offset + i >= SCREEN_W) continue;
-		if (game->player.rays[h_offset + i].hit_point.dist < sprite.dist * game->cube_size) continue;
+		if (game->player.rays[h_offset + i].hit_point.dist < sprite->dist * game->cube_size) continue;
 		for (int j=0; j < sprite_screen_size; j++)
 		{
 			if (v_offset + j < 0 || v_offset + j >= SCREEN_H) continue;
-//			int		time_id = tick % 6;
-//			int		time_id = tmp % 4;
-			int color = game->bonus.text_sp[anim_id].data[i * 32 / sprite_screen_size +  (j * 32 / sprite_screen_size) * game->bonus.text_sp[anim_id].size_line];
+			int color = game->bonus.text_sp[sprite->type][sprite->anim_id].data[i * 32 / sprite_screen_size +  (j * 32 / sprite_screen_size) * game->bonus.text_sp[sprite->type][sprite->anim_id].size_line];
 			if (((color >> 24) & 0xFF) != 0xFF)
-				my_mlx_pixel_put(&game->img, h_offset+i, v_offset+j, fog_texture(color, sprite.dist * game->cube_size));
+				my_mlx_pixel_put(&game->img, h_offset+i, v_offset+j, fog_texture(color, sprite->dist * game->cube_size));
 		}
 	}
 }

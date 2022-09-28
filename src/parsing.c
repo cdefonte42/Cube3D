@@ -13,7 +13,7 @@
 #include "parsing.h"
 
 #ifdef BONUS
-
+// Count how many sprites are in the map + 4 for the players
 static void	count_sprite(t_game *game, char *line)
 {
 	int		i;
@@ -103,7 +103,7 @@ static bool	is_cub(char *file)
 }
 
 #ifdef BONUS
-
+// +4 for the playersNb
 static bool init_sprite(t_game *game)
 {
 	int		i;
@@ -111,14 +111,14 @@ static bool init_sprite(t_game *game)
 	int		k;
 
 	i = 0;
-	printf("nn %d\n", game->bonus.nb_sp);
+	game->bonus.nb_sp += 4;
 	game->bonus.sps = ft_calloc(game->bonus.nb_sp, sizeof(t_sprite));
 	if (game->bonus.sps == NULL)
 		return (false);
 	game->bonus.sort_sp = ft_calloc(game->bonus.nb_sp, sizeof(int));
 	if (game->bonus.sort_sp == NULL)
 		return (false);
-	k = 0;
+	k = 4;
 	while (i < game->map.height)
 	{
 		j = 0;
@@ -128,6 +128,8 @@ static bool init_sprite(t_game *game)
 			{
 				game->bonus.sps[k].pos.x = j + 0.5;
 				game->bonus.sps[k].pos.y = i + 0.5;
+				game->bonus.sps[k].type = coin;
+				game->bonus.sps[k].anim_size = 6;
 				++k;
 			}
 			++j;

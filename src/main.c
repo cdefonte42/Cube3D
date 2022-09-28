@@ -58,7 +58,8 @@ int	main(int argc, char **argv)
 	
 //	mlx_hook(game.map.win, 2, 1L<<0, &key_hook, &game);
 	#ifdef BONUS
-	init_sprites_text(&game);
+	if (!init_sprites_text(&game))
+		return (ft_exit(&game), 1);
     // mlx_mouse_hide(game.mlx_ptr, game.win);
 	mlx_hook(game.win, KeyPress, KeyPressMask, &press_hook, &game);
 	mlx_hook(game.win, KeyRelease, KeyReleaseMask, &press_hook, &game);

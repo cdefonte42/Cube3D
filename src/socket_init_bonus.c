@@ -58,8 +58,8 @@ bool	get_pos(t_game *game)
 		{
 			// int id = atoi(game->bonus.buf);
 			int id = ft_atoi(game->bonus.buf+2);
-			game->bonus.players[id].pos.x = ft_atof(game->bonus.buf+4);
-			game->bonus.players[id].pos.y = ft_atof(ft_strchr(game->bonus.buf+4, ':')+1);
+			game->bonus.sps[id].pos.x = ft_atof(game->bonus.buf+4);
+			game->bonus.sps[id].pos.y = ft_atof(ft_strchr(game->bonus.buf+4, ':')+1);
 		}
 	}
 	ft_bzero(game->bonus.buf, sizeof(char)*50);
@@ -154,9 +154,10 @@ static int read_server(t_game *game, char *buffer)
 		perror("read()");
 		ft_exit(game);
 	}
-
-	buffer[n] = 0;
-
+	if (n < 50)
+		buffer[n] = 0;
+	else
+		buffer[49] = 0;
 	return n;
 }
 

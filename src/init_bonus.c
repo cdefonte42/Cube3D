@@ -12,31 +12,71 @@
 
 #include "cubed.h"
 
-int	init_sprites_text(t_game *game)
+static bool	cb_load_mlx_image(void *mlx_ptr, char *path, t_texture *texture)
+{
+	texture->ptr = mlx_xpm_file_to_image(mlx_ptr,
+	path, &texture->width, &texture->height);
+	if (!texture->ptr)
+		return (false);
+	texture->data = (int *)mlx_get_data_addr(texture->ptr, \
+	&texture->bpp, &texture->size_line, &texture->endian);
+	texture->size_line /= 4;
+	return (true);
+}
+
+static bool	init_coin_sprites(t_game *game)
 {
 	int		i;
-	char	*path[6];
+	char	*path[COINS_NB];
 
 	i = 0;
-
-	ft_memcpy(path, (char *[6]){"img/GoldCoinSprite/coin1.xpm", "img/GoldCoinSprite/coin2.xpm", \
-	"img/GoldCoinSprite/coin3.xpm", "img/GoldCoinSprite/coin4.xpm", "img/GoldCoinSprite/coin5.xpm", "img/GoldCoinSprite/coin6.xpm"}, sizeof(char *) * 6);
-	while (i < 6)
+	ft_memcpy(path, (char *[COINS_NB]){"img/GoldCoinSprite/coin1.xpm", \
+	"img/GoldCoinSprite/coin2.xpm", "img/GoldCoinSprite/coin3.xpm", \
+	"img/GoldCoinSprite/coin4.xpm", "img/GoldCoinSprite/coin5.xpm", \
+	"img/GoldCoinSprite/coin6.xpm"}, sizeof(char *) * COINS_NB);
+	while (i < COINS_NB)
 	{
-		game->bonus.text_sp[i].ptr = mlx_xpm_file_to_image(game->mlx_ptr, \
-		path[i], &game->bonus.text_sp[i].width, &game->bonus.text_sp[i].height);
-		if (!game->bonus.text_sp[i].ptr)
-			return (error("loading sprites img", NULL), -1);
-		game->bonus.text_sp[i].data = (int *)mlx_get_data_addr(game->bonus.text_sp[i].ptr, \
-		&game->bonus.text_sp[i].bpp, &game->bonus.text_sp[i].size_line, &game->bonus.text_sp[i].endian);
-		game->bonus.text_sp[i].size_line /= 4;
+		if (!cb_load_mlx_image(game->mlx_ptr, path[i], \
+		&game->bonus.text_sp[coin][i]))
+			return (error("loading sprites img", NULL));
 		++i;
 	}
+	return (true);
+}
+
+static bool	init_ply_sprites(t_game *game)
+{
+	int		i;
+	char	*path[PLAYERS_NB];
+
+	i = 0;
+	ft_memcpy(path, (char *[PLAYERS_NB]){"img/GoldCoinSprite/coin4.xpm"}, \
+	sizeof(char *) * PLAYERS_NB);
+	while (i < PLAYERS_NB)
+	{
+		if (!cb_load_mlx_image(game->mlx_ptr, path[i], \
+		&game->bonus.text_sp[player][i]))
+			return (error("loading sprites img", NULL));
+		++i;
+	}
+	return (true);
+}
+
+bool	init_sprites_text(t_game *game)
+{
+	int	i;
+
+	if (!init_coin_sprites(game))
+		return (false);
+	if (!init_ply_sprites(game))
+		return (false);
 	i = 0;
 	while (i < game->bonus.nb_sp)
 	{
 		game->bonus.sort_sp[i] = i;
+		if (game->bonus.sps[i].anim_size == 0)
+			game->bonus.sps[i].anim_size = 1;
 		++i;
 	}
-	return (0);
+	return (true);
 }

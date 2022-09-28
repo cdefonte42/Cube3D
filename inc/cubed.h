@@ -46,6 +46,13 @@
 #  define VIEW_HEIGHT 32
 # endif
 
+# define COINS_SIZE 32
+# define COINS_NB 6
+
+# define PLAYER_SIZE 32
+# define PLAYERS_NB 1
+
+
 /*
 DIR			(x, y, z) in grid et map sys: (z vers ecran)	+------> x
 NORTH	=	(0, -1, 0);										|
@@ -90,6 +97,12 @@ typedef enum e_state
 	off,
 	on
 }			t_state;
+
+typedef enum e_type_sprites
+{
+	player,
+	coin,
+}			t_sp_type;
 
 /* Enum pour une paire de int (int[2]) avec interval inf index 0 etc. */
 typedef struct s_interval
@@ -211,9 +224,12 @@ typedef struct s_map	// AFFICHAGE DE LA MINIMAP
 
 typedef struct s_sprite
 {
-	t_pos	pos;
-	double	dist;
-	double	dir;
+	t_pos		pos;
+	double		dist;
+	double		dir;
+	t_sp_type	type;
+	int			anim_id;
+	int			anim_size;
 }				t_sprite;
 
 typedef struct s_bonus
@@ -221,12 +237,10 @@ typedef struct s_bonus
 	int			sock;
 	fd_set		rdfs;
 	char		*buf;
-	t_sprite	players[4];
 
 	long		tick;
-	int			anim_id;
 	t_sprite	*sps;
-	t_texture	text_sp[6];
+	t_texture	text_sp[2][6];
 	int			nb_sp;
 	int			*sort_sp;
 }				t_bonus;
@@ -353,7 +367,7 @@ bool	error(char *, const char *);
 bool	map_parsing(t_game *, char *);
 
 /* ______ Init bonus ____*/
-int		init_sprites_text(t_game *game);
+bool	init_sprites_text(t_game *game);
 
 /* 			FOG			*/
 
