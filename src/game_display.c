@@ -18,6 +18,28 @@ void	draw_sprite(t_game *game, t_sprite *sprite, double angle);
 void	set_sprites_datas(t_game *game, double angle);
 void	sort_sprites(t_game *game);
 
+#ifndef BONUS
+
+void	draw_sprite(t_game *game, t_sprite *sprite, double angle)
+{
+	(void) game;
+	(void) sprite;
+	(void) angle;
+}
+
+void	set_sprites_datas(t_game *game, double angle)
+{
+	(void) game;
+	(void) angle;
+}
+
+void	sort_sprites(t_game *game)
+{
+	(void) game;
+}
+
+#endif
+
 /* Calcule la hauteur "percue" du mur (si loin, petit, et inversement).
 Correction du fish eye grace a la projection (cos(a)) de la distance du hit 
 point sur l'axe de view. */

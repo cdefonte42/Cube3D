@@ -33,7 +33,7 @@ static void	clear_texture(void *mlx_ptr, t_texture *textures, int size, bool al)
 
 static void	exit_bonus(t_game *game)
 {
-	clear_texture(game->mlx_ptr, game->bonus.text_sp[player], 1, false);
+	clear_texture(game->mlx_ptr, game->bonus.text_sp[player], 4, false);
 	clear_texture(game->mlx_ptr, game->bonus.text_sp[coin], 6, false);
 	if (game->bonus.sort_sp)
 		free(game->bonus.sort_sp);

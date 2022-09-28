@@ -74,10 +74,10 @@ void	sort_sprites(t_game *game)
 	}
 }
 
-static void	draw_sprite_pixels(t_game *game, t_sprite *sprite)
-{
-	
-} 
+// static void	draw_sprite_pixels(t_game *game, t_sprite *sprite)
+// {
+
+// } 
 
 void	draw_sprite(t_game *game, t_sprite *sprite, double angle)
 {
@@ -95,14 +95,14 @@ void	draw_sprite(t_game *game, t_sprite *sprite, double angle)
 	v_offset = SCREEN_H / 2 + 24;
 	size = game->bonus.text_sp[sprite->type][sprite->anim_id].height;
 	sprite->anim_id = (sprite->anim_id + 1) % sprite->anim_size;
-	i = 0;
-	while (i < sprite_screen_size - size)
+	i = -1;
+	while (++i < sprite_screen_size)
 	{
 		if ((h_offset + i < 0 || h_offset + i >= SCREEN_W) || (game->player.\
 rays[h_offset + i].hit_point.dist < sprite->dist * game->cube_size))
 			continue ;
-		j = 0;
-		while (j < sprite_screen_size - size)
+		j = -1;
+		while (++j < sprite_screen_size)
 		{
 			if (v_offset + j < 0 || v_offset + j >= SCREEN_H)
 				continue ;
@@ -112,8 +112,6 @@ rays[h_offset + i].hit_point.dist < sprite->dist * game->cube_size))
 			if (((color >> 24) & 0xFF) != 0xFF)
 				cb_put_pixel(&game->img, h_offset + i, v_offset + j, \
 				fog_texture(color, sprite->dist * game->cube_size));
-			++j;
 		}
-		++i;
 	}
 }
