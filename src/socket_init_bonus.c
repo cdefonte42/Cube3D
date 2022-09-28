@@ -45,7 +45,11 @@ bool	get_pos(t_game *game)
 			printf("Server disconnected !\n");
 			return (false);
 		}
-		game->bonus.buf[n] = '\0';
+
+		if (n < 50)
+			game->bonus.buf[n] = 0;
+		else
+			game->bonus.buf[49] = 0;
 		if (game->bonus.buf[0] == 'n')
 		{
 			printf("New player with id %d !\n", ft_atoi(game->bonus.buf+2));
