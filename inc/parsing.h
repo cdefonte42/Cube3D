@@ -30,7 +30,7 @@ enum e_mapflags
 };
 
 /* UTILS */
-bool	error(char *reason, char *suffix);
+bool	error(char *reason, const char *suffix);
 bool	is_wall(char *line);
 bool	is_color(int *color, char *line);
 bool	is_path(t_game *game, int flag, char *line);

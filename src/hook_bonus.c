@@ -28,15 +28,17 @@ int	loop_hook(t_game *game)
 	int				x;
 	int				y;
 
-	if (!get_pos(game))
-		return (ft_exit(game));
-
-	if ( is_press_key(game->player.keyboard))
+	if (game->sock > 0)
 	{
-		if (!send_pos(game))
-			return (ft_exit(game));
+		if (!get_pos(game))
+			ft_exit(game);
+
+		if (is_press_key(game->player.keyboard))
+		{
+			if (!send_pos(game))
+				ft_exit(game);
+		}
 	}
-	
 	current_ticks = clock();
 
 	refresh_game(game);
@@ -63,6 +65,10 @@ int	loop_hook(t_game *game)
 			(x-SCREEN_W/2)/(double)360);
 		// printf("%d\n", (x-SCREEN_W/2));
 	}
+	if (game->player.keyboard.shift)
+		game->player.mv_speed = 0.2;
+	else
+		game->player.mv_speed = 0.1;
 	if (game->player.keyboard.w)
 	{
 		back_front_mvx(game, 1, game->colision);
@@ -100,6 +106,7 @@ int	press_hook(int keycode, t_game *game)
 		game->player.keyboard.right = !game->player.keyboard.right;
 	else if (keycode == L_ARW)
 		game->player.keyboard.left = !game->player.keyboard.left;
+
 	if (keycode == W_KEY)
 		game->player.keyboard.w = !game->player.keyboard.w;
 	else if (keycode == S_KEY)
@@ -108,6 +115,8 @@ int	press_hook(int keycode, t_game *game)
 		game->player.keyboard.a = !game->player.keyboard.a;
 	else if (keycode == D_KEY)
 		game->player.keyboard.d = !game->player.keyboard.d;
+	if (keycode == SHIFT)
+		game->player.keyboard.shift = !game->player.keyboard.shift;
 	if (keycode == TAB)
 		game->map.state = !game->map.state;
 	return (0);

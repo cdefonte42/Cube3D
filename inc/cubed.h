@@ -147,6 +147,7 @@ typedef struct	s_keyboard
 	bool	a;
 	bool	s;
 	bool	d;
+	bool	shift;
 	bool	left;
 	bool	right;
 	bool	mouse;
@@ -258,13 +259,14 @@ typedef struct s_game
 #  define ESC				65307
 #  define TAB				0xff09
 #  define SPACE				0x0020
+#  define SHIFT				0xffe1
 # endif
 
 /*____ PARSING ____ */
 int		ft_isok_len(char **map);
 int		ft_isok_char(char **map);
 int		ft_nb_line(char *filename);
-char	**ft_clean_map(int argc, char **argv);
+char	**ft_clean_map(char **argv);
 int		ft_check_walls(char **map);
 char	**ft_new_map(char *filename, int nb_line);
 char	**ft_remove_n(char **map);
@@ -277,8 +279,8 @@ int		ft_exit(t_game *game);
 
 /* ______ INITIALISATIONS ____ */
 int		init_player(t_game *game);
-int		init_game(t_game *game, int argc, char **argv);
-int		init_map(t_game *game, int argc, char **argv);
+int		init_game(t_game *game, char **argv);
+int		init_map(t_game *game, char **argv);
 
 /*_____ UTILS __________*/
 void	ft_free_map(char **map);
@@ -328,7 +330,7 @@ void	draw_sized_ray(t_game *game, t_ray ray, int length, int color);
 void	draw_buff_texture(t_game *game, int col_screen, t_interval interval, double hpwall);
 
 /* ____ PARSING ______*/
-bool	error(char *, char *);
+bool	error(char *, const char *);
 bool	map_parsing(t_game *, char *);
 
 /* ______ Init bonus ____*/

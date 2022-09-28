@@ -37,11 +37,10 @@ int	ft_exit(t_game *game)
 {
 	if (!game)
 		return (0);
-	if (game->sock > 0)
-	{
+	if (game->buf != NULL)
 		free(game->buf);
+	if (game->sock > 0)
 		close(game->sock);
-	}
 	clear_texture(game);
 	if (game->player.rays)
 		free(game->player.rays);

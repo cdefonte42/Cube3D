@@ -20,12 +20,35 @@ int	press_hook(int key, t_game *game);
 int	in_hook(t_game *game);
 int	out_hook(t_game *game);
 
+#ifdef BONUS
+bool	check_args(int argc, char **argv, t_game *game)
+{
+	if (argc > 3 || argc < 2)
+		return (error("Invalid number of arguments", NULL));
+	if (argc == 3)
+		game->sock = init_connection(game, argv[2]);
+	printf("%d: %s\n", game->sock, game->sock >= 0 ? "Connected to server" : "Not connected to server");
+	return (true);
+}
+#else
+bool	check_args(int argc, char **argv, t_game *game)
+{
+	(void) argv;
+	(void) game;
+	if (argc != 2)
+		return (error("Invalid number of arguments", NULL));
+	return (true);
+}
+#endif
+
 int	main(int argc, char **argv)
 {
 	t_game	game;
 
 	ft_bzero(&game, sizeof(t_game));
-	if (init_game(&game, argc, argv) == -1)
+	if (check_args(argc, argv, &game) == false)
+		return (1);
+	if (init_game(&game, argv) == -1)
 		return (ft_exit(&game), 1);
 	init_sprites_text(&game);
 	refresh_game(&game);
@@ -38,9 +61,8 @@ int	main(int argc, char **argv)
 	
 //	mlx_hook(game.map.win, 2, 1L<<0, &key_hook, &game);
 	#ifdef BONUS
-	game.sock = init_connection(&game, "127.0.0.1");
 
-    mlx_mouse_hide(game.mlx_ptr, game.win);
+    // mlx_mouse_hide(game.mlx_ptr, game.win);
 	mlx_hook(game.win, KeyPress, KeyPressMask, &press_hook, &game);
 	mlx_hook(game.win, KeyRelease, KeyReleaseMask, &press_hook, &game);
 	mlx_hook(game.win, FocusIn, FocusChangeMask, &in_hook, &game);

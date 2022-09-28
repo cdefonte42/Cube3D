@@ -6,13 +6,13 @@
 #include "socket.h"
 #include "cubed.h"
 
-static int	read_server(SOCKET sock, char *buffer);
-static void	write_server(SOCKET sock, const char *buffer);
+static int	read_server(t_game *game, char *buffer);
+static void	write_server(t_game *game, const char *buffer);
 
 bool	send_pos(t_game *game)
 {
-	sprintf(game->buf, "%f:%f", game->player.pos.x, game->player.pos.y);
-	write_server(game->sock, game->buf);
+	sprintf(game->buf, "%f:%f", game->player.pos.x, game->player.pos.y); // TODO: replace sprintf
+	write_server(game, game->buf);
 	// if(send(game->sock, msg, strlen(msg), 0) < 0)
 	// {
 	// 	free(msg);
@@ -33,13 +33,13 @@ bool	get_pos(t_game *game)
 	if((ret = select(game->sock + 1, &game->rdfs, NULL, NULL, &(struct timeval){})) < 0)
 	{
 		perror("select()");
-		exit(errno);
+		ft_exit(game);
 	}
 	if (FD_ISSET(game->sock, &game->rdfs))
 	{
 		if (game->buf == NULL)
 			return (false);
-		int n = read_server(game->sock, game->buf);
+		int n = read_server(game, game->buf);
 		if(n == 0)
 		{
 			printf("Server disconnected !\n");
@@ -57,9 +57,10 @@ bool	get_pos(t_game *game)
 		else if (game->buf[0] == 'p')
 		{
 			// int id = atoi(game->buf);
-			int id = 0;
-			game->sprites[id].x = ft_atof(game->buf+2);
-			game->sprites[id].y = ft_atof(ft_strchr(game->buf+2, ':')+1);
+			int id = ft_atoi(game->buf+2);
+			id = 0;
+			game->sprites[id].x = ft_atof(game->buf+4);
+			game->sprites[id].y = ft_atof(ft_strchr(game->buf+4, ':')+1);
 		}
 	}
 	ft_bzero(game->buf, sizeof(char)*50);
@@ -69,41 +70,32 @@ bool	get_pos(t_game *game)
 
 int init_connection(t_game *game, const char *address)
 {
-	SOCKET sock = socket(AF_INET, SOCK_STREAM, 0);
-	SOCKADDR_IN sin = { 0 };
+	SOCKET		sock;
+	SOCKADDR_IN	sin = { 0 };
 
 	struct hostent *hostinfo;
-
+	sock = socket(AF_INET, SOCK_STREAM, 0);
 	if(sock == INVALID_SOCKET)
 	{
 		perror("socket()");
 		exit(errno);
 	}
-
 	hostinfo = gethostbyname(address);
 	if (hostinfo == NULL)
 	{
-		fprintf (stderr, "Unknown host %s.\n", address);
+		error("Unknown host", address);
 		exit(EXIT_FAILURE);
 	}
-
 	sin.sin_addr = *(IN_ADDR *) hostinfo->h_addr_list[0];
 	sin.sin_port = htons(PORT);
 	sin.sin_family = AF_INET;
-
 	if(connect(sock,(SOCKADDR *) &sin, sizeof(SOCKADDR)) == SOCKET_ERROR)
 	{
 		perror("connect()");
 		exit(errno);
 	}
 	game->buf = ft_calloc(sizeof(char), 50);
-
 	return sock;
-}
-
-void end_connection(int sock)
-{
-	closesocket(sock);
 }
 
 // static void app(SOCKET sock, const char *name)
@@ -127,7 +119,7 @@ void end_connection(int sock)
 // 		if(select(sock + 1, &rdfs, NULL, NULL, NULL) == -1)
 // 		{
 // 			perror("select()");
-// 			exit(errno);
+// 			ft_exit(errno);
 // 		}
 
 // 		/* something from standard input : i.e keyboard */
@@ -154,14 +146,14 @@ void end_connection(int sock)
 // }
 
 
-static int read_server(SOCKET sock, char *buffer)
+static int read_server(t_game *game, char *buffer)
 {
 	int n = 0;
 
-	if((n = recv(sock, buffer, 50, 0)) < 0)
+	if((n = read(game->sock, buffer, 50)) < 0)
 	{
-		perror("recv()");
-		exit(errno);
+		perror("read()");
+		ft_exit(game);
 	}
 
 	buffer[n] = 0;
@@ -169,12 +161,12 @@ static int read_server(SOCKET sock, char *buffer)
 	return n;
 }
 
-static void write_server(SOCKET sock, const char *buffer)
+static void write_server(t_game *game, const char *buffer)
 {
-	if(send(sock, buffer, strlen(buffer), 0) < 0)
+	if(write(game->sock, buffer, strlen(buffer)) < 0)
 	{
 		perror("send()");
-		exit(errno);
+		ft_exit(game);
 	}
 }
 
@@ -183,8 +175,8 @@ static void write_server(SOCKET sock, const char *buffer)
 // 	if(argc < 2)
 // 	{
 // 		printf("Usage : %s [address] [pseudo]\n", argv[0]);
-// 		return EXIT_FAILURE;
+// 		return ft_exit_FAILURE;
 // 	}
 
-// 	return EXIT_SUCCESS;
+// 	return ft_exit_SUCCESS;
 // }

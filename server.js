@@ -35,7 +35,7 @@ function sendMessageToAllClients(message, author) {
 	for (var i = 0; i < clients.length; i++) {
 		if (author == null || clients[i].port != author.port) {
 			clients[i].socket.write(message);
-			console.log(i, message);
+			// console.log(i, message);
 		}
 	}
 }

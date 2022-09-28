@@ -32,13 +32,11 @@ int	init_minimap(t_game *game)
 	return (0);
 }
 
-int	init_map(t_game *game, int argc, char **argv)
+int	init_map(t_game *game, char **argv)
 {
 	int		nb_pixel_x;
 	int		nb_pixel_y;
 
-	if (argc != 2)
-		return (error("Invalid number of arguments", NULL), -1);
 	game->text = ft_calloc(sizeof(t_texture), 4);
 	if (!map_parsing(game, argv[1]))
 		return (-1);
@@ -140,7 +138,7 @@ int	init_textures(t_game *game)
 	return (0);
 }
 
-int	init_game(t_game *game, int argc, char **argv)
+int	init_game(t_game *game, char **argv)
 {
 	game->width = SCREEN_W;
 	game->height = SCREEN_H;
@@ -149,7 +147,7 @@ int	init_game(t_game *game, int argc, char **argv)
 	game->mlx_ptr = mlx_init();
 	if (!game->mlx_ptr)
 		return (-1);
-	if (init_map(game, argc, argv) == -1)
+	if (init_map(game, argv) == -1)
 		return (-1);
 	if (init_textures(game) == -1)
 		return (-1);

@@ -31,7 +31,7 @@ static void	app(SOCKET sock, const char *name);
 static void	end_connection(int sock);
 */
 
-void	end_connection(int sock);
+// void	end_connection(int sock);
 int		init_connection(t_game *game, const char *address);
 bool	get_pos(t_game *game);
 bool	send_pos(t_game *game);
