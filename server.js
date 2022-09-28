@@ -67,7 +67,7 @@ var server = net.createServer(function(socket) {
 	});
 
 	socket.on('data', function(data) {
-		console.log(C.Cyan+`Client data ${client.id}: ${data}`);
+		// console.log(C.Cyan+`Client data ${client.id}: ${data}`);
 		
 		if (clients.length > 1) {
 			

@@ -46,11 +46,9 @@
 #  define VIEW_HEIGHT 32
 # endif
 
-# define COINS_SIZE 32
 # define COINS_NB 6
 
-# define PLAYER_SIZE 32
-# define PLAYERS_NB 1
+# define PLAYERS_NB 4
 
 
 /*

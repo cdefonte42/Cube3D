@@ -205,6 +205,7 @@ void	draw_sprite(t_game *game, t_sprite *sprite, double angle)
 
 	int h_offset = (sprite->dir - angle)*(SCREEN_W)/game->player.fov + SCREEN_W/2 - sprite_screen_size/2;
     int v_offset = SCREEN_H/2 + 24;
+	int	size = game->bonus.text_sp[sprite->type][sprite->anim_id].height;
 	sprite->anim_id = (sprite->anim_id+1) % sprite->anim_size;
 	for (int i=0; i < sprite_screen_size; ++i)
 	{
@@ -213,7 +214,7 @@ void	draw_sprite(t_game *game, t_sprite *sprite, double angle)
 		for (int j=0; j < sprite_screen_size; j++)
 		{
 			if (v_offset + j < 0 || v_offset + j >= SCREEN_H) continue;
-			int color = game->bonus.text_sp[sprite->type][sprite->anim_id].data[i * 32 / sprite_screen_size +  (j * 32 / sprite_screen_size) * game->bonus.text_sp[sprite->type][sprite->anim_id].size_line];
+			int color = game->bonus.text_sp[sprite->type][sprite->anim_id].data[i * size / sprite_screen_size +  (j * size / sprite_screen_size) * game->bonus.text_sp[sprite->type][sprite->anim_id].size_line];
 			if (((color >> 24) & 0xFF) != 0xFF)
 				my_mlx_pixel_put(&game->img, h_offset+i, v_offset+j, fog_texture(color, sprite->dist * game->cube_size));
 		}

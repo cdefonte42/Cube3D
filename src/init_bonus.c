@@ -50,7 +50,8 @@ static bool	init_ply_sprites(t_game *game)
 	char	*path[PLAYERS_NB];
 
 	i = 0;
-	ft_memcpy(path, (char *[PLAYERS_NB]){"img/GoldCoinSprite/coin4.xpm"}, \
+	ft_memcpy(path, (char *[PLAYERS_NB]){"img/player-0.xpm", "img/player-1.xpm",
+	"img/player-2.xpm", "img/player-3.xpm"}, \
 	sizeof(char *) * PLAYERS_NB);
 	while (i < PLAYERS_NB)
 	{
@@ -75,7 +76,7 @@ bool	init_sprites_text(t_game *game)
 	{
 		game->bonus.sort_sp[i] = i;
 		if (game->bonus.sps[i].anim_size == 0)
-			game->bonus.sps[i].anim_size = 1;
+			game->bonus.sps[i].anim_size = 4;
 		++i;
 	}
 	return (true);
