@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/28 10:40:36 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/28 11:37:22 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,6 +236,9 @@ typedef struct s_game
 							// peut s'approcher des murss
 	int			floor_color;
 	int			ceiling_color;
+
+	long		tick;
+	int			anim_id;
 }				t_game;
 
 # if defined(__APPLE__) && defined(__MACH__)

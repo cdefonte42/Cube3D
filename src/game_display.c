@@ -6,14 +6,15 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 12:27:33 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/28 10:40:13 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/28 11:39:13 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cubed.h"
+#include <sys/time.h>
 #include <time.h>
 
-void	draw_sprite(t_game *game, t_sprite sprite, double angle);
+void	draw_sprite(t_game *game, t_sprite sprite, double angle, int anim_id);
 void	set_sprites_datas(t_game *game, double angle);
 void	sort_sprites(t_game *game);
 
@@ -131,11 +132,13 @@ void	draw_game(t_game *game)
 	set_sprites_datas(game, angle);
 	sort_sprites(game);
 	int		i = game->nb_sprites - 1;
+	game->anim_id = (game->anim_id+1) % 6;
 	while (i >= 0)
 	{
-		draw_sprite(game, game->sprites[game->sort_sprite[i]], angle);
+		draw_sprite(game, game->sprites[game->sort_sprite[i]], angle, game->anim_id);
 		--i;
 	}
+
 }
 
 
@@ -176,54 +179,78 @@ void	set_sprites_datas(t_game *game, double angle)
 /* Remplit un tableau d'index, tries par rapport a la distance des sprites (dist
 de chaque sprite par rapport au joueur). Tri du plus loin (premier index) au 
 plus proche. */
-void	sort_sprites(t_game *game)
-{
-	int			l;
-	int			p;
-	int			idell;
+//void	sort_sprites(t_game *game)
+//{
+//	int			l;
+//	int			p;
+//	int			idell;
+//
+//	l = 0;
+//	while (l < game->nb_sprites)
+//	{
+//		p = 0;
+//		idell = 0;
+//		while (p < game->nb_sprites)
+//		{
+//			if (game->sprites[l].dist > game->sprites[p].dist && l != p)
+//				++idell;
+//			else if (fabs(game->sprites[l].dist - game->sprites[p].dist) < 0.0000001 && l > p)
+//				++idell;
+//			++p;
+//		}
+//		game->sort_sprite[l] = idell;
+//		++l;
+//	}
+//	int		i;
+//	int		j;
+//	i = 0;
+//	int	tmp;
+//	while (i + 1 < game->nb_sprites)
+//	{
+//		j = game->sort_sprite[i];
+//		if (game->sprites[j].dist > game->sprites[game->sort_sprite[i + 1]].dist)
+//		{
+//			tmp = game->sort_sprite[i];
+//			game->sort_sprite[i] = game->sort_sprite[i + 1];
+//			game->sort_sprite[i + 1] = tmp;
+//			i = 0;
+//		}
+//		++i;
+//	}
+//}
 
-	l = 0;
-	while (l < game->nb_sprites)
-	{
-		p = 0;
-		idell = 0;
-		while (p < game->nb_sprites)
-		{
-			if (game->sprites[l].dist > game->sprites[p].dist && l != p)
-				++idell;
-			else if (fabs(game->sprites[l].dist - game->sprites[p].dist) < 0.0000001 && l > p)
-				++idell;
-			++p;
-		}
-		game->sort_sprite[l] = idell;
-		++l;
-	}
-	int		i;
-	int		j;
+void sort_sprites(t_game *game)
+{
+	int i;
+	int j;
+	int tmp;
+	int	*orders;
+
 	i = 0;
-	int	tmp;
-	while (i + 1 < game->nb_sprites)
+	orders = game->sort_sprite;
+	while (i < game->nb_sprites)
 	{
-		j = game->sort_sprite[i];
-		if (game->sprites[j].dist > game->sprites[game->sort_sprite[i + 1]].dist)
+		j = i + 1;
+		while (j < game->nb_sprites)
 		{
-			tmp = game->sort_sprite[i];
-			game->sort_sprite[i] = game->sort_sprite[i + 1];
-			game->sort_sprite[i + 1] = tmp;
-			i = 0;
+			if (game->sprites[orders[i]].dist > game->sprites[orders[j]].dist)
+			{
+				tmp = orders[i];
+				orders[i] = orders[j];
+				orders[j] = tmp;
+			}
+			j++;
 		}
-		++i;
+		i++;
 	}
 }
 
-void	draw_sprite(t_game *game, t_sprite sprite, double angle)
+void	draw_sprite(t_game *game, t_sprite sprite, double angle, int anim_id)
 {
-	clock_t		tick = clock();
-//	time_t		tmp = time(NULL);
 	int sprite_screen_size = fmin(SCREEN_H, SCREEN_H/(sprite.dist * 2));
 
 	int h_offset = (sprite.dir - angle)*(SCREEN_W)/game->player.fov + SCREEN_W/2 - sprite_screen_size/2;
-    int v_offset = SCREEN_H/2;
+    int v_offset = SCREEN_H/2 + 24;
 
 	for (int i=0; i < sprite_screen_size; ++i)
 	{
@@ -232,9 +259,9 @@ void	draw_sprite(t_game *game, t_sprite sprite, double angle)
 		for (int j=0; j < sprite_screen_size; j++)
 		{
 			if (v_offset + j < 0 || v_offset + j >= SCREEN_H) continue;
-			int		time_id = tick % 6;
+//			int		time_id = tick % 6;
 //			int		time_id = tmp % 4;
-			int color = game->text_sprite[time_id].data[i * 32 / sprite_screen_size +  (j * 32 / sprite_screen_size) * game->text_sprite[time_id].size_line];
+			int color = game->text_sprite[anim_id].data[i * 32 / sprite_screen_size +  (j * 32 / sprite_screen_size) * game->text_sprite[anim_id].size_line];
 			if (((color >> 24) & 0xFF) != 0xFF)
 				my_mlx_pixel_put(&game->img, h_offset+i, v_offset+j, fog_texture(color, sprite.dist * game->cube_size));
 		}

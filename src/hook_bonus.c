@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 17:54:24 by mbraets           #+#    #+#             */
-/*   Updated: 2022/09/22 15:20:08 by mbraets          ###   ########.fr       */
+/*   Updated: 2022/09/28 11:43:11 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 int	loop_hook(t_game *game)
 {
-	static clock_t	current_ticks;
-	static clock_t	delta_ticks;
+	clock_t	current_ticks;
+	clock_t	delta_ticks;
 	//static clock_t	fps = 0;
 	int				x;
 	int				y;
@@ -73,6 +73,7 @@ int	loop_hook(t_game *game)
 	if (game->player.keyboard.right)
 		game->player.dir = rotate_vector(game->player.dir,
 				game->player.rot_speed);
+	game->tick++; // TODO: Unused
 	return (0);
 }
 
