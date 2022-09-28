@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 14:13:54 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/19 12:22:44 by mbraets          ###   ########.fr       */
+/*   Updated: 2022/09/28 14:31:12 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,12 @@ int	init_minimap(t_game *game)
 
 
 #ifdef BONUS
-int	init_map(t_game *game, int argc, char **argv)
+int	init_map(t_game *game, char **argv)
 {
 	int		nb_pixel_x;
 	int		nb_pixel_y;
 
-	if (argc != 2)
-		return (error("Invalid number of arguments", NULL), -1);
-	game->text = ft_calloc(sizeof(t_texture), 4);
+	game->text = ft_calloc(sizeof(t_texture), nb_textures);
 	if (!map_parsing(game, argv[1]))
 		return (-1);
 	// game->map.tab = ft_clean_map(argc, argv); // A PROTEGER
@@ -80,11 +78,9 @@ int	init_map(t_game *game, int argc, char **argv)
 	return (0);
 }
 #else
-int	init_map(t_game *game, int argc, char **argv)
+int	init_map(t_game *game, char **argv)
 {
-	if (argc != 2)
-		return (error("Invalid number of arguments", NULL), -1);
-	game->text = ft_calloc(sizeof(t_texture), 4);
+	game->text = ft_calloc(sizeof(t_texture), nb_textures);
 	if (!map_parsing(game, argv[1]))
 		return (-1);
 	// game->map.tab = ft_clean_map(argc, argv); // A PROTEGER
@@ -96,7 +92,7 @@ int	init_map(t_game *game, int argc, char **argv)
 
 int	init_player(t_game *game)
 {
-	game->player.fov = (120.0 * PI) / 180.0;
+	game->player.fov = (70.0 * PI) / 180.0;
 	game->player.dist_screen = (game->width / 2) / tan(game->player.fov / 2);
 	// Replace = 2.5 by += .5 to spawn in the middle
 	game->player.pos.x += 0.5; //exprime en map unit, soit *64 pour pixels
@@ -114,51 +110,68 @@ int	init_player(t_game *game)
 	return (0);
 }
 
+static void	revert_texture(t_game *game, int i)
+{
+	int			j;
+	int			k;
+	int			tmp;
+	t_texture	*text;
+
+	text = &game->text[i];
+	j = 0;
+	while (j < text->width / 2)
+	{
+	k = 0;
+		while (k < text->height)
+		{
+			tmp = text->data[k * text->width + j];
+			text->data[k * text->width + j] = text->data[k * text->width + \
+			text->width - j - 1];
+			text->data[k * text->width + text->width - j - 1] = tmp;
+			k++;
+		}
+		j++;
+	}
+}
+
 /* Cree les pointeurs images sur des xpm files avec mlx_xpm_file_to_image(), et
 remplit le int *data tableau contenant les pixels values. */
 // NOTE : pas beau, copie colle, d'ou l'interet de rajouter un char *filename
 // a la structure s_img 
 int	init_textures(t_game *game)
 {
-	// game->text = malloc(sizeof(t_texture) * nb_textures);
-	// if (!game->text)
-		// return (-1);
-	
-	game->text[wwall].ptr = mlx_xpm_file_to_image(game->mlx_ptr, \
-game->text[wwall].path, &game->text[wwall].width, &game->text[wwall].height);
-	if (!game->text[wwall].ptr)
-		return (error("loading wall img", NULL), -1);
-	game->text[wwall].data = (int *)mlx_get_data_addr(game->text[wwall].ptr, \
-	&game->text[wwall].bpp, &game->text[wwall].size_line, &game->text[wwall].endian);
-	game->text[wwall].size_line /= 4;
+	int	i;
 
-	game->text[ewall].ptr = mlx_xpm_file_to_image(game->mlx_ptr, \
-game->text[ewall].path, &game->text[ewall].width, &game->text[ewall].height);
-	if (!game->text[ewall].ptr)
+	i = 0;
+	while (i < door)
+	{
+		game->text[i].ptr = mlx_xpm_file_to_image(game->mlx_ptr, \
+	game->text[i].path, &game->text[i].width, &game->text[i].height);
+		if (!game->text[i].ptr)
+			return (error("loading wall img", NULL), -1);
+		game->text[i].data = (int *)mlx_get_data_addr(game->text[i].ptr, \
+		&game->text[i].bpp, &game->text[i].size_line, &game->text[i].endian);
+		game->text[i].size_line /= 4;
+		i++;
+	}
+	revert_texture(game, wwall);
+	revert_texture(game, swall);
+	#ifndef BONUS
+	return (0);
+	#endif
+	// TODO: Replace by cb_new_img : init_bonus
+	game->text[i].ptr = mlx_xpm_file_to_image(game->mlx_ptr, \
+"img/door_64.xpm", &game->text[i].width, &game->text[i].height);
+	if (!game->text[i].ptr)
 		return (error("loading wall img", NULL), -1);
-	game->text[ewall].data = (int *)mlx_get_data_addr(game->text[ewall].ptr, \
-	&game->text[ewall].bpp, &game->text[ewall].size_line, &game->text[ewall].endian);
-	game->text[ewall].size_line /= 4;
+	game->text[i].data = (int *)mlx_get_data_addr(game->text[i].ptr, \
+	&game->text[i].bpp, &game->text[i].size_line, &game->text[i].endian);
+	game->text[i].size_line /= 4;
 
-	game->text[nwall].ptr = mlx_xpm_file_to_image(game->mlx_ptr, \
-game->text[nwall].path, &game->text[nwall].width, &game->text[nwall].height);
-	if (!game->text[nwall].ptr)
-		return (error("loading wall img", NULL), -1);
-	game->text[nwall].data = (int *)mlx_get_data_addr(game->text[nwall].ptr, \
-	&game->text[nwall].bpp, &game->text[nwall].size_line, &game->text[nwall].endian);
-	game->text[nwall].size_line /= 4;
-
-	game->text[swall].ptr = mlx_xpm_file_to_image(game->mlx_ptr, \
-game->text[swall].path, &game->text[swall].width, &game->text[swall].height);
-	if (!game->text[swall].ptr)
-		return (error("loading wall img", NULL), -1);
-	game->text[swall].data = (int *)mlx_get_data_addr(game->text[swall].ptr, \
-	&game->text[swall].bpp, &game->text[swall].size_line, &game->text[swall].endian);
-	game->text[swall].size_line /= 4;
 	return (0);
 }
 
-int	init_game(t_game *game, int argc, char **argv)
+int	init_game(t_game *game, char **argv)
 {
 	game->width = SCREEN_W;
 	game->height = SCREEN_H;
@@ -167,7 +180,7 @@ int	init_game(t_game *game, int argc, char **argv)
 	game->mlx_ptr = mlx_init();
 	if (!game->mlx_ptr)
 		return (-1);
-	if (init_map(game, argc, argv) == -1)
+	if (init_map(game, argv) == -1)
 		return (-1);
 	if (init_textures(game) == -1)
 		return (-1);

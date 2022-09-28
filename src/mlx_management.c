@@ -6,27 +6,47 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:32:55 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/22 15:12:13 by mbraets          ###   ########.fr       */
+/*   Updated: 2022/09/28 16:07:55 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cubed.h"
 
-static void	clear_texture(t_game *game)
+#include "socket.h"
+
+static void	clear_texture(void *mlx_ptr, t_texture *textures, int size, bool al)
 {
 	int	i;
 
 	i = 0;
-	if (game->text)
+	while (i < size)
 	{
-		while (i < nb_textures)
-		{
-			free(game->text[i].path);
-			if (game->text[i].ptr)
-				mlx_destroy_image(game->mlx_ptr, game->text[i].ptr);
-			++i;
-		}
-		free(game->text);
+		if (textures[i].path != NULL)
+			free(textures[i].path);
+		if (textures[i].ptr)
+			mlx_destroy_image(mlx_ptr, textures[i].ptr);
+		++i;
+	}
+	if (al)
+		free(textures);
+}
+
+static void	exit_bonus(t_game *game)
+{
+	clear_texture(game->mlx_ptr, game->bonus.text_sp[player], 4, false);
+	clear_texture(game->mlx_ptr, game->bonus.text_sp[coin], 6, false);
+	if (game->bonus.sort_sp)
+		free(game->bonus.sort_sp);
+	if (game->bonus.sps)
+		free(game->bonus.sps);
+	if (game->bonus.buf != NULL)
+		free(game->bonus.buf);
+	if (game->bonus.sock > 0)
+		close(game->bonus.sock);
+	if (game->mlx_ptr && game->win)
+	{
+		mlx_mouse_show(game->mlx_ptr, game->win);
+		mlx_do_key_autorepeaton(game->mlx_ptr);
 	}
 }
 
@@ -35,7 +55,8 @@ int	ft_exit(t_game *game)
 {
 	if (!game)
 		return (0);
-	clear_texture(game);
+	exit_bonus(game);
+	clear_texture(game->mlx_ptr, game->text, nb_textures, true);
 	if (game->player.rays)
 		free(game->player.rays);
 	if (game->img.ptr)
@@ -48,11 +69,6 @@ int	ft_exit(t_game *game)
 		mlx_destroy_image(game->mlx_ptr, game->minimap.ptr);
 	if (game->map.tab)
 		ft_free_map_i(game->map.tab, game->map.height);
-	if (game->mlx_ptr && game->win)
-	{
-		mlx_mouse_show(game->mlx_ptr, game->win);
-		mlx_do_key_autorepeaton(game->mlx_ptr);
-	}
 	if (game->win)
 		mlx_destroy_window(game->mlx_ptr, game->win);
 	if (game->mlx_ptr)

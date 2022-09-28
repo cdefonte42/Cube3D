@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/22 12:45:29 by mbraets          ###   ########.fr       */
+/*   Updated: 2022/09/28 11:37:22 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,11 @@
 # include <stdio.h>
 
 # ifndef PI
-#  define PI 3.142857
+#  ifndef M_PI
+#   define PI 3.14159265358979323846
+#  else
+#   define PI M_PI
+#  endif
 # endif
 
 # ifndef SCREEN_W		// should be pair
@@ -41,6 +45,11 @@
 // player's sight height (usually 1/2 cubes's height)
 #  define VIEW_HEIGHT 32
 # endif
+
+# define COINS_NB 6
+
+# define PLAYERS_NB 4
+
 
 /*
 DIR			(x, y, z) in grid et map sys: (z vers ecran)	+------> x
@@ -61,12 +70,12 @@ typedef enum e_element_type
 	ewall,
 	nwall,
 	swall,
+	door,
 	nb_textures,
+	sprite,
 	hline,
 	vline,
 	apex,
-	sprite,
-	door
 }			t_type;
 
 typedef enum e_orientation
@@ -86,6 +95,12 @@ typedef enum e_state
 	off,
 	on
 }			t_state;
+
+typedef enum e_type_sprites
+{
+	player,
+	coin,
+}			t_sp_type;
 
 /* Enum pour une paire de int (int[2]) avec interval inf index 0 etc. */
 typedef struct s_interval
@@ -143,6 +158,7 @@ typedef struct	s_keyboard
 	bool	a;
 	bool	s;
 	bool	d;
+	bool	shift;
 	bool	left;
 	bool	right;
 	bool	mouse;
@@ -171,7 +187,7 @@ typedef struct s_player
 	data	:	filled by mlx_get_data_addr(); !!! Casted en int * au lieu de 
 				char *. Contient les bits de pixels;
 	bpp		:	bits per pixel also called the depth of the image
-	size_line	: number of bytes used to store one line of the image in memor
+    :x
 	endian		: little == 0; big endian == 1;
 NOTE: Peut etre ajouter un char *filename? Ne serait utile que pour les textures
 */
@@ -204,6 +220,29 @@ typedef struct s_map	// AFFICHAGE DE LA MINIMAP
 	t_state	state;	// Permet de cacher / afficher si on / off la grde map
 }			t_map;
 
+typedef struct s_sprite
+{
+	t_pos		pos;
+	double		dist;
+	double		dir;
+	t_sp_type	type;
+	int			anim_id;
+	int			anim_size;
+}				t_sprite;
+
+typedef struct s_bonus
+{
+	int			sock;
+	fd_set		rdfs;
+	char		*buf;
+
+	long		tick;
+	t_sprite	*sps;
+	t_texture	text_sp[2][6];
+	int			nb_sp;
+	int			*sort_sp;
+}				t_bonus;
+
 typedef struct s_game
 {
 	void		*mlx_ptr;
@@ -221,6 +260,9 @@ typedef struct s_game
 							// peut s'approcher des murss
 	int			floor_color;
 	int			ceiling_color;
+
+	t_bonus		bonus;
+
 }				t_game;
 
 # if defined(__APPLE__) && defined(__MACH__)
@@ -248,13 +290,14 @@ typedef struct s_game
 #  define ESC				65307
 #  define TAB				0xff09
 #  define SPACE				0x0020
+#  define SHIFT				0xffe1
 # endif
 
 /*____ PARSING ____ */
 int		ft_isok_len(char **map);
 int		ft_isok_char(char **map);
 int		ft_nb_line(char *filename);
-char	**ft_clean_map(int argc, char **argv);
+char	**ft_clean_map(char **argv);
 int		ft_check_walls(char **map);
 char	**ft_new_map(char *filename, int nb_line);
 char	**ft_remove_n(char **map);
@@ -262,13 +305,14 @@ char	**ft_remove_n(char **map);
 /*_____ MLX MANAGE __________*/
 int		key_hook(int keycode, void *param);
 int		tab_hook(int keycode, void *param);
+void	space_hook(t_game *game);
 void	refresh_game(t_game *game);
 int		ft_exit(t_game *game);
 
 /* ______ INITIALISATIONS ____ */
 int		init_player(t_game *game);
-int		init_game(t_game *game, int argc, char **argv);
-int		init_map(t_game *game, int argc, char **argv);
+int		init_game(t_game *game, char **argv);
+int		init_map(t_game *game, char **argv);
 
 /*_____ UTILS __________*/
 void	ft_free_map(char **map);
@@ -299,10 +343,13 @@ void	stepaside_mvy(t_game *game, int keycode, double limit);
 /* _________ RAYCASTING ________ */
 t_ray	get_mid_ray(t_game *game);
 void	raycasting(t_game *game);
+void	set_ray_steps(t_game *game, t_ray *ray);
 
 /*____________ HIT POINTS CALCULS _______*/
 void	next_hit_point(t_ray *ray);
 void	set_wall_hit_point(t_game *game, t_ray *ray);
+bool	check_hit_point_is_door(t_game *game, t_ray ray);
+void	set_htpt_dist(t_ray *ray);
 
 /* _________ VECTORS UTILS _______*/
 t_pos	rotate_vector(struct s_coord from, double angle);
@@ -318,7 +365,18 @@ void	draw_sized_ray(t_game *game, t_ray ray, int length, int color);
 void	draw_buff_texture(t_game *game, int col_screen, t_interval interval, double hpwall);
 
 /* ____ PARSING ______*/
-bool	error(char *, char *);
+bool	error(char *, const char *);
 bool	map_parsing(t_game *, char *);
+
+/* ______ Init bonus ____*/
+bool	init_sprites_text(t_game *game);
+
+/* 			FOG			*/
+
+/* Applied black by dist */
+int		fog_texture(int texture_color, float dist);
+/* Applied black by percentage */
+int		fog_percentage(int color, int fog, double percentage);
+
 
 #endif

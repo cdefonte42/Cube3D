@@ -6,7 +6,7 @@
 /*   By: cdefonte <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 15:22:08 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/02/05 15:44:05 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/27 23:54:54 by mbraets          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	*ft_memmove(void *dest, const void *src, size_t n);
 void	*ft_memset(void *s, int c, size_t n);
 void	ft_striteri(char *s, void (*f)(unsigned int, char*));
 void	ft_putchar_fd(char c, int fd);
-void	ft_putstr_fd(char *s, int fd);
+void	ft_putstr_fd(const char *s, int fd);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 char	*ft_strdup(const char *s);
@@ -77,5 +77,7 @@ int		ft_atoi(const char *nptr);
 char	*get_next_line(int fd);
 int		ft_isspace(int c);
 int		ft_stris(char *s, int (*f)(int));
+
+double	ft_atof(const char *s);
 
 #endif
