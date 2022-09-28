@@ -6,11 +6,17 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 18:47:18 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/28 13:10:18 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/28 14:25:52 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cubed.h"
+
+#ifdef BONUS
+# define OK_CHAR "1OC"
+#else
+# define OK_CHAR "1"
+#endif
 
 bool	check_hit_point_is_wall(t_game *game, t_ray ray)
 {
@@ -25,7 +31,7 @@ bool	check_hit_point_is_wall(t_game *game, t_ray ray)
 		--y;
 	if (x <= 0 || x >= game->map.width || y <= 0 || y >= game->map.height)
 		return (true);
-	if (game->map.tab[y][x] == '1' || game->map.tab[y][x] == 'D')
+	if (ft_strchr(OK_CHAR, game->map.tab[y][x]))
 		return (true);
 	return (false);
 }
@@ -43,7 +49,7 @@ bool	check_hit_point_is_door(t_game *game, t_ray ray)
 		--y;
 	if (x <= 0 || x >= game->map.width || y <= 0 || y >= game->map.height)
 		return (false);
-	if (game->map.tab[y][x] == 'D')
+	if (game->map.tab[y][x] == 'O' || game->map.tab[y][x] == 'C')
 		return (true);
 	return (false);
 }

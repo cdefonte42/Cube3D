@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 14:13:54 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/28 12:56:01 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/28 14:31:12 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ int	init_textures(t_game *game)
 		i++;
 	}
 	game->text[i].ptr = mlx_xpm_file_to_image(game->mlx_ptr, \
-"img/west_wall_64_64.xpm", &game->text[i].width, &game->text[i].height);
+game->text[i].path, &game->text[i].width, &game->text[i].height);
 	if (!game->text[i].ptr)
 		return (error("loading wall img", NULL), -1);
 	game->text[i].data = (int *)mlx_get_data_addr(game->text[i].ptr, \

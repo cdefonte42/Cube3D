@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 18:03:35 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/09/28 12:39:57 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/28 14:15:50 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	draw_walls(t_game *game)
 		{
 			if (game->map.tab[i][j] == '1')
 				fill_cube(game, i, j, GREY);
-			else if (game->map.tab[i][j] == 'D')
+			else if (game->map.tab[i][j] == 'O' || game->map.tab[i][j] == 'C')
 				fill_cube(game, i, j, PURPLE);
 			++j;
 		}
