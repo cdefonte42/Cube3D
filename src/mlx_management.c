@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:32:55 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/26 12:36:44 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/28 12:14:34 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	clear_texture(t_game *game)
 	i = 0;
 	if (game->text)
 	{
-		while (i < nb_textures)
+		while (i < door)
 		{
 			free(game->text[i].path);
 			if (game->text[i].ptr)

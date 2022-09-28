@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 11:50:01 by mbraets           #+#    #+#             */
-/*   Updated: 2022/09/28 10:38:08 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/28 12:54:18 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,9 @@ static bool	set_default_flags(t_game *game)
 		return (error("malloc failed", NULL));
 	game->text[ewall].path = ft_strdup("img/tech_ewall_64.xpm");
 	if (game->text[ewall].path == NULL)
+		return (error("malloc failed", NULL));
+	game->text[door].path = ft_strdup("img/east_wall_64_64.xpm");
+	if (game->text[door].path == NULL)
 		return (error("malloc failed", NULL));
 	return (true);
 }

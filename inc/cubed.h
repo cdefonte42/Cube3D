@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/28 11:37:22 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/28 12:14:02 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,12 @@ typedef enum e_element_type
 	ewall,
 	nwall,
 	swall,
+	door,
 	nb_textures,
 	sprite,
 	hline,
 	vline,
 	apex,
-	door
 }			t_type;
 
 typedef enum e_orientation
@@ -334,6 +334,7 @@ void	draw_sized_ray(t_game *game, t_ray ray, int length, int color);
 
 /* ____ TEXTURE (tests)______*/
 void	draw_buff_texture(t_game *game, int col_screen, t_interval interval, double hpwall);
+void	draw_door(t_game *game, int col_screen, t_interval interval, double hpwall);
 
 /* ____ PARSING ______*/
 bool	error(char *, char *);

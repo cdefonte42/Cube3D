@@ -6,7 +6,7 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 14:00:03 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/07/29 22:05:59 by Cyrielle         ###   ########.fr       */
+/*   Updated: 2022/09/28 13:14:50 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,14 @@ void	back_front_mvx(t_game *game, int keycode, double limit)
 		stepx = 1.0 - limit - modf(game->player.pos.x, &int_part);
 	else
 		stepx = modf(game->player.pos.x, &int_part) - limit;
-	if (fabs(mvx) < stepx || game->map.tab[(int)taby][(int)tabx] != '1')
+	if (fabs(mvx) < stepx || (game->map.tab[(int)taby][(int)tabx] != '1'
+	&& game->map.tab[(int)taby][(int)tabx] != 'D'))
 	{
 		if (fabs(mvx) < stepx
 			|| modf(game->player.pos.y, &int_part) > 5 / game->cube_size)
 			game->player.pos.x += mvx;
-		else if (game->map.tab[(int)--taby][(int)tabx] != '1')
+		else if (game->map.tab[(int)--taby][(int)tabx] != '1'
+				&& game->map.tab[(int)--taby][(int)tabx] != 'D')
 			game->player.pos.x += mvx;
 	}
 }
@@ -60,12 +62,14 @@ void	back_front_mvy(t_game *game, int keycode, double limit)
 		stepy = 1.0 - limit - modf(game->player.pos.y, &int_part);
 	else
 		stepy = modf(game->player.pos.y, &int_part) - limit;
-	if (fabs(mvy) < stepy || game->map.tab[(int)taby][(int)tabx] != '1')
+	if (fabs(mvy) < stepy || (game->map.tab[(int)taby][(int)tabx] != '1'
+	&& game->map.tab[(int)taby][(int)tabx] != 'D'))
 	{
 		if (fabs(mvy) < stepy
 			|| modf(game->player.pos.x, &int_part) > 5 / game->cube_size)
 			game->player.pos.y += mvy;
-		else if (game->map.tab[(int)taby][(int)--tabx] != '1')
+		else if (game->map.tab[(int)taby][(int)--tabx] != '1'
+				&& game->map.tab[(int)taby][(int)--tabx] != 'D')
 			game->player.pos.y += mvy;
 	}
 }
@@ -89,12 +93,14 @@ void	stepaside_mvx(t_game *game, int keycode, double limit)
 		stepx = 1.0 - limit - modf(game->player.pos.x, &int_part);
 	else
 		stepx = modf(game->player.pos.x, &int_part) - limit;
-	if (fabs(mvx) < stepx || game->map.tab[(int)taby][(int)tabx] != '1')
+	if (fabs(mvx) < stepx || (game->map.tab[(int)taby][(int)tabx] != '1'
+	&& game->map.tab[(int)taby][(int)tabx] != 'D'))
 	{
 		if (fabs(mvx) < stepx
 			|| modf(game->player.pos.y, &int_part) > 5 / game->cube_size)
 			game->player.pos.x += mvx;
-		else if (game->map.tab[(int)--taby][(int)tabx] != '1')
+		else if (game->map.tab[(int)--taby][(int)tabx] != '1'
+		&& game->map.tab[(int)--taby][(int)tabx] != 'D')
 			game->player.pos.x += mvx;
 	}
 }
@@ -118,12 +124,14 @@ void	stepaside_mvy(t_game *game, int keycode, double limit)
 		stepy = 1.0 - limit - modf(game->player.pos.y, &int_part);
 	else
 		stepy = modf(game->player.pos.y, &int_part) - limit;
-	if (fabs(mvy) < stepy || game->map.tab[(int)taby][(int)tabx] != '1')
+	if (fabs(mvy) < stepy || (game->map.tab[(int)taby][(int)tabx] != '1'
+	&& game->map.tab[(int)taby][(int)tabx] != 'D'))
 	{
 		if (fabs(mvy) < stepy
 			|| modf(game->player.pos.x, &int_part) > 5 / game->cube_size)
 			game->player.pos.y += mvy;
-		else if (game->map.tab[(int)taby][(int)--tabx] != '1')
+		else if (game->map.tab[(int)taby][(int)--tabx] != '1'
+		&& game->map.tab[(int)taby][(int)--tabx] != 'D')
 			game->player.pos.y += mvy;
 	}
 }

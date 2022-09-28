@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 13:42:49 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/22 15:50:59 by mbraets          ###   ########.fr       */
+/*   Updated: 2022/09/28 13:08:27 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ double hpwall)
 
 	ray = &(game->player.rays[col_screen]);
 	text = game->text[ray->hit_point.type];
-	if (ray->hit_point.type == nwall || ray->hit_point.type == swall)
+	if (ray->step_x == 0)
 		col_text = (int)ray->hit_point.pos[grid].x % game->cube_size;
 	else
 		col_text = (int)ray->hit_point.pos[grid].y % game->cube_size;

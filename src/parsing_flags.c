@@ -6,14 +6,14 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 17:06:35 by mbraets           #+#    #+#             */
-/*   Updated: 2022/09/27 18:02:11 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/28 12:01:28 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
 #ifdef BONUS 
-# define OK_CHARS "01NSEWX"
+# define OK_CHARS "01NSEWXD"
 #else
 # define OK_CHARS "01NSEW"
 #endif

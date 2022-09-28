@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 12:27:33 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/28 11:39:13 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/28 12:37:30 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,7 @@ void	draw_game(t_game *game)
 			hpwall = 1.0;
 		get_interval(&(interval.inf), &(interval.sup), game->img, hpwall);
 		draw_buff_texture(game, col, interval, hpwall);
+//		draw_door(game, col, interval, hpwall);
 		draw_floor(&(game->img.data[col + interval.sup]), \
 		game->img.size_line, img_pixl_max - interval.sup, game->floor_color);
 		draw_sky(&(game->img.data[col]), game->img.size_line, \
@@ -140,7 +141,6 @@ void	draw_game(t_game *game)
 	}
 
 }
-
 
 // TODO: Rename the function and move it to utils.c
 void	my_mlx_pixel_put(t_img *data, int x, int y, int color)
@@ -179,46 +179,6 @@ void	set_sprites_datas(t_game *game, double angle)
 /* Remplit un tableau d'index, tries par rapport a la distance des sprites (dist
 de chaque sprite par rapport au joueur). Tri du plus loin (premier index) au 
 plus proche. */
-//void	sort_sprites(t_game *game)
-//{
-//	int			l;
-//	int			p;
-//	int			idell;
-//
-//	l = 0;
-//	while (l < game->nb_sprites)
-//	{
-//		p = 0;
-//		idell = 0;
-//		while (p < game->nb_sprites)
-//		{
-//			if (game->sprites[l].dist > game->sprites[p].dist && l != p)
-//				++idell;
-//			else if (fabs(game->sprites[l].dist - game->sprites[p].dist) < 0.0000001 && l > p)
-//				++idell;
-//			++p;
-//		}
-//		game->sort_sprite[l] = idell;
-//		++l;
-//	}
-//	int		i;
-//	int		j;
-//	i = 0;
-//	int	tmp;
-//	while (i + 1 < game->nb_sprites)
-//	{
-//		j = game->sort_sprite[i];
-//		if (game->sprites[j].dist > game->sprites[game->sort_sprite[i + 1]].dist)
-//		{
-//			tmp = game->sort_sprite[i];
-//			game->sort_sprite[i] = game->sort_sprite[i + 1];
-//			game->sort_sprite[i + 1] = tmp;
-//			i = 0;
-//		}
-//		++i;
-//	}
-//}
-
 void sort_sprites(t_game *game)
 {
 	int i;
@@ -259,8 +219,6 @@ void	draw_sprite(t_game *game, t_sprite sprite, double angle, int anim_id)
 		for (int j=0; j < sprite_screen_size; j++)
 		{
 			if (v_offset + j < 0 || v_offset + j >= SCREEN_H) continue;
-//			int		time_id = tick % 6;
-//			int		time_id = tmp % 4;
 			int color = game->text_sprite[anim_id].data[i * 32 / sprite_screen_size +  (j * 32 / sprite_screen_size) * game->text_sprite[anim_id].size_line];
 			if (((color >> 24) & 0xFF) != 0xFF)
 				my_mlx_pixel_put(&game->img, h_offset+i, v_offset+j, fog_texture(color, sprite.dist * game->cube_size));
