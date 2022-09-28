@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/28 12:14:02 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/28 15:18:09 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -280,6 +280,7 @@ char	**ft_remove_n(char **map);
 /*_____ MLX MANAGE __________*/
 int		key_hook(int keycode, void *param);
 int		tab_hook(int keycode, void *param);
+void	space_hook(t_game *game);
 void	refresh_game(t_game *game);
 int		ft_exit(t_game *game);
 
@@ -317,10 +318,12 @@ void	stepaside_mvy(t_game *game, int keycode, double limit);
 /* _________ RAYCASTING ________ */
 t_ray	get_mid_ray(t_game *game);
 void	raycasting(t_game *game);
+void	set_ray_steps(t_game *game, t_ray *ray);
 
 /*____________ HIT POINTS CALCULS _______*/
 void	next_hit_point(t_ray *ray);
 void	set_wall_hit_point(t_game *game, t_ray *ray);
+bool	check_hit_point_is_door(t_game *game, t_ray ray);
 
 /* _________ VECTORS UTILS _______*/
 t_pos	rotate_vector(struct s_coord from, double angle);

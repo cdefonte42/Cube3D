@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 11:50:01 by mbraets           #+#    #+#             */
-/*   Updated: 2022/09/28 14:31:43 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/28 15:24:38 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,6 @@ static bool init_sprite(t_game *game)
 	int		k;
 
 	i = 0;
-	printf("nn %d\n", game->nb_sprites);
 	game->sprites = ft_calloc(game->nb_sprites, sizeof(t_sprite));
 	if (game->sprites == NULL)
 		return (false);

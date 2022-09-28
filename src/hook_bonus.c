@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 17:54:24 by mbraets           #+#    #+#             */
-/*   Updated: 2022/09/28 11:43:11 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/28 15:24:57 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,13 +95,15 @@ int	press_hook(int keycode, t_game *game)
 		game->player.keyboard.d = !game->player.keyboard.d;
 	if (keycode == TAB)
 		game->map.state = !game->map.state;
+	else if (keycode == SPACE)
+		space_hook(game);
+
 	return (0);
 }
 
 int	in_hook(t_game *game)
 {
 	(void)game;
-	printf("in hook\n");
 	game->player.keyboard.mouse = true;
 	return (0);
 }

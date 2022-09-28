@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:32:55 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/28 12:14:34 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/28 15:22:29 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,42 @@ int	tab_hook(int keycode, void *param)
 		#endif
 	}
 	return (0);
+}
+
+void	change_state_door(t_game *game, t_ray ray)
+{
+	int	x;
+	int	y;
+
+	x = (int)ray.hit_point.pos[grid].x / game->cube_size;
+	y = (int)ray.hit_point.pos[grid].y / game->cube_size;
+	if ((ray.hit_point.type == vline) && ray.step_x <= 0)
+		--x;
+	if ((ray.hit_point.type == hline) && ray.step_y <= 0)
+		--y;
+	if (game->map.tab[y][x] == 'O')
+		game->map.tab[y][x] = 'C';
+	else if (game->map.tab[y][x] == 'C')
+		game->map.tab[y][x] = 'O';
+}
+
+void	space_hook(t_game *game)
+{
+	t_ray	ray;
+
+	ray = game->player.rays[SCREEN_W / 2 -1];
+	if (ray.hit_point.type == door && ray.hit_point.dist <= game->cube_size)
+	{
+		change_state_door(game, ray);
+	}
+	else
+	{
+		set_ray_steps(game, &ray);
+		next_hit_point(&ray);
+		if (check_hit_point_is_door(game, ray) == true)
+			change_state_door(game, ray);
+	}
+
 }
 
 void	dispatch_player_move(t_game *game, int keycode)

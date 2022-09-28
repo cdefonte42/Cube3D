@@ -6,14 +6,14 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 18:47:18 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/28 14:25:52 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/28 14:34:13 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cubed.h"
 
 #ifdef BONUS
-# define OK_CHAR "1OC"
+# define OK_CHAR "1C"
 #else
 # define OK_CHAR "1"
 #endif

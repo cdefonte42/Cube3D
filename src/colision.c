@@ -6,14 +6,14 @@
 /*   By: Cyrielle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 14:00:03 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/28 14:24:11 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/28 14:34:42 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cubed.h"
 
 #ifdef BONUS
-# define BLOCK_CHARS "1OC"
+# define BLOCK_CHARS "1C"
 #else
 # define BLOCK_CHARS "1"
 #endif
