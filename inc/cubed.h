@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/26 19:11:49 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/28 11:37:22 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,6 +209,28 @@ typedef struct s_map	// AFFICHAGE DE LA MINIMAP
 	t_state	state;	// Permet de cacher / afficher si on / off la grde map
 }			t_map;
 
+typedef struct s_sprite
+{
+	t_pos	pos;
+	double	dist;
+	double	dir;
+}				t_sprite;
+
+typedef struct s_bonus
+{
+	int			sock;
+	fd_set		rdfs;
+	char		*buf;
+	t_sprite	players[4];
+
+	long		tick;
+	int			anim_id;
+	t_sprite	*sps;
+	t_texture	text_sp[6];
+	int			nb_sp;
+	int			*sort_sp;
+}				t_bonus;
+
 typedef struct s_game
 {
 	void		*mlx_ptr;
@@ -222,16 +244,13 @@ typedef struct s_game
 	t_img		minimap;	// Copie de map mais en mini: centre sur le 
 							// joueur. A une taille de fenetre maxi!
 	t_texture	*text;		// tableau d'au moins 4 texture (Nord, Sud, Est, Ouest);
-	t_texture	text_sprite[4];
-	t_pos		*sprites;
 	double		colision;	// distance max en map unit a laquelle le player
 							// peut s'approcher des murss
 	int			floor_color;
 	int			ceiling_color;
 
-	int			sock;
-	fd_set		rdfs;
-	char		*buf;
+	t_bonus		bonus;
+
 }				t_game;
 
 # if defined(__APPLE__) && defined(__MACH__)

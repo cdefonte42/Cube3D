@@ -26,8 +26,7 @@ bool	check_args(int argc, char **argv, t_game *game)
 	if (argc > 3 || argc < 2)
 		return (error("Invalid number of arguments", NULL));
 	if (argc == 3)
-		game->sock = init_connection(game, argv[2]);
-	printf("%d: %s\n", game->sock, game->sock >= 0 ? "Connected to server" : "Not connected to server");
+		game->bonus.sock = init_connection(game, argv[2]);
 	return (true);
 }
 #else
@@ -50,8 +49,6 @@ int	main(int argc, char **argv)
 		return (1);
 	if (init_game(&game, argv) == -1)
 		return (ft_exit(&game), 1);
-	init_sprites_text(&game);
-	refresh_game(&game);
 	mlx_key_hook(game.win, key_hook, &game);
 	mlx_key_hook(game.win, tab_hook, &game);
 //	mlx_key_hook(game.map.win, key_hook, &game);
@@ -61,7 +58,7 @@ int	main(int argc, char **argv)
 	
 //	mlx_hook(game.map.win, 2, 1L<<0, &key_hook, &game);
 	#ifdef BONUS
-
+	init_sprites_text(&game);
     // mlx_mouse_hide(game.mlx_ptr, game.win);
 	mlx_hook(game.win, KeyPress, KeyPressMask, &press_hook, &game);
 	mlx_hook(game.win, KeyRelease, KeyReleaseMask, &press_hook, &game);
@@ -71,6 +68,7 @@ int	main(int argc, char **argv)
 	mlx_do_key_autorepeatoff(game.mlx_ptr); // no difference seen with or without this line
 	mlx_loop_hook(game.mlx_ptr, loop_hook, &game);
 	#endif
+	refresh_game(&game);
 	mlx_loop(game.mlx_ptr);
 
 	ft_exit(&game);

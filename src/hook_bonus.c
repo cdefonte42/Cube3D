@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 17:54:24 by mbraets           #+#    #+#             */
-/*   Updated: 2022/09/22 15:20:08 by mbraets          ###   ########.fr       */
+/*   Updated: 2022/09/28 11:43:11 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,13 @@ static inline bool is_press_key(t_keyboard keyboard)
 
 int	loop_hook(t_game *game)
 {
-	static clock_t	current_ticks;
-	static clock_t	delta_ticks;
+	clock_t	current_ticks;
+	clock_t	delta_ticks;
 	//static clock_t	fps = 0;
 	int				x;
 	int				y;
 
-	if (game->sock > 0)
+	if (game->bonus.sock > 0)
 	{
 		if (!get_pos(game))
 			ft_exit(game);
@@ -66,7 +66,7 @@ int	loop_hook(t_game *game)
 		// printf("%d\n", (x-SCREEN_W/2));
 	}
 	if (game->player.keyboard.shift)
-		game->player.mv_speed = 0.2;
+		game->player.mv_speed = 0.4;
 	else
 		game->player.mv_speed = 0.1;
 	if (game->player.keyboard.w)
@@ -95,6 +95,7 @@ int	loop_hook(t_game *game)
 	if (game->player.keyboard.right)
 		game->player.dir = rotate_vector(game->player.dir,
 				game->player.rot_speed);
+	game->bonus.tick++; // TODO: Unused
 	return (0);
 }
 

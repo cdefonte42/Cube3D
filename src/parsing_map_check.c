@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing_map.c                                      :+:      :+:    :+:   */
+/*   parsing_map_check.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 17:06:40 by mbraets           #+#    #+#             */
-/*   Updated: 2022/09/15 17:29:27 by mbraets          ###   ########.fr       */
+/*   Updated: 2022/09/27 17:44:12 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,17 @@ static bool	check_side(t_game *game, int y, int x)
 	return (false);
 }
 
+#ifdef BONUS
+static inline bool	is_character(char c)
+{
+	return (c == '0' || isplayer(c) || c == 'X');
+}
+#else
+static inline bool	is_character(char c)
+{
+	return (c == '0' || isplayer(c));
+}
+#endif
 bool	map_check(t_game *game) // TODO: Removing debug info, Dont work with \t
 {
 	int	i;
@@ -57,7 +68,7 @@ bool	map_check(t_game *game) // TODO: Removing debug info, Dont work with \t
 		j = 0;
 		while (j < game->map.width)
 		{
-			if (game->map.tab[i][j] == '0' || isplayer(game->map.tab[i][j])) // || game->map.tab[i][j] == '2' pour bonus ?
+			if (is_character(game->map.tab[i][j]))
 			{
 				if (i == 0 || i == game->map.height - 1 || j == 0 || \
 				j == game->map.width - 1)

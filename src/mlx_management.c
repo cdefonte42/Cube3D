@@ -32,15 +32,38 @@ static void	clear_texture(t_game *game)
 	}
 }
 
+static void	exit_bonus(t_game *game)
+{
+	int	i;
+
+	i = 0;
+	while (i < 6)
+	{
+		if (game->bonus.text_sp[i].ptr)
+			mlx_destroy_image(game->mlx_ptr, game->bonus.text_sp[i].ptr);
+		++i;
+	}
+	if (game->bonus.sort_sp)
+		free(game->bonus.sort_sp);
+	if (game->bonus.sps)
+		free(game->bonus.sps);
+	if (game->bonus.buf != NULL)
+		free(game->bonus.buf);
+	if (game->bonus.sock > 0)
+		close(game->bonus.sock);
+	if (game->mlx_ptr && game->win)
+	{
+		mlx_mouse_show(game->mlx_ptr, game->win);
+		mlx_do_key_autorepeaton(game->mlx_ptr);
+	}
+}
+
 /*Appellee quand red cross clicked ou ESC press*/
 int	ft_exit(t_game *game)
 {
 	if (!game)
 		return (0);
-	if (game->buf != NULL)
-		free(game->buf);
-	if (game->sock > 0)
-		close(game->sock);
+	exit_bonus(game);
 	clear_texture(game);
 	if (game->player.rays)
 		free(game->player.rays);
@@ -54,11 +77,6 @@ int	ft_exit(t_game *game)
 		mlx_destroy_image(game->mlx_ptr, game->minimap.ptr);
 	if (game->map.tab)
 		ft_free_map_i(game->map.tab, game->map.height);
-	if (game->mlx_ptr && game->win)
-	{
-		mlx_mouse_show(game->mlx_ptr, game->win);
-		mlx_do_key_autorepeaton(game->mlx_ptr);
-	}
 	if (game->win)
 		mlx_destroy_window(game->mlx_ptr, game->win);
 	if (game->mlx_ptr)
