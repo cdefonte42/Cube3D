@@ -50,7 +50,7 @@ int	init_map(t_game *game)
 	int		nb_pixel_x;
 	int		nb_pixel_y;
 
-	game->map.state = off;
+	game->map.state = false;
 	game->map.rcube_size = 16;
 	game->map.ratio = (double)game->map.rcube_size / (double)game->cube_size;
 	nb_pixel_x = game->map.width * game->map.rcube_size + 1;

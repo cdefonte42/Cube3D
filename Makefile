@@ -49,7 +49,9 @@ SRCS		=	$(addprefix $(SRC_DIR),\
 ifeq ($(BONUS),true)
 	CFLAGS		+=	-DBONUS
 	SRCS		+=  $(addprefix $(SRC_DIR),\
-					hook_bonus.c socket_bonus.c socket_init_bonus.c init_bonus.c)
+					hook_bonus.c socket_bonus.c socket_init_bonus.c \
+					init_bonus.c loop_bonus.c \
+					door_bonus.c)
 endif
 
 OBJS		=	$(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRCS))

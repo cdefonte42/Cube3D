@@ -24,7 +24,7 @@ void	refresh_game(t_game *game)
 	mlx_put_image_to_window(game->mlx_ptr, game->win, game->img.ptr, 0, 0);
 	if (!BONUS)
 		return ;
-	if (game->minimap.ptr != NULL && game->map.state == off)
+	if (game->minimap.ptr != NULL && !game->map.state)
 	{
 		draw_minimap(game);
 		mlx_put_image_to_window(game->mlx_ptr, game->win,
@@ -42,10 +42,7 @@ int	tab_hook(int keycode, void *param)
 	game = param;
 	if (keycode == TAB)
 	{
-		if (game->map.state == off)
-			game->map.state = on;
-		else
-			game->map.state = off;
+		game->map.state = !game->map.state;
 		if (!BONUS)
 			refresh_game(game);
 	}

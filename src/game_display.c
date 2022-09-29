@@ -55,7 +55,7 @@ void	draw_sky(int *pixels, int size_line, int max, int color)
 	i = max;
 	while (i >= 0)
 	{
-		pixels[i] = fog_percentage(color, 0x000000, \
+		pixels[i] = fog_percentage(color, \
 		(SCREEN_H / 2 - (i / size_line)) / (double)(SCREEN_H / 2) *100);
 		i -= size_line;
 	}
@@ -69,7 +69,7 @@ void	draw_floor(int *pixels, int size_line, int max, int color)
 	(void)color;
 	while (i <= max)
 	{
-		pixels[i] = fog_percentage(color, 0x000000, \
+		pixels[i] = fog_percentage(color, \
 		100 - (SCREEN_H / 2 + (max - i) / size_line) / (double)SCREEN_H * 100);
 		i += size_line;
 	}

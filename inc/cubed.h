@@ -98,11 +98,6 @@ typedef enum e_orientation
 enum e_sys_ids {view, grid, map, sys_ids_size};
 # define SYS_IDS_SIZE 3  
 
-typedef enum e_state
-{
-	off,
-	on
-}			t_state;
 
 typedef enum e_type_sprites
 {
@@ -213,19 +208,30 @@ struct s_img
 typedef struct s_img	t_img;
 typedef struct s_img	t_texture;
 
-typedef struct s_map	// AFFICHAGE DE LA MINIMAP
+/*
+	AFFICHAGE DE LA MINIMAP
+char	**tab	// tableau retourne par le parsing de fichier .cub
+int 	width	// nb de colonnes du tab
+int 	height	// nb de lignes du tab
+t_img	img		// image a remplir pour afficher map et rays. 
+				// Prend toute la window.
+t_img	grid	// img avec que la grille de remplit: permet d'eviter
+				// de recalculer les pixels pour wall etc a chaque frame
+double	ratio	// Taille des cubes de la map par rapport aux vrais cubes
+				// Permet de reduire taille de la map
+int 	rcube_size
+bool	state	// Permet de cacher / afficher si on / off la grde map
+*/
+typedef struct s_map
 {
-	char	**tab;	// tableau retourne par le parsing de fichier .cub
-	int		width;	// nb de colonnes du tab
-	int		height;	// nb de lignes du tab
-	t_img	img;	// image a remplir pour afficher map et rays. 
-					// Prend toute la window.
-	t_img	grid;	// img avec que la grille de remplit: permet d'eviter
-					// de recalculer les pixels pour wall etc a chaque frame
-	double	ratio;	// Taille des cubes de la map par rapport aux vrais cubes
-					// Permet de reduire taille de la map
+	char	**tab;
+	int		width;
+	int		height;
+	t_img	img;
+	t_img	grid;
+	double	ratio;
 	int		rcube_size;
-	t_state	state;	// Permet de cacher / afficher si on / off la grde map
+	bool	state;
 }			t_map;
 
 typedef struct s_sprite
@@ -314,7 +320,6 @@ char	**ft_remove_n(char **map);
 /*_____ MLX MANAGE __________*/
 int		key_hook(int keycode, void *param);
 int		tab_hook(int keycode, void *param);
-void	space_hook(t_game *game);
 void	refresh_game(t_game *game);
 
 /* ______ INITIALISATIONS ____ */
@@ -388,7 +393,7 @@ bool	cb_load_mlx_image(void *mlx_ptr, char *path, t_texture *texture);
 /* Applied black by dist */
 int		fog_texture(int texture_color, float dist);
 /* Applied black by percentage */
-int		fog_percentage(int color, int fog, double percentage);
+int		fog_percentage(int color, double percentage);
 
 /*______ TEXTURE UTILS ________ */
 bool	cb_load_mlx_image(void *mlx_ptr, char *path, t_texture *texture);
@@ -396,6 +401,8 @@ void	revert_texture(t_game *game, int i);
 void	cb_put_pixel(t_img *data, int x, int y, int color);
 
 /* 			BONUS		*/
+
+void	handle_use_key(t_game *game);
 
 /*_____ INIT MAP BONUS __________*/
 int		init_minimap(t_game *game);

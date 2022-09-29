@@ -60,7 +60,7 @@ void	set_htpt_type(t_game *game, t_ray *ray)
 		ray->step_y = 0;
 	else
 		ray->step_x = 0;
-	if (check_hit_point_is_door(game, *ray) == true)
+	if (BONUS && check_hit_point_is_door(game, *ray) == true)
 		ray->hit_point.type = door;
 	else if (ray->hit_point.type == vline)
 	{
