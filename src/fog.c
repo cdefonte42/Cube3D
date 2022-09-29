@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 15:17:13 by mbraets           #+#    #+#             */
-/*   Updated: 2022/09/27 15:17:14 by mbraets          ###   ########.fr       */
+/*   Updated: 2022/09/29 15:04:47 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,20 +25,23 @@ static t_rgb	color_converter(int hex_value)
 	rgb_color.g = ((hex_value >> 8) & 0xFF);   // Extract the GG byte
 	rgb_color.b = ((hex_value) & 0xFF);        // Extract the BB byte
 
-	return rgb_color; 
+	return (rgb_color); 
 }
 
 int	fog_texture(int texture_color, float dist)
 {
 	t_rgb	color;
 	t_rgb	fog;
-	
+	int		alpha;
+
+	alpha = (texture_color >> 24) & 0xFF;
+
 	color = color_converter(texture_color);
 	fog = color_converter(0x000000);
 	color.r = (1 - fmin(dist/800, 1.0)) * color.r + fmin(dist/800, 1.0) * fog.r;
 	color.g = (1 - fmin(dist/800, 1.0)) * color.g + fmin(dist/800, 1.0) * fog.g;
 	color.b = (1 - fmin(dist/800, 1.0)) * color.b + fmin(dist/800, 1.0) * fog.b;
-	return color.r << 16 | color.g << 8 | color.b;
+	return (alpha << 24 | color.r << 16 | color.g << 8 | color.b);
 }
 
 

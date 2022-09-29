@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/29 12:00:20 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/29 14:55:54 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,10 @@
 
 # if !BONUS
 #  define BONUS 0
+# endif
+
+# ifndef LEAK
+#  define LEAK 0
 # endif
 
 # ifndef SCREEN_W		// should be pair
@@ -228,6 +232,7 @@ typedef struct s_sprite
 {
 	t_pos		pos;
 	double		dist;
+	int			screen_size;
 	double		dir;
 	t_sp_type	type;
 	int			anim_id;
@@ -349,10 +354,13 @@ void	raycasting(t_game *game);
 void	set_ray_steps(t_game *game, t_ray *ray);
 
 /*____________ HIT POINTS CALCULS _______*/
-void	next_hit_point(t_ray *ray);
 void	set_wall_hit_point(t_game *game, t_ray *ray);
-bool	check_hit_point_is_door(t_game *game, t_ray ray);
 void	set_htpt_dist(t_ray *ray);
+void	next_hit_point(t_ray *ray);
+
+/*____________ HIT POINTS UTILS _______*/
+bool	check_hit_point_is_wall(t_game *game, t_ray ray);
+bool	check_hit_point_is_door(t_game *game, t_ray ray);
 
 /* _________ VECTORS UTILS _______*/
 t_pos	rotate_vector(struct s_coord from, double angle);
@@ -384,13 +392,13 @@ int		fog_percentage(int color, int fog, double percentage);
 /*______ TEXTURE UTILS ________ */
 bool	cb_load_mlx_image(void *mlx_ptr, char *path, t_texture *texture);
 void	revert_texture(t_game *game, int i);
+void	cb_put_pixel(t_img *data, int x, int y, int color);
 
 /* 			BONUS		*/
 
 /*_____ INIT MAP BONUS __________*/
 int		init_minimap(t_game *game);
 int		init_map(t_game *game);
-
 
 
 /* ______ Init bonus ____*/

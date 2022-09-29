@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:07:19 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/28 16:01:28 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/29 14:31:42 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	in_hook(t_game *game);
 int	out_hook(t_game *game);
 
 #if BONUS
+
 bool	check_args(int argc, char **argv, t_game *game)
 {
 	if (argc > 3 || argc < 2)
@@ -31,6 +32,7 @@ bool	check_args(int argc, char **argv, t_game *game)
 	return (true);
 }
 #else
+
 bool	check_args(int argc, char **argv, t_game *game)
 {
 	(void) argv;
@@ -47,23 +49,25 @@ int	main_bonus(t_game *game)
 {
 	if (!init_sprites_text(game))
 		return (ft_exit(game), 1);
-    // mlx_mouse_hide(game.mlx_ptr, game.win);
+	LEAK && mlx_mouse_hide(game->mlx_ptr, game->win);
 	mlx_hook(game->win, KeyPress, KeyPressMask, &press_hook, game);
 	mlx_hook(game->win, KeyRelease, KeyReleaseMask, &release_hook, game);
 	mlx_hook(game->win, FocusIn, FocusChangeMask, &in_hook, game);
 	mlx_hook(game->win, FocusOut, FocusChangeMask, &out_hook, game);
 	mlx_mouse_hook(game->win, NULL, NULL);
-	mlx_do_key_autorepeatoff(game->mlx_ptr); // no difference seen with or without this line
+	mlx_do_key_autorepeatoff(game->mlx_ptr);
 	mlx_loop_hook(game->mlx_ptr, loop_hook, game);
 	return (1);
 }
 #else
+
 int	main_bonus(t_game *game)
 {
 	(void) game;
 	return (1);
 }
 #endif
+
 int	main(int argc, char **argv)
 {
 	t_game	game;
@@ -74,16 +78,11 @@ int	main(int argc, char **argv)
 	if (init_game(&game, argv) == -1)
 		return (ft_exit(&game), 1);
 	mlx_key_hook(game.win, key_hook, &game);
-//	mlx_key_hook(game.map.win, key_hook, &game);
 	mlx_hook(game.win, DestroyNotify, 0, &ft_exit, &game);
-//	mlx_hook(game.map.win, 17, 0, &ft_exit, &game);
 	mlx_hook(game.win, KeyPress, 1L << 0, &key_hook, &game);
-	
-//	mlx_hook(game.map.win, 2, 1L<<0, &key_hook, &game);
 	BONUS && main_bonus(&game);
 	refresh_game(&game);
 	mlx_loop(game.mlx_ptr);
-
 	ft_exit(&game);
 	return (0);
 }

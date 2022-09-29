@@ -6,11 +6,23 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 11:52:53 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/09/29 11:54:05 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/29 15:05:00 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cubed.h"
+
+void	cb_put_pixel(t_img *data, int x, int y, int color)
+{
+	int	*dst;
+
+	if (((color >> 24) & 0xFF) == 0xFF)
+		return ;
+	if (x < 0 || x >= data->width || y < 0 || y >= data->height)
+		return ;
+	dst = data->data + (y * data->size_line + x * (data->bpp / 32));
+	*(unsigned int *)dst = color;
+}
 
 bool	cb_load_mlx_image(void *mlx_ptr, char *path, t_texture *texture)
 {

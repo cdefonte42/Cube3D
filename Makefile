@@ -6,7 +6,7 @@
 #    By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/18 12:15:17 by cdefonte          #+#    #+#              #
-#    Updated: 2022/09/29 12:42:14 by cdefonte         ###   ########.fr        #
+#    Updated: 2022/09/29 14:33:32 by cdefonte         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ SRCS		=	$(addprefix $(SRC_DIR),\
 					mlx_management.c raycasting.c vectors_utils.c\
 					colision.c init.c game_display.c\
 					parsing.c parsing_map.c parsing_map_check.c parsing_flags.c\
-					parsing_utils.c fog.c texture_utils.c \
+					parsing_utils.c fog.c texture_utils.c hit_points_check.c\
 					\
 					draw_sprites_bonus.c parsing_bonus.c textures_bonus.c \
 					init_map_bonus.c\
