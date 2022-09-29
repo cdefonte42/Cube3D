@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/29 16:29:23 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/29 18:38:24 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,27 +37,20 @@
 #  define LEAK 0
 # endif
 
-# ifndef SCREEN_W		// should be pair
+# ifndef SCREEN_W
 #  define SCREEN_W 1280
 # endif
 # ifndef SCREEN_H
-#  define SCREEN_H 720	// should be pair
+#  define SCREEN_H 720
 # endif
 
 # ifndef CUBE_SIZE
-// should be pair. (8 multiples top) AND same size than xpm
 #  define CUBE_SIZE 64
-# endif
-
-# ifndef VIEW_HEIGHT
-// player's sight height (usually 1/2 cubes's height)
-#  define VIEW_HEIGHT 32
 # endif
 
 # define COINS_NB 6
 
 # define PLAYERS_NB 4
-
 
 /*
 DIR			(x, y, z) in grid et map sys: (z vers ecran)	+------> x
@@ -97,7 +90,6 @@ typedef enum e_orientation
 /*	Nom des reperes; a rajouter si besoin d'un nouveau systeme (avant la size)*/
 enum e_sys_ids {view, grid, map, sys_ids_size};
 # define SYS_IDS_SIZE 3  
-
 
 typedef enum e_type_sprites
 {
@@ -155,7 +147,7 @@ typedef struct s_ray
 	double		angle;
 }				t_ray;
 
-typedef struct	s_keyboard
+typedef struct s_keyboard
 {
 	bool	w;
 	bool	a;
@@ -167,19 +159,24 @@ typedef struct	s_keyboard
 	bool	mouse;
 }			t_keyboard;
 
+/*
+	fov:			player field of view (en radian)
+	dist_screen:	distance in grid unit between camera plane/screen and player
+	pos:			player position, en map unit
+	dir:			orientation du joueur, par rapport aux map et grid systemes
+	rot_speed:		angle effectue pour 1 pression fleche droite/gauche (radian)
+	mv_speed:		incrementation en map unit pour deplacement
+	rays:			tableau de rays
+*/
 typedef struct s_player
 {
-	double			fov;	// player filed of view in RADIANS;
-	double			dist_screen;	// distance between screen and player view 
-							// (fonction du FOV);
-	t_pos			pos;	// position du jouer, dans systeme de map
-	t_dir			dir;	// orientation du joueur, N/S/W/E, en sys map & grid;
-//	double			angle;	// son orientation (en radian) par rapport au 
-							// repre de la map
-	double			rot_speed;	// angle (en radian) increment pour une 
-								// pression touche droite ou gauche
-	double			mv_speed;	// inc (en map unit) pour le deplacement du jouer
-	t_ray			*rays;	// tableau de rays;
+	double			fov;
+	double			dist_screen;
+	t_pos			pos;
+	t_dir			dir;
+	double			rot_speed;
+	double			mv_speed;
+	t_ray			*rays;
 	t_keyboard		keyboard;
 }				t_player;
 
@@ -203,7 +200,7 @@ struct s_img
 	int		bpp;
 	int		size_line;
 	int		endian;
-	char	*path; 
+	char	*path;
 };
 typedef struct s_img	t_img;
 typedef struct s_img	t_texture;
@@ -258,21 +255,33 @@ typedef struct s_bonus
 	int			*sort_sp;
 }				t_bonus;
 
+/*
+	win;		// Window dans laquelle afficher le jeu
+	width;		// taille de la window en pixels
+	height;		// taille de la window en pixels
+	cube_size;	// taille des murs en pixels
+	img;		// image du jeu
+	player;
+	map;		// Tout ce qui est pour afficher la map
+	minimap;	// Copie de map mais en mini: centre sur le 
+				// joueur. A une taille de fenetre maxi!
+	*text;		// tableau d'au moins 4 texture (Nord, Sud, Est, Ouest);
+	colision;	// distance max en map unit a laquelle le player
+				// peut s'approcher des murss
+*/
 typedef struct s_game
 {
 	void		*mlx_ptr;
-	void		*win;		// Window dans laquelle afficher le jeu
-	int			width;		// taille de la window en pixels
-	int			height;		// taille de la window en pixels
-	int			cube_size;	// taille des murs en pixels
-	t_img		img;		// image du jeu
+	void		*win;
+	int			width;
+	int			height;	
+	int			cube_size;
+	t_img		img;
 	t_player	player;
-	t_map		map;		// Tout ce qui est pour afficher la map
-	t_img		minimap;	// Copie de map mais en mini: centre sur le 
-							// joueur. A une taille de fenetre maxi!
-	t_texture	*text;		// tableau d'au moins 4 texture (Nord, Sud, Est, Ouest);
-	double		colision;	// distance max en map unit a laquelle le player
-							// peut s'approcher des murss
+	t_map		map;
+	t_img		minimap;
+	t_texture	*text;
+	double		colision;
 	int			floor_color;
 	int			ceiling_color;
 
@@ -332,7 +341,6 @@ void	ft_free_map_i(char **map, int height);
 int		ft_exit(t_game *game);
 void	exit_bonus(t_game *game);
 
-
 /*______ IMG UTILS _______ */
 void	erase_img(t_img *img);
 void	cpy_img_pixels(t_img from, t_img to);
@@ -379,11 +387,12 @@ void	draw_all_rays(t_game *game);
 void	draw_sized_ray(t_game *game, t_ray ray, int length, int color);
 
 /* ____ TEXTURE (tests)______*/
-void	draw_buff_texture(t_game *game, int col_screen, t_interval interval, double hpwall);
+void	draw_buff_texture(t_game *game, int col_screen, t_interval interval, \
+double hpwall);
 
 /* ____ PARSING ______*/
-bool	error(char *, const char *);
-bool	map_parsing(t_game *, char *);
+bool	error(char *str, const char *n);
+bool	map_parsing(t_game *game, char *str);
 
 /*			UTILS 		 */
 bool	cb_load_mlx_image(void *mlx_ptr, char *path, t_texture *texture);
@@ -407,7 +416,6 @@ void	handle_use_key(t_game *game);
 /*_____ INIT MAP BONUS __________*/
 int		init_minimap(t_game *game);
 int		init_map(t_game *game);
-
 
 /* ______ Init bonus ____*/
 bool	init_sprites_text(t_game *game);
