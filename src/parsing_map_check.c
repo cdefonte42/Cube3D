@@ -46,7 +46,7 @@ static bool	check_side(t_game *game, int y, int x)
 	return (false);
 }
 
-#ifdef BONUS
+#if BONUS
 static inline bool	is_character(char c)
 {
 	return (c == '0' || isplayer(c) || c == 'X');

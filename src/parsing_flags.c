@@ -12,7 +12,7 @@
 
 #include "parsing.h"
 
-#ifdef BONUS 
+#if BONUS 
 # define OK_CHARS "01NSEWXCO"
 #else
 # define OK_CHARS "01NSEW"

@@ -29,6 +29,10 @@
 #  endif
 # endif
 
+# if !BONUS
+#  define BONUS 0
+# endif
+
 # ifndef SCREEN_W		// should be pair
 #  define SCREEN_W 1280
 # endif
@@ -368,8 +372,6 @@ void	draw_buff_texture(t_game *game, int col_screen, t_interval interval, double
 bool	error(char *, const char *);
 bool	map_parsing(t_game *, char *);
 
-/* ______ Init bonus ____*/
-bool	init_sprites_text(t_game *game);
 
 /* 			FOG			*/
 
@@ -378,5 +380,12 @@ int		fog_texture(int texture_color, float dist);
 /* Applied black by percentage */
 int		fog_percentage(int color, int fog, double percentage);
 
+/* 			BONUS		*/
+
+/* ______ Init bonus ____*/
+bool	init_sprites_text(t_game *game);
+/* _____ Parsing bonus ____*/
+void	count_sprite(t_game *game, char *line);
+bool	init_sprite(t_game *game);
 
 #endif

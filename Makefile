@@ -40,7 +40,7 @@ SRCS		=	$(addprefix $(SRC_DIR),\
 					mlx_management.c raycasting.c vectors_utils.c\
 					colision.c init.c game_display.c\
 					parsing.c parsing_map.c parsing_map_check.c parsing_flags.c\
-					parsing_utils.c fog.c)
+					parsing_utils.c fog.c bonus_def.c)
 
 ifeq ($(BONUS),true)
 	CFLAGS		+=	-DBONUS

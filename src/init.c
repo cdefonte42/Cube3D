@@ -12,7 +12,7 @@
 
 #include "cubed.h"
 
-#ifdef BONUS
+#if BONUS
 int	init_minimap(t_game *game)
 {
 	if (game->map.img.height > game->height * 0.25 || \
@@ -41,7 +41,7 @@ int	init_minimap(t_game *game)
 #endif
 
 
-#ifdef BONUS
+#if BONUS
 int	init_map(t_game *game, char **argv)
 {
 	int		nb_pixel_x;
@@ -156,7 +156,7 @@ int	init_textures(t_game *game)
 	}
 	revert_texture(game, wwall);
 	revert_texture(game, swall);
-	#ifndef BONUS
+	#if !BONUS
 	return (0);
 	#endif
 	// TODO: Replace by cb_new_img : init_bonus

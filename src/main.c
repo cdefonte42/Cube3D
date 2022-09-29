@@ -21,7 +21,7 @@ int	release_hook(int key, t_game *game);
 int	in_hook(t_game *game);
 int	out_hook(t_game *game);
 
-#ifdef BONUS
+#if BONUS
 bool	check_args(int argc, char **argv, t_game *game)
 {
 	if (argc > 3 || argc < 2)
@@ -57,7 +57,7 @@ int	main(int argc, char **argv)
 	mlx_hook(game.win, KeyPress, 1L << 0, &key_hook, &game);
 	
 //	mlx_hook(game.map.win, 2, 1L<<0, &key_hook, &game);
-	#ifdef BONUS
+	#if BONUS
 	if (!init_sprites_text(&game))
 		return (ft_exit(&game), 1);
     // mlx_mouse_hide(game.mlx_ptr, game.win);
