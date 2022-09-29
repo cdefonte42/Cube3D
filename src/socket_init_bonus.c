@@ -12,14 +12,6 @@
 
 #include "socket.h"
 
-void	set_eof(char *buf, int n, int size)
-{
-	if (n < size)
-		buf[n] = 0;
-	else
-		buf[size - 1] = 0;
-}
-
 // TODO: replace sprintf
 bool	send_pos(t_game *game)
 {

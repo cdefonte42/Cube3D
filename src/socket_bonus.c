@@ -12,6 +12,14 @@
 
 #include "socket.h"
 
+void	set_eof(char *buf, int n, int size)
+{
+	if (n < size)
+		buf[n] = 0;
+	else
+		buf[size - 1] = 0;
+}
+
 int	read_server(t_game *game, char *buffer)
 {
 	int	n;
