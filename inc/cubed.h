@@ -372,6 +372,8 @@ void	draw_buff_texture(t_game *game, int col_screen, t_interval interval, double
 bool	error(char *, const char *);
 bool	map_parsing(t_game *, char *);
 
+/*			UTILS 		 */
+bool	cb_load_mlx_image(void *mlx_ptr, char *path, t_texture *texture);
 
 /* 			FOG			*/
 
@@ -387,5 +389,11 @@ bool	init_sprites_text(t_game *game);
 /* _____ Parsing bonus ____*/
 void	count_sprite(t_game *game, char *line);
 bool	init_sprite(t_game *game);
+/* _____ Draw bonus ____*/
+bool	init_texture_door(t_game *game);
 
+int		draw_sprites_bonus(t_game *game);
+void	draw_sprite(t_game *game, t_sprite *sprite, double angle);
+void	set_sprites_datas(t_game *game, double angle);
+void	sort_sprites(t_game *game);
 #endif

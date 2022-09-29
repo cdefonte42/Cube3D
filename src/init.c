@@ -156,18 +156,7 @@ int	init_textures(t_game *game)
 	}
 	revert_texture(game, wwall);
 	revert_texture(game, swall);
-	#if !BONUS
-	return (0);
-	#endif
-	// TODO: Replace by cb_new_img : init_bonus
-	game->text[i].ptr = mlx_xpm_file_to_image(game->mlx_ptr, \
-"img/door_64.xpm", &game->text[i].width, &game->text[i].height);
-	if (!game->text[i].ptr)
-		return (error("loading wall img", NULL), -1);
-	game->text[i].data = (int *)mlx_get_data_addr(game->text[i].ptr, \
-	&game->text[i].bpp, &game->text[i].size_line, &game->text[i].endian);
-	game->text[i].size_line /= 4;
-
+	BONUS && init_texture_door(game);
 	return (0);
 }
 

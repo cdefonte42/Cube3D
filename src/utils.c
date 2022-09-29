@@ -12,6 +12,18 @@
 
 #include "cubed.h"
 
+bool	cb_load_mlx_image(void *mlx_ptr, char *path, t_texture *texture)
+{
+	texture->ptr = mlx_xpm_file_to_image(mlx_ptr, path, \
+	&texture->width, &texture->height);
+	if (!texture->ptr)
+		return (false);
+	texture->data = (int *)mlx_get_data_addr(texture->ptr, \
+	&texture->bpp, &texture->size_line, &texture->endian);
+	texture->size_line /= 4;
+	return (true);
+}
+
 /* Free tous les elements d'un char **map*/
 void	ft_free_map(char **map)
 {

@@ -12,6 +12,23 @@
 
 #include "cubed.h"
 
+int	draw_sprites_bonus(t_game *game)
+{
+	int		i;
+	double	angle;
+
+	angle = atan2(game->player.dir.y, game->player.dir.x);
+	set_sprites_datas(game, angle);
+	sort_sprites(game);
+	i = game->bonus.nb_sp - 1;
+	while (i >= 0)
+	{
+		draw_sprite(game, &game->bonus.sps[game->bonus.sort_sp[i]], angle);
+		--i;
+	}
+	return (1);
+}
+
 // TODO: Rename the function and move it to utils.c
 void	cb_put_pixel(t_img *data, int x, int y, int color)
 {

@@ -12,18 +12,6 @@
 
 #include "cubed.h"
 
-static bool	cb_load_mlx_image(void *mlx_ptr, char *path, t_texture *texture)
-{
-	texture->ptr = mlx_xpm_file_to_image(mlx_ptr,
-	path, &texture->width, &texture->height);
-	if (!texture->ptr)
-		return (false);
-	texture->data = (int *)mlx_get_data_addr(texture->ptr, \
-	&texture->bpp, &texture->size_line, &texture->endian);
-	texture->size_line /= 4;
-	return (true);
-}
-
 static bool	init_coin_sprites(t_game *game)
 {
 	int		i;
@@ -38,7 +26,7 @@ static bool	init_coin_sprites(t_game *game)
 	{
 		if (!cb_load_mlx_image(game->mlx_ptr, path[i], \
 		&game->bonus.text_sp[coin][i]))
-			return (error("loading sprites img", NULL));
+			return (error("Loading sprites coin image", NULL));
 		++i;
 	}
 	return (true);
@@ -51,13 +39,12 @@ static bool	init_ply_sprites(t_game *game)
 
 	i = 0;
 	ft_memcpy(path, (char *[PLAYERS_NB]){"img/player-0.xpm", "img/player-1.xpm",
-	"img/player-2.xpm", "img/player-3.xpm"}, \
-	sizeof(char *) * PLAYERS_NB);
+		"img/player-2.xpm", "img/player-3.xpm"}, sizeof(char *) * PLAYERS_NB);
 	while (i < PLAYERS_NB)
 	{
 		if (!cb_load_mlx_image(game->mlx_ptr, path[i], \
 		&game->bonus.text_sp[player][i]))
-			return (error("loading sprites img", NULL));
+			return (error("Loading sprites player image", NULL));
 		++i;
 	}
 	return (true);

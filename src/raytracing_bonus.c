@@ -12,6 +12,7 @@
 
 #include "cubed.h"
 
+// TODO: unused
 void	draw_ray_until_first_hline(t_game *game, t_ray ray, int color)
 {
 	int		max_line;
@@ -36,6 +37,7 @@ void	draw_ray_until_first_hline(t_game *game, t_ray ray, int color)
 	}
 }
 
+// TODO: unused
 void	draw_ray_until_first_vline(t_game *game, t_ray ray, int color)
 {
 	int		max_line;

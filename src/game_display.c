@@ -11,34 +11,6 @@
 /* ************************************************************************** */
 
 #include "cubed.h"
-#include <sys/time.h>
-#include <time.h>
-
-void	draw_sprite(t_game *game, t_sprite *sprite, double angle);
-void	set_sprites_datas(t_game *game, double angle);
-void	sort_sprites(t_game *game);
-
-#if !BONUS
-
-void	draw_sprite(t_game *game, t_sprite *sprite, double angle)
-{
-	(void) game;
-	(void) sprite;
-	(void) angle;
-}
-
-void	set_sprites_datas(t_game *game, double angle)
-{
-	(void) game;
-	(void) angle;
-}
-
-void	sort_sprites(t_game *game)
-{
-	(void) game;
-}
-
-#endif
 
 /* Calcule la hauteur "percue" du mur (si loin, petit, et inversement).
 Correction du fish eye grace a la projection (cos(a)) de la distance du hit 
@@ -83,11 +55,11 @@ void	draw_sky(int *pixels, int size_line, int max, int color)
 	i = max;
 	while (i >= 0)
 	{
-		pixels[i] = fog_percentage(color, 0x000000, (SCREEN_H/2-(i/size_line))/(double)(SCREEN_H/2)*100);
+		pixels[i] = fog_percentage(color, 0x000000, \
+		(SCREEN_H / 2 - (i / size_line)) / (double)(SCREEN_H / 2) *100);
 		i -= size_line;
 	}
 }
-
 
 void	draw_floor(int *pixels, int size_line, int max, int color)
 {
@@ -97,25 +69,8 @@ void	draw_floor(int *pixels, int size_line, int max, int color)
 	(void)color;
 	while (i <= max)
 	{
-		pixels[i] = fog_percentage(color, 0x000000, 100-(SCREEN_H/2+(max-i)/size_line)/(double)(SCREEN_H)*100);
-		// pixels[i] = i/size_line;
-		i += size_line;
-	}
-
-}
-// TODO: Useless need to remove !!!!!
-void	draw_floor_or_sky(int *pixels, int size_line, int max, int color)
-{
-	int	i;
-
-	i = 0;
-	while (i < max)
-	{
-		if (i < max/2)
-			pixels[i] = color;
-		else
-			pixels[i] = 0x000000;
-		// pixels[i] = color;
+		pixels[i] = fog_percentage(color, 0x000000, \
+		100 - (SCREEN_H / 2 + (max - i) / size_line) / (double)SCREEN_H * 100);
 		i += size_line;
 	}
 }
@@ -125,6 +80,7 @@ void	draw_floor_or_sky(int *pixels, int size_line, int max, int color)
 	it_inff et it_max : en pixels! Interval entre le haut et le bas du mur
 						(line min et line max a peindre).
 */
+
 void	draw_game(t_game *game)
 {
 	double			hpwall;
@@ -144,20 +100,11 @@ void	draw_game(t_game *game)
 			hpwall = 1.0;
 		get_interval(&(interval.inf), &(interval.sup), game->img, hpwall);
 		draw_buff_texture(game, col, interval, hpwall);
-//		draw_door(game, col, interval, hpwall);
 		draw_floor(&(game->img.data[col + interval.sup]), \
 		game->img.size_line, img_pixl_max - interval.sup, game->floor_color);
 		draw_sky(&(game->img.data[col]), game->img.size_line, \
 		interval.inf, game->ceiling_color);
 		++col;
 	}
-	double	angle = atan2(game->player.dir.y, game->player.dir.x);
-	set_sprites_datas(game, angle);
-	sort_sprites(game);
-	int		i = game->bonus.nb_sp - 1;
-	while (i >= 0)
-	{
-		draw_sprite(game, &game->bonus.sps[game->bonus.sort_sp[i]], angle);
-		--i;
-	}
+	BONUS && draw_sprites_bonus(game);
 }
