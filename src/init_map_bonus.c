@@ -6,7 +6,7 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 11:25:51 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/09/29 11:52:03 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/29 15:18:20 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,19 @@ int	init_minimap(t_game *game)
 	return (0);
 }
 
+static int	init_img(t_game *game, t_img *img, int pxlx, int pxly)
+{
+	img->ptr = mlx_new_image(game->mlx_ptr, pxlx, pxly);
+	if (!img->ptr)
+		return (-1);
+	img->data = (int *)mlx_get_data_addr(img->ptr, \
+	&img->bpp, &img->size_line, &img->endian);
+	img->size_line /= 4;
+	img->height = pxly;
+	img->width = pxlx;
+	return (0);
+}
+
 int	init_map(t_game *game)
 {
 	int		nb_pixel_x;
@@ -42,22 +55,10 @@ int	init_map(t_game *game)
 	game->map.ratio = (double)game->map.rcube_size / (double)game->cube_size;
 	nb_pixel_x = game->map.width * game->map.rcube_size + 1;
 	nb_pixel_y = game->map.height * game->map.rcube_size + 1;
-	game->map.grid.ptr = mlx_new_image(game->mlx_ptr, nb_pixel_x, nb_pixel_y);
-	if (!game->map.grid.ptr)
+	if (init_img(game, &game->map.img, nb_pixel_x, nb_pixel_y) == 1)
 		return (-1);
-	game->map.img.ptr = mlx_new_image(game->mlx_ptr, nb_pixel_x, nb_pixel_y);
-	if (!game->map.img.ptr)
+	if (init_img(game, &(game->map.grid), nb_pixel_x, nb_pixel_y) == 1)
 		return (-1);
-	game->map.grid.data = (int *)mlx_get_data_addr(game->map.grid.ptr, \
-	&game->map.grid.bpp, &game->map.grid.size_line, &game->map.grid.endian);
-	game->map.grid.size_line /= 4;
-	game->map.grid.height = nb_pixel_y;
-	game->map.grid.width = nb_pixel_x;
-	game->map.img.data = (int *)mlx_get_data_addr(game->map.img.ptr, \
-	&game->map.img.bpp, &game->map.img.size_line, &game->map.img.endian);
-	game->map.img.size_line /= 4;
-	game->map.img.height = nb_pixel_y;
-	game->map.img.width = nb_pixel_x;
 	draw_walls(game);
 	return (0);
 }
