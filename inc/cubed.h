@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/29 14:55:54 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/29 16:29:23 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -316,7 +316,6 @@ int		key_hook(int keycode, void *param);
 int		tab_hook(int keycode, void *param);
 void	space_hook(t_game *game);
 void	refresh_game(t_game *game);
-int		ft_exit(t_game *game);
 
 /* ______ INITIALISATIONS ____ */
 int		init_player(t_game *game);
@@ -325,6 +324,8 @@ int		init_game(t_game *game, char **argv);
 /*_____ UTILS __________*/
 void	ft_free_map(char **map);
 void	ft_free_map_i(char **map, int height);
+int		ft_exit(t_game *game);
+void	exit_bonus(t_game *game);
 
 
 /*______ IMG UTILS _______ */

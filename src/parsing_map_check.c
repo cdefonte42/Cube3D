@@ -6,22 +6,21 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 17:06:40 by mbraets           #+#    #+#             */
-/*   Updated: 2022/09/27 17:44:12 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/29 16:00:08 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
+#if BONUS
+# define NOWALL "NSEWCOX0"
+#else
+# define NOWALL "NSEW0"
+#endif
+
 static bool	isspace_null(char c)
 {
 	if (c == '\0' || ft_isspace(c))
-		return (true);
-	return (false);
-}
-
-static bool	isplayer(char c)
-{
-	if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
 		return (true);
 	return (false);
 }
@@ -46,18 +45,7 @@ static bool	check_side(t_game *game, int y, int x)
 	return (false);
 }
 
-#if BONUS
-static inline bool	is_character(char c)
-{
-	return (c == '0' || isplayer(c) || c == 'X');
-}
-#else
-static inline bool	is_character(char c)
-{
-	return (c == '0' || isplayer(c));
-}
-#endif
-bool	map_check(t_game *game) // TODO: Removing debug info, Dont work with \t
+bool	map_check(t_game *game)
 {
 	int	i;
 	int	j;
@@ -68,17 +56,13 @@ bool	map_check(t_game *game) // TODO: Removing debug info, Dont work with \t
 		j = 0;
 		while (j < game->map.width)
 		{
-			if (is_character(game->map.tab[i][j]))
+			if (game->map.tab[i][j] && ft_strchr(NOWALL, game->map.tab[i][j]))
 			{
 				if (i == 0 || i == game->map.height - 1 || j == 0 || \
 				j == game->map.width - 1)
-					return (error("Map not closed", game->map.tab[i]), \
-					printf("%d\n%02d %s\n", j, i, game->map.tab[i]), false);
+					return (error("Map not closed", game->map.tab[i]));
 				if (check_diagonal(game, i, j) || check_side(game, i, j))
-					return (error("Map not closed", game->map.tab[i]), \
-					printf("%d\n%02d %s\n%02d %s\n%02d %s\n", j, i-1, \
-					game->map.tab[i-1], i, game->map.tab[i], \
-					i+1,game->map.tab[i+1]), false);
+					return (error("Map not closed", game->map.tab[i]));
 			}
 			j++;
 		}
