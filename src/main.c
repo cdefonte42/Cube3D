@@ -29,6 +29,8 @@ bool	check_args(int argc, char **argv, t_game *game)
 		return (error("Invalid number of arguments", NULL));
 	if (argc == 3)
 		game->bonus.sock = init_connection(game, argv[2]);
+	if (game->bonus.sock == -1)
+		return (false);
 	return (true);
 }
 #else

@@ -57,6 +57,7 @@ var server = net.createServer(function(socket) {
 		clients.forEach((element, index) => {
 			if (element.port == socket.remotePort) {
 				clients.splice(index, 1);
+				sendMessageToAllClients(`d:${element.id}`, client);
 			}
 		});
 

@@ -24,15 +24,13 @@ int	loop_hook(t_game *game)
 {
 	clock_t	current_ticks;
 	clock_t	delta_ticks;
-	//static clock_t	fps = 0;
-	int				x;
-	int				y;
+	int		x;
+	int		y;
 
 	if (game->bonus.sock > 0)
 	{
 		if (!get_pos(game))
 			ft_exit(game);
-
 		if (is_press_key(game->player.keyboard))
 		{
 			if (!send_pos(game))
