@@ -12,7 +12,7 @@
 
 #include "cubed.h"
 
-#ifdef BONUS
+#if BONUS
 # define OK_CHAR "1C"
 #else
 # define OK_CHAR "1"

@@ -13,11 +13,11 @@
 #ifndef PARSING_H
 # define PARSING_H
 
-#include "cubed.h"
-#include "libft.h"
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
+# include "cubed.h"
+# include "libft.h"
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <fcntl.h>
 
 enum e_mapflags
 {
@@ -40,7 +40,7 @@ void	clean_parse(char *line, int fd);
 int		map_checkheader(t_game *game, char *file);
 
 /* Check maps */
- bool	check_line(t_game *game, int y, char *line, int *player);
+bool	check_line(t_game *game, int y, char *line, int *player);
 bool	map_checkcharacters(t_game *game, char *line, int fd);
 bool	map_check(t_game *game);
 bool	map_init(t_game *game);

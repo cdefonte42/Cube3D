@@ -83,11 +83,12 @@ int	init_game(t_game *game, char **argv)
 		return (-1);
 	if (init_map(game) == -1)
 		return (-1);
-	if (!cb_load_mlx_image(game->mlx_ptr, "img/door_64.xpm", \
+	if (BONUS && !cb_load_mlx_image(game->mlx_ptr, "img/door_64.xpm", \
 	&(game->text[door])))
 		return (error("loading wall img", NULL), -1);
 	if (init_minimap(game) == -1)
 		return (-1);
-	return (0);
+	if (init_player(game) == -1)
+		return (-1);
 	return (0);
 }

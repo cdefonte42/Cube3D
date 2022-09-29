@@ -6,7 +6,7 @@
 /*   By: cdefonte <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 15:22:08 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/09/27 23:54:54 by mbraets          ###   ########.fr       */
+/*   Updated: 2022/09/29 11:42:45 by mbraets          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,5 +79,6 @@ int		ft_isspace(int c);
 int		ft_stris(char *s, int (*f)(int));
 
 double	ft_atof(const char *s);
+int		ft_palloc(void *dst, size_t size);
 
 #endif

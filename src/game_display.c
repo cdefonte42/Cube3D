@@ -18,7 +18,7 @@ void	draw_sprite(t_game *game, t_sprite *sprite, double angle);
 void	set_sprites_datas(t_game *game, double angle);
 void	sort_sprites(t_game *game);
 
-#ifndef BONUS
+#if !BONUS
 
 void	draw_sprite(t_game *game, t_sprite *sprite, double angle)
 {

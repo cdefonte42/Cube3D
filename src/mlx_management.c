@@ -81,7 +81,7 @@ int	ft_exit(t_game *game)
 
 /* Refresh les differents affichages (game screen, minimap). Implique le
 recalcul de tous les rayons. */
-#ifdef BONUS
+#if BONUS
 void	refresh_game(t_game *game)
 {
 	raycasting(game);
@@ -118,7 +118,7 @@ int	tab_hook(int keycode, void *param)
 			game->map.state = on;
 		else
 			game->map.state = off;
-		#ifndef BONUS
+		#if !BONUS
 		refresh_game(game);
 		#endif
 	}
@@ -166,7 +166,7 @@ int	key_hook(int keycode, void *param)
 	else
 		dispatch_player_move(game, keycode);
 
-	#ifndef BONUS
+	#if !BONUS
 	refresh_game(game);
 	#endif
 	return (0);

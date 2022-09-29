@@ -12,33 +12,6 @@
 
 #include "parsing.h"
 
-#ifdef BONUS
-// Count how many sprites are in the map + 4 for the players
-static void	count_sprite(t_game *game, char *line)
-{
-	int		i;
-
-	i = 0;
-	if (!line)
-		return ;
-	while (line[i])
-	{
-		if (line[i] == 'X')
-			++(game->bonus.nb_sp);
-		++i;
-	}
-}
-
-#else
-
-static void	count_sprite(t_game *game, char *line)
-{
-	(void)game;
-	(void)line;
-}
-
-#endif
-
 bool	map_checkcharacters(t_game *game, char *line, int fd)
 {
 	int		player;
@@ -102,52 +75,6 @@ static bool	is_cub(char *file)
 	return (false);
 }
 
-#ifdef BONUS
-// +4 for the playersNb
-static bool init_sprite(t_game *game)
-{
-	int		i;
-	int		j;
-	int		k;
-
-	i = 0;
-	game->bonus.nb_sp += 4;
-	game->bonus.sps = ft_calloc(game->bonus.nb_sp, sizeof(t_sprite));
-	if (game->bonus.sps == NULL)
-		return (false);
-	game->bonus.sort_sp = ft_calloc(game->bonus.nb_sp, sizeof(int));
-	if (game->bonus.sort_sp == NULL)
-		return (false);
-	k = 4;
-	while (i < game->map.height)
-	{
-		j = 0;
-		while (j < game->map.width)
-		{
-			if (game->map.tab[i][j] == 'X')
-			{
-				game->bonus.sps[k].pos.x = j + 0.5;
-				game->bonus.sps[k].pos.y = i + 0.5;
-				game->bonus.sps[k].type = coin;
-				game->bonus.sps[k].anim_size = 6;
-				++k;
-			}
-			++j;
-		}
-		++i;
-	}
-	return (true);
-}
-#else
-
-static bool init_sprite(t_game *game)
-{
-	(void)game;
-	return (true);
-}
-
-#endif
-
 bool	map_parsing(t_game *game, char *file)
 {
 	if (!is_cub(file))
@@ -163,7 +90,7 @@ bool	map_parsing(t_game *game, char *file)
 		return (false);
 	if (!map_check(game))
 		return (false);
-	if (!init_sprite(game))
+	if (BONUS && !init_sprite(game))
 		return (false);
 	return (true);
 }
