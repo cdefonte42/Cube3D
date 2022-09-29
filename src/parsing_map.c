@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 17:39:35 by mbraets           #+#    #+#             */
-/*   Updated: 2022/09/27 18:21:48 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/29 11:21:00 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ bool	map_fill(t_game *game, char *file)
 		if (is_wall(line))
 		{
 			if (line[ft_strlen(line) - 1] != '\n')
-				ft_strlcpy(game->map.tab[i], line, ft_strlen(line) + 1); // +1 is cause problem unles the line is the last??
+				ft_strlcpy(game->map.tab[i], line, ft_strlen(line) + 1);
 			else
 				ft_strlcpy(game->map.tab[i], line, ft_strlen(line));
 			i++;

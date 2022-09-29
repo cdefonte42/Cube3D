@@ -6,7 +6,7 @@
 #    By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/18 12:15:17 by cdefonte          #+#    #+#              #
-#    Updated: 2022/09/26 16:10:02 by cdefonte         ###   ########.fr        #
+#    Updated: 2022/09/29 12:42:14 by cdefonte         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,15 +40,16 @@ SRCS		=	$(addprefix $(SRC_DIR),\
 					mlx_management.c raycasting.c vectors_utils.c\
 					colision.c init.c game_display.c\
 					parsing.c parsing_map.c parsing_map_check.c parsing_flags.c\
-					parsing_utils.c fog.c \
+					parsing_utils.c fog.c texture_utils.c \
 					\
 					draw_sprites_bonus.c parsing_bonus.c textures_bonus.c \
-					)
+					init_map_bonus.c\
+					map_draw_bonus.c raytracing_bonus.c img_utils_bonus.c)
 
 ifeq ($(BONUS),true)
 	CFLAGS		+=	-DBONUS
 	SRCS		+=  $(addprefix $(SRC_DIR),\
-					hook_bonus.c img_utils_bonus.c map_draw_bonus.c raytracing_bonus.c socket_init_bonus.c init_bonus.c)
+					hook_bonus.c socket_init_bonus.c init_bonus.c)
 endif
 
 OBJS		=	$(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRCS))

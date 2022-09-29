@@ -41,6 +41,29 @@ bool	check_args(int argc, char **argv, t_game *game)
 }
 #endif
 
+#if BONUS
+
+int	main_bonus(t_game *game)
+{
+	if (!init_sprites_text(game))
+		return (ft_exit(game), 1);
+    // mlx_mouse_hide(game.mlx_ptr, game.win);
+	mlx_hook(game->win, KeyPress, KeyPressMask, &press_hook, game);
+	mlx_hook(game->win, KeyRelease, KeyReleaseMask, &release_hook, game);
+	mlx_hook(game->win, FocusIn, FocusChangeMask, &in_hook, game);
+	mlx_hook(game->win, FocusOut, FocusChangeMask, &out_hook, game);
+	mlx_mouse_hook(game->win, NULL, NULL);
+	mlx_do_key_autorepeatoff(game->mlx_ptr); // no difference seen with or without this line
+	mlx_loop_hook(game->mlx_ptr, loop_hook, game);
+	return (1);
+}
+#else
+int	main_bonus(t_game *game)
+{
+	(void) game;
+	return (1);
+}
+#endif
 int	main(int argc, char **argv)
 {
 	t_game	game;
@@ -57,18 +80,7 @@ int	main(int argc, char **argv)
 	mlx_hook(game.win, KeyPress, 1L << 0, &key_hook, &game);
 	
 //	mlx_hook(game.map.win, 2, 1L<<0, &key_hook, &game);
-	#if BONUS
-	if (!init_sprites_text(&game))
-		return (ft_exit(&game), 1);
-    // mlx_mouse_hide(game.mlx_ptr, game.win);
-	mlx_hook(game.win, KeyPress, KeyPressMask, &press_hook, &game);
-	mlx_hook(game.win, KeyRelease, KeyReleaseMask, &release_hook, &game);
-	mlx_hook(game.win, FocusIn, FocusChangeMask, &in_hook, &game);
-	mlx_hook(game.win, FocusOut, FocusChangeMask, &out_hook, &game);
-	mlx_mouse_hook(game.win, NULL, NULL);
-	mlx_do_key_autorepeatoff(game.mlx_ptr); // no difference seen with or without this line
-	mlx_loop_hook(game.mlx_ptr, loop_hook, &game);
-	#endif
+	BONUS && main_bonus(&game);
 	refresh_game(&game);
 	mlx_loop(game.mlx_ptr);
 

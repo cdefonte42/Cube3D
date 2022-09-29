@@ -81,13 +81,15 @@ int	ft_exit(t_game *game)
 
 /* Refresh les differents affichages (game screen, minimap). Implique le
 recalcul de tous les rayons. */
-#if BONUS
 void	refresh_game(t_game *game)
 {
 	raycasting(game);
-	draw_map(game);
+	if (BONUS)
+		draw_map(game);
 	draw_game(game);
 	mlx_put_image_to_window(game->mlx_ptr, game->win, game->img.ptr, 0, 0);
+	if (!BONUS)
+		return ;
 	if (game->minimap.ptr != NULL && game->map.state == off)
 	{
 		draw_minimap(game);
@@ -98,14 +100,6 @@ void	refresh_game(t_game *game)
 		mlx_put_image_to_window(game->mlx_ptr, game->win,
 			game->map.img.ptr, 0, 0);
 }
-#else
-void	refresh_game(t_game *game)
-{
-	raycasting(game);
-	draw_game(game);
-	mlx_put_image_to_window(game->mlx_ptr, game->win, game->img.ptr, 0, 0);
-}
-#endif
 
 int	tab_hook(int keycode, void *param)
 {

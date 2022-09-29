@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:30:57 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/28 11:37:22 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/09/29 12:00:20 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -316,7 +316,6 @@ int		ft_exit(t_game *game);
 /* ______ INITIALISATIONS ____ */
 int		init_player(t_game *game);
 int		init_game(t_game *game, char **argv);
-int		init_map(t_game *game, char **argv);
 
 /*_____ UTILS __________*/
 void	ft_free_map(char **map);
@@ -382,7 +381,17 @@ int		fog_texture(int texture_color, float dist);
 /* Applied black by percentage */
 int		fog_percentage(int color, int fog, double percentage);
 
+/*______ TEXTURE UTILS ________ */
+bool	cb_load_mlx_image(void *mlx_ptr, char *path, t_texture *texture);
+void	revert_texture(t_game *game, int i);
+
 /* 			BONUS		*/
+
+/*_____ INIT MAP BONUS __________*/
+int		init_minimap(t_game *game);
+int		init_map(t_game *game);
+
+
 
 /* ______ Init bonus ____*/
 bool	init_sprites_text(t_game *game);
