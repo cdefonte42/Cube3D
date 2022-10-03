@@ -3,7 +3,8 @@ WE img/tech_wwall_64.xpm
 NO  	  img/tech_nwall_64.xpm
 EA  img/tech_ewall_64.xpm
 
-F 64,164,199
+F 2,12,164
+
 C 220,100,100
 
         1111111111111111111111111

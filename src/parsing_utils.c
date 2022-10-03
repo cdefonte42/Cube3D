@@ -66,6 +66,8 @@ bool	is_color(int *color, char *line)
 			return (false);
 		tmp++;
 	}
+	if (*tmp != '\0')
+		return (false);
 	*color = (colors[0] << 16) + (colors[1] << 8) + colors[2];
 	return (true);
 }

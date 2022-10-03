@@ -36,7 +36,7 @@ int	read_server(t_game *game, char *buffer)
 
 void	write_server(t_game *game, const char *buffer)
 {
-	if (write(game->bonus.sock, buffer, strlen(buffer)) < 0)
+	if (write(game->bonus.sock, buffer, ft_strlen(buffer)) < 0)
 	{
 		perror("send()");
 		ft_exit(game);
