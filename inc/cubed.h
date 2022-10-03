@@ -380,11 +380,7 @@ bool	check_hit_point_is_door(t_game *game, t_ray ray);
 t_pos	rotate_vector(struct s_coord from, double angle);
 
 /*__________ RAYTRACING (DEBUG) _______*/
-void	draw_ray_until_first_hline(t_game *game, t_ray ray, int color);
-void	draw_ray_until_first_vline(t_game *game, t_ray ray, int color);
-void	draw_ray(t_game *game, t_ray ray, int color);
 void	draw_all_rays(t_game *game);
-void	draw_sized_ray(t_game *game, t_ray ray, int length, int color);
 
 /* ____ TEXTURE (tests)______*/
 void	draw_buff_texture(t_game *game, int col_screen, t_interval interval, \

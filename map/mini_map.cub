@@ -1,7 +1,7 @@
-SO img/hello.xpm
-NO img/hello.xpm
-WE img/hello.xpm
-EA img/hello.xpm
+SO img/hello-64.xpm
+NO img/arrow.xpm
+WE img/arrow.xpm
+EA img/hello-128.xpm
 
 F 220,100,100
 C 200,100,200

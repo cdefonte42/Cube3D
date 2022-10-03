@@ -42,8 +42,8 @@ int	init_textures(t_game *game)
 			return (error("Loading wall image", NULL), -1);
 		++i;
 	}
-	revert_texture(game, wwall);
-	revert_texture(game, swall);
+	revert_texture(game, ewall);
+	revert_texture(game, nwall);
 	if (BONUS && !init_texture_door(game))
 		return (-1);
 	return (0);
