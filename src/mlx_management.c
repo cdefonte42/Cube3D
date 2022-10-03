@@ -18,12 +18,11 @@ recalcul de tous les rayons. */
 void	refresh_game(t_game *game)
 {
 	raycasting(game);
-	if (BONUS)
-		draw_map(game);
 	draw_game(game);
 	mlx_put_image_to_window(game->mlx_ptr, game->win, game->img.ptr, 0, 0);
 	if (!BONUS)
 		return ;
+	draw_map(game);
 	if (game->minimap.ptr != NULL && !game->map.state)
 	{
 		draw_minimap(game);

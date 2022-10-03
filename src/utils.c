@@ -78,6 +78,12 @@ void	exit_bonus(t_game *game)
 		mlx_mouse_show(game->mlx_ptr, game->win);
 		mlx_do_key_autorepeaton(game->mlx_ptr);
 	}
+	if (game->map.img.ptr)
+		mlx_destroy_image(game->mlx_ptr, game->map.img.ptr);
+	if (game->map.grid.ptr)
+		mlx_destroy_image(game->mlx_ptr, game->map.grid.ptr);
+	if (game->minimap.ptr)
+		mlx_destroy_image(game->mlx_ptr, game->minimap.ptr);
 }
 
 /*Appellee quand red cross clicked ou ESC press*/
@@ -91,12 +97,6 @@ int	ft_exit(t_game *game)
 		free(game->player.rays);
 	if (game->img.ptr)
 		mlx_destroy_image(game->mlx_ptr, game->img.ptr);
-	if (game->map.img.ptr)
-		mlx_destroy_image(game->mlx_ptr, game->map.img.ptr);
-	if (game->map.grid.ptr)
-		mlx_destroy_image(game->mlx_ptr, game->map.grid.ptr);
-	if (game->minimap.ptr)
-		mlx_destroy_image(game->mlx_ptr, game->minimap.ptr);
 	if (game->map.tab)
 		ft_free_map_i(game->map.tab, game->map.height);
 	if (game->win)
