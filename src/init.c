@@ -81,9 +81,9 @@ int	init_game(t_game *game, char **argv)
 		return (-1);
 	if (init_window(game) == -1)
 		return (-1);
-	if (init_map(game) == -1)
+	if (BONUS && init_map(game) == -1)
 		return (-1);
-	if (init_minimap(game) == -1)
+	if (BONUS && init_minimap(game) == -1)
 		return (-1);
 	if (init_player(game) == -1)
 		return (-1);
