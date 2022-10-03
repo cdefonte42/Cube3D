@@ -47,6 +47,8 @@ static void	clear_texture(void *mlx_ptr, t_texture *textures, int size, bool al)
 	int	i;
 
 	i = 0;
+	if (textures == NULL || size <= 0)
+		return ;
 	while (i < size)
 	{
 		if (textures[i].path != NULL)
