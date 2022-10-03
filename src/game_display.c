@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 12:27:33 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/28 11:39:13 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/10/03 19:35:44 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ void	draw_floor(int *pixels, int size_line, int max, int color)
 	int	i;
 
 	i = 0;
-	(void)color;
 	while (i <= max)
 	{
 		pixels[i] = fog_percentage(color, \
@@ -80,7 +79,6 @@ void	draw_floor(int *pixels, int size_line, int max, int color)
 	it_inff et it_max : en pixels! Interval entre le haut et le bas du mur
 						(line min et line max a peindre).
 */
-
 void	draw_game(t_game *game)
 {
 	double			hpwall;
@@ -102,8 +100,9 @@ void	draw_game(t_game *game)
 		draw_buff_texture(game, col, interval, hpwall);
 		draw_floor(&(game->img.data[col + interval.sup]), \
 		game->img.size_line, img_pixl_max - interval.sup, game->floor_color);
-		draw_sky(&(game->img.data[col]), game->img.size_line, \
-		interval.inf, game->ceiling_color);
+		if (interval.inf > 0)
+			draw_sky(&(game->img.data[col]), game->img.size_line, \
+			interval.inf, game->ceiling_color);
 		++col;
 	}
 	BONUS && draw_sprites_bonus(game);
