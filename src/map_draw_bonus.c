@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 18:03:35 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/09/29 12:50:07 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/10/03 19:39:24 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,29 @@ void	draw_inner_minimap(int i, t_game *game, int origin, int col)
 	}
 }
 
+static void	transparency_minimap(t_game *game)
+{
+	int	col;
+	int	line;
+
+	col = 0;
+	line = 0;
+	while (line < game->minimap.height)
+	{
+		col = 0;
+		while (col < game->minimap.width)
+		{
+			if (game->minimap.data[col + line * game->minimap.size_line] == BLACK)
+			{
+				game->minimap.data[col + line * game->minimap.size_line] = \
+				fog_percentage(game->img.data[col + line * game->img.size_line], 50);
+			}
+			++col;
+		}
+		++line;
+	}
+}
+
 void	draw_minimap(t_game *game)
 {
 	int		i;
@@ -117,4 +140,5 @@ void	draw_minimap(t_game *game)
 			origin += game->map.img.size_line;
 	}
 	draw_inner_minimap(i, game, origin, col);
+	transparency_minimap(game);
 }
