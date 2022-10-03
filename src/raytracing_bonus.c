@@ -43,7 +43,6 @@ static void	draw_middle_ray(t_game *game)
 	index_mid_ray = game->width / 2 - 1;
 	rays = game->player.rays;
 	draw_sized_ray(game, rays[index_mid_ray], YELLOW);
-	draw_square(game, rays[index_mid_ray].hit_point.pos[grid], 5, PINK);
 }
 
 static void	draw_cone_fov(t_game *game, double player_a)

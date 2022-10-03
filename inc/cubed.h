@@ -342,9 +342,7 @@ int		ft_exit(t_game *game);
 void	exit_bonus(t_game *game);
 
 /*______ IMG UTILS _______ */
-void	erase_img(t_img *img);
 void	cpy_img_pixels(t_img from, t_img to);
-void	draw_square(t_game *game, t_pos origin, int size, int color);
 void	draw_player(t_game *game);
 
 /* __________ DISPLAY GAME ________ */
