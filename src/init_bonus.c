@@ -18,10 +18,12 @@ static bool	init_coin_sprites(t_game *game)
 	char	*path[COINS_NB];
 
 	i = 0;
-	ft_memcpy(path, (char *[COINS_NB]){"img/GoldCoinSprite/coin1.xpm", \
-	"img/GoldCoinSprite/coin2.xpm", "img/GoldCoinSprite/coin3.xpm", \
-	"img/GoldCoinSprite/coin4.xpm", "img/GoldCoinSprite/coin5.xpm", \
-	"img/GoldCoinSprite/coin6.xpm"}, sizeof(char *) * COINS_NB);
+	ft_memcpy(path, (char *[COINS_NB]){"img/coins/coin_1.xpm", \
+	"img/coins/coin_2.xpm", "img/coins/coin_3.xpm", \
+	"img/coins/coin_4.xpm", "img/coins/coin_5.xpm", \
+	"img/coins/coin_6.xpm", "img/coins/coin_7.xpm", \
+	"img/coins/coin_8.xpm", "img/coins/coin_9.xpm", \
+	"img/coins/coin_10.xpm"}, sizeof(char *) * COINS_NB);
 	while (i < COINS_NB)
 	{
 		if (!cb_load_mlx_image(game->mlx_ptr, path[i], \

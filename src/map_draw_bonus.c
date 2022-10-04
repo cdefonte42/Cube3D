@@ -88,7 +88,7 @@ static void	transparency_minimap(t_game *game)
 			{
 				game->minimap.data[col + line * game->minimap.size_line] = \
 				fog_percentage(game->img.data[col + \
-					line * game->img.size_line], 50);
+					line * game->img.size_line], 75);
 			}
 			++col;
 		}

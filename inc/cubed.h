@@ -48,7 +48,7 @@
 #  define CUBE_SIZE 64
 # endif
 
-# define COINS_NB 6
+# define COINS_NB 10
 
 # define PLAYERS_NB 4
 
@@ -249,7 +249,7 @@ typedef struct s_bonus
 	char		*buf;
 
 	t_sprite	*sps;
-	t_texture	text_sp[2][6];
+	t_texture	text_sp[2][COINS_NB];
 	int			nb_sp;
 	int			*sort_sp;
 }				t_bonus;

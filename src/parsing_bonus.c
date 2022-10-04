@@ -44,7 +44,7 @@ bool	init_sprite(t_game *game)
 			if (game->map.tab[i][j] == 'X')
 			{
 				ft_memcpy(&game->bonus.sps[k], &(t_sprite){.pos.x = j + 0.5, \
-				.pos.y = i + 0.5, .type = coin, .anim_size = 6}, \
+				.pos.y = i + 0.5, .type = coin, .anim_size = COINS_NB}, \
 				sizeof(t_sprite));
 				++k;
 			}

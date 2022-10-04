@@ -49,7 +49,10 @@ void	set_sprites_datas(t_game *game, double angle)
 			head->dir += 2.0 * PI;
 		head->dist = sqrt(pow(px - head->pos.x, 2.0) + \
 													pow(py - head->pos.y, 2.0));
-		head->screen_size = fmin(SCREEN_H, SCREEN_H / (head->dist * 2));
+		if (head->type == coin)
+			head->screen_size = fmin(SCREEN_H, SCREEN_H / (head->dist * 2));
+		else
+			head->screen_size = fmin(SCREEN_H, SCREEN_H / (head->dist * 2));
 		++i;
 	}
 }
@@ -100,7 +103,7 @@ void	draw_sprite(t_game *game, t_sprite *sprite, double angle)
 
 	h_offset = (sprite->dir - angle) * SCREEN_W / game->player.fov + SCREEN_W \
 	/ 2 - sprite->screen_size / 2;
-	v_offset = SCREEN_H / 2 + 24;
+	v_offset = SCREEN_H / 2;
 	i = -1;
 	sprite->anim_id = (sprite->anim_id + 1) % sprite->anim_size;
 	while (++i < sprite->screen_size)
