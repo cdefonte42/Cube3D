@@ -38,10 +38,13 @@ typedef struct in_addr		t_in_addr;
 int		read_server(t_game *game, char *buffer);
 void	write_server(t_game *game, const char *buffer);
 void	set_eof(char *buf, int n, int size);
+void	close_door(t_game *game);
+void	open_door(t_game *game);
 
 /* public */
 int		init_connection(t_game *game, const char *address);
 bool	get_pos(t_game *game);
 bool	send_pos(t_game *game);
+void	send_door_state(t_game *game, int x, int y);
 
 #endif /* guard */

@@ -45,6 +45,31 @@ static int	init_img(t_game *game, t_img *img, int pxlx, int pxly)
 	return (0);
 }
 
+/* Draw (fill pixels) sur l'image de la map 2D viewed les pixels correspondants
+aux walls. Va dabord chercher a quelle map unit position se trouve un wall,
+puis fait appel a fill_cube pour remplir cette case. Iter l'operation sur toutes
+les cases de la map. */
+void	draw_grid_walls(t_game *game)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < game->map.height)
+	{
+		j = 0;
+		while (j < game->map.width)
+		{
+			if (game->map.tab[i][j] == '1')
+				fill_cube_grid(game, i, j, GREY);
+			else if (game->map.tab[i][j] == 'O' || game->map.tab[i][j] == 'C')
+				fill_cube_grid(game, i, j, PURPLE);
+			++j;
+		}
+		++i;
+	}
+}
+
 int	init_map(t_game *game)
 {
 	int		nb_pixel_x;
@@ -59,6 +84,6 @@ int	init_map(t_game *game)
 		return (-1);
 	if (init_img(game, &(game->map.grid), nb_pixel_x, nb_pixel_y) == 1)
 		return (-1);
-	draw_walls(game);
+	draw_grid_walls(game);
 	return (0);
 }

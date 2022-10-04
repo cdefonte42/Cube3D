@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "cubed.h"
+#include "socket.h"
 
 static void	change_state_door(t_game *game, t_ray ray)
 {
@@ -27,6 +28,8 @@ static void	change_state_door(t_game *game, t_ray ray)
 		game->map.tab[y][x] = 'C';
 	else if (game->map.tab[y][x] == 'C')
 		game->map.tab[y][x] = 'O';
+	if (game->bonus.sock > 0)
+		send_door_state(game, x, y);
 }
 
 void	handle_use_key(t_game *game)

@@ -41,12 +41,13 @@ static void	parse_info(t_game *game)
 		return ;
 	if (game->bonus.buf[0] == 'n')
 	{
+		printf("Player join with id: %d\n", ft_atoi(game->bonus.buf + 2));
 		set_player_pos(game, ft_atof(game->bonus.buf + 4), \
 			ft_atof(ft_strchr(game->bonus.buf + 4, ':') + 1));
 	}
 	else if (game->bonus.buf[0] == 'd')
 	{
-		printf("Delete player with id%d !\n", ft_atoi(game->bonus.buf + 2));
+		printf("Player leave with id: %d\n", ft_atoi(game->bonus.buf + 2));
 		set_player_pos(game, 0, 0);
 	}
 	else if (game->bonus.buf[0] == 'p')
@@ -54,6 +55,10 @@ static void	parse_info(t_game *game)
 		set_player_pos(game, ft_atof(game->bonus.buf + 4), \
 			ft_atof(ft_strchr(game->bonus.buf + 4, ':') + 1));
 	}
+	else if (game->bonus.buf[0] == 'C')
+		close_door(game);
+	else if (game->bonus.buf[0] == 'O')
+		open_door(game);
 }
 
 // get info from server and print it to stdout

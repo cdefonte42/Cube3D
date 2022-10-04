@@ -248,7 +248,6 @@ typedef struct s_bonus
 	fd_set		rdfs;
 	char		*buf;
 
-	long		tick;
 	t_sprite	*sps;
 	t_texture	text_sp[2][6];
 	int			nb_sp;
@@ -349,8 +348,8 @@ void	draw_player(t_game *game);
 void	draw_game(t_game *game);
 
 /* ______ MAP DRAWING ______ */
-void	fill_cube(t_game *game, int y, int x, int color);
-void	draw_walls(t_game *game);
+void	fill_cube_grid(t_game *game, int y, int x, int color);
+void	draw_grid_walls(t_game *game);
 void	draw_map(t_game *game);
 void	draw_minimap(t_game *game);
 
