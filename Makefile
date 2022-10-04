@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME		=	cub3d
+NAME		=	cub3D
 
 SRC_DIR		=	src/
 OBJ_DIR		=	obj/
@@ -90,5 +90,4 @@ bonus		:
 
 -include $(DEPS)
 
-
-.PHONY: all clean run fclean
+.PHONY: all clean run fclean bonus

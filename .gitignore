@@ -4,6 +4,7 @@
 *.swp
 cubed
 cub3d
+cub3D
 parser
 mlx_linux/test/mlx-test
 dinoCharactersVersion1.1.zip
