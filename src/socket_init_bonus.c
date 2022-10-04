@@ -28,12 +28,17 @@ typedef struct timeval	t_t;
 
 static void	set_player_pos(t_game *game, double x, double y)
 {
+	if (x < 0 || y < 0 || x > game->map.width || y > game->map.height)
+		return ;
 	game->bonus.sps[ft_atoi(game->bonus.buf + 2)].pos.x = x;
 	game->bonus.sps[ft_atoi(game->bonus.buf + 2)].pos.y = y;
 }
 
 static void	parse_info(t_game *game)
 {
+	if (game->bonus.buf == NULL || \
+		ft_strlen(game->bonus.buf) < 5 || ft_strlen(game->bonus.buf) > 40)
+		return ;
 	if (game->bonus.buf[0] == 'n')
 	{
 		set_player_pos(game, ft_atof(game->bonus.buf + 4), \
