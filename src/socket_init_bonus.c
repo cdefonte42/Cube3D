@@ -71,7 +71,7 @@ bool	get_pos(t_game *game)
 	ret = select(game->bonus.sock + 1, &game->bonus.rdfs, NULL, NULL, &(t_t){});
 	if (ret < 0)
 	{
-		perror("select()");
+		perror("Error\nselect()");
 		ft_exit(game);
 	}
 	if (FD_ISSET(game->bonus.sock, &game->bonus.rdfs))
@@ -97,7 +97,7 @@ int	init_connection(t_game *game, const char *address)
 	sock = socket(AF_INET, SOCK_STREAM, 0);
 	if (sock == INVALID_SOCKET)
 	{
-		perror("socket()");
+		perror("Error\nsocket()");
 		exit(errno);
 	}
 	hostinfo = gethostbyname(address);
@@ -110,7 +110,7 @@ int	init_connection(t_game *game, const char *address)
 	sin.sin_port = htons(PORT);
 	sin.sin_family = AF_INET;
 	if (connect(sock, (t_sockaddr *)&sin, sizeof(t_sockaddr)) == SOCKET_ERROR)
-		return (perror("connect()"), -1);
+		return (perror("Error\nconnect()"), -1);
 	game->bonus.buf = ft_calloc(sizeof(char), BUFFER_SIZE);
 	return (sock);
 }

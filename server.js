@@ -41,10 +41,9 @@ function sendMessageToAllClients(message, author) {
 }
 
 var server = net.createServer(function(socket) {
-	console.log(C.Green+'Client connected: ' + socket.remoteAddress + ':' + socket.remotePort);
-
-	if (clients.length > 4)
+	if (clients.length >= 4)
 		return ;
+	console.log(C.Green+'Client connected: ' + socket.remoteAddress + ':' + socket.remotePort);
 	let client = new Client(socket);
 	if (clients.length > 0) {
 		client.id = clients[clients.length - 1].id + 1;
