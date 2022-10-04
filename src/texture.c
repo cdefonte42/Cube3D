@@ -6,11 +6,24 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 13:42:49 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/10/03 16:39:11 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/10/04 14:42:15 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cubed.h"
+
+static int	get_col_text(t_game *game, t_texture text, t_ray *ray)
+{
+	int		col_text;
+	double	ratio;
+
+	ratio = text.width / game->cube_size;
+	if (ray->step_x == 0)
+		col_text = (int)(ray->hit_point.pos[grid].x * ratio) % (text.width);
+	else
+		col_text = (int)(ray->hit_point.pos[grid].y * ratio) % (text.width);
+	return (col_text);
+}
 
 void	draw_buff_texture(t_game *game, int col_screen, t_interval interval, \
 double hpwall)
@@ -23,11 +36,7 @@ double hpwall)
 
 	ray = &(game->player.rays[col_screen]);
 	text = game->text[ray->hit_point.type];
-	double	ratio = text.width / game->cube_size;
-	if (ray->step_x == 0) // hline
-		col_text = (int)(ray->hit_point.pos[grid].x * ratio) % (text.width);
-	else // vline
-		col_text = (int)(ray->hit_point.pos[grid].y * ratio) % (text.width);
+	col_text = get_col_text(game, text, ray);
 	if ((int)hpwall >= game->img.height)
 		line_text_indent = ((hpwall - game->img.height) / 2) * text.width;
 	else
