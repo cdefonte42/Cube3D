@@ -71,8 +71,13 @@ var server = net.createServer(function(socket) {
 		// console.log(C.Cyan+`Client data ${client.id}: ${data}`);
 		
 		if (clients.length > 1) {
-			
-			let message = `p:${client.id}:${data}`;
+			let message = ``;			
+			if (data.toString().at(0) == 'C' || data.toString().at(0) == 'O') {
+				message = data.toString();
+			}
+			else {
+				message = `p:${client.id}:${data}`;
+			}
 			sendMessageToAllClients(message, client);
 		}
 	});

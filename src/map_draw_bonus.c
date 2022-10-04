@@ -13,7 +13,7 @@
 #include "cubed.h"
 
 /* Remplit la position (x, y) en map unit de 64(cube size) pixels de color. */
-void	fill_cube(t_game *game, int y, int x, int color)
+void	fill_cube_grid(t_game *game, int y, int x, int color)
 {
 	int	origin_line;
 	int	max_line;
@@ -34,31 +34,6 @@ void	fill_cube(t_game *game, int y, int x, int color)
 			++col;
 		}
 		line += game->map.grid.size_line;
-	}
-}
-
-/* Draw (fill pixels) sur l'image de la map 2D viewed les pixels correspondants
-aux walls. Va dabord chercher a quelle map unit position se trouve un wall,
-puis fait appel a fill_cube pour remplir cette case. Iter l'operation sur toutes
-les cases de la map. */
-void	draw_walls(t_game *game)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < game->map.height)
-	{
-		j = 0;
-		while (j < game->map.width)
-		{
-			if (game->map.tab[i][j] == '1')
-				fill_cube(game, i, j, GREY);
-			else if (game->map.tab[i][j] == 'O' || game->map.tab[i][j] == 'C')
-				fill_cube(game, i, j, PURPLE);
-			++j;
-		}
-		++i;
 	}
 }
 
@@ -108,10 +83,12 @@ static void	transparency_minimap(t_game *game)
 		col = 0;
 		while (col < game->minimap.width)
 		{
-			if (game->minimap.data[col + line * game->minimap.size_line] == BLACK)
+			if (game->minimap.data[col + \
+				line * game->minimap.size_line] == BLACK)
 			{
 				game->minimap.data[col + line * game->minimap.size_line] = \
-				fog_percentage(game->img.data[col + line * game->img.size_line], 50);
+				fog_percentage(game->img.data[col + \
+					line * game->img.size_line], 50);
 			}
 			++col;
 		}

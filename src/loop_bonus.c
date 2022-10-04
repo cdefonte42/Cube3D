@@ -90,6 +90,5 @@ int	loop_hook(t_game *game)
 		usleep((CLOCKS_PER_SEC / 20 - delta_ticks));
 	handle_movement(game);
 	handle_camera(game);
-// ++game->bonus.tick; // NOTE: uncomment to enable tick counter
 	return (0);
 }
