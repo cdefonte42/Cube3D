@@ -74,7 +74,7 @@ $(LIBFT)	:
 				make -C $(LIBFT_DIR)
 
 clean		:
-				rm -rf $(OBJS) $(DEPS)
+				rm -rf $(OBJ_DIR)
 				make clean -C $(LIBFT_DIR)
 
 
