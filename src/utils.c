@@ -6,7 +6,7 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 11:15:23 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/09/29 16:29:04 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/10/04 15:01:52 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static void	clear_texture(void *mlx_ptr, t_texture *textures, int size, bool al)
 void	exit_bonus(t_game *game)
 {
 	clear_texture(game->mlx_ptr, game->bonus.text_sp[player], 4, false);
-	clear_texture(game->mlx_ptr, game->bonus.text_sp[coin], 6, false);
+	clear_texture(game->mlx_ptr, game->bonus.text_sp[coin], COINS_NB, false);
 	if (game->bonus.sort_sp)
 		free(game->bonus.sort_sp);
 	if (game->bonus.sps)

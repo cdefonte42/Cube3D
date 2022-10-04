@@ -6,7 +6,7 @@
 /*   By: cdefonte <cdefonte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 14:12:21 by cdefonte          #+#    #+#             */
-/*   Updated: 2022/09/29 11:43:56 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/10/04 15:05:40 by cdefonte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,12 @@ static bool	init_coin_sprites(t_game *game)
 	char	*path[COINS_NB];
 
 	i = 0;
-	ft_memcpy(path, (char *[COINS_NB]){"img/GoldCoinSprite/coin1.xpm", \
-	"img/GoldCoinSprite/coin2.xpm", "img/GoldCoinSprite/coin3.xpm", \
-	"img/GoldCoinSprite/coin4.xpm", "img/GoldCoinSprite/coin5.xpm", \
-	"img/GoldCoinSprite/coin6.xpm"}, sizeof(char *) * COINS_NB);
+	ft_memcpy(path, (char *[COINS_NB]){"img/Coin/Silver_1.xpm", \
+	"img/Coin/Silver_2.xpm", "img/Coin/Silver_3.xpm", \
+	"img/Coin/Silver_4.xpm", "img/Coin/Silver_5.xpm", \
+	"img/Coin/Silver_6.xpm","img/Coin/Silver_7.xpm", "img/Coin/Silver_8.xpm", \
+	"img/Coin/Silver_9.xpm", "img/Coin/Silver_10.xpm"}, \
+	sizeof(char *) * COINS_NB);
 	while (i < COINS_NB)
 	{
 		if (!cb_load_mlx_image(game->mlx_ptr, path[i], \
