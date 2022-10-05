@@ -127,7 +127,7 @@ int	map_checkheader(t_game *game, char *file)
 		return (close(fd), error("Missing map", NULL), false);
 	if (flags == -1)
 		return (clean_parse(line, fd), false);
-	if (flags != 0 && flags != -1 && flags != 0b111111)
+	if (flags != -1 && flags != 0b111111)
 		return (clean_parse(line, fd), error("Missing flags", NULL));
 	return (map_checkcharacters(game, line, fd));
 }
