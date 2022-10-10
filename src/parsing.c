@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 11:50:01 by mbraets           #+#    #+#             */
-/*   Updated: 2022/09/28 10:38:08 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/10/10 12:12:22 by mbraets          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,25 +41,6 @@ bool	map_checkcharacters(t_game *game, char *line, int fd)
 	return (true);
 }
 
-static bool	set_default_flags(t_game *game)
-{
-	game->ceiling_color = DARK_GREY;
-	game->floor_color = GREY;
-	game->text[nwall].path = ft_strdup("img/tech_nwall_64.xpm");
-	if (game->text[nwall].path == NULL)
-		return (error("malloc failed", NULL));
-	game->text[swall].path = ft_strdup("img/tech_swall_64.xpm");
-	if (game->text[swall].path == NULL)
-		return (error("malloc failed", NULL));
-	game->text[wwall].path = ft_strdup("img/tech_wwall_64.xpm");
-	if (game->text[wwall].path == NULL)
-		return (error("malloc failed", NULL));
-	game->text[ewall].path = ft_strdup("img/tech_ewall_64.xpm");
-	if (game->text[ewall].path == NULL)
-		return (error("malloc failed", NULL));
-	return (true);
-}
-
 static bool	is_cub(char *file)
 {
 	int	len;
@@ -80,9 +61,6 @@ bool	map_parsing(t_game *game, char *file)
 	if (!is_cub(file))
 		return (false);
 	if (map_checkheader(game, file) == false)
-		return (false);
-	if (game->text != NULL && game->text[nwall].path == NULL \
-		&& !set_default_flags(game))
 		return (false);
 	if (!map_init(game))
 		return (false);
