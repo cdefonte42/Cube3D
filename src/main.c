@@ -6,7 +6,7 @@
 /*   By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 14:07:19 by Cyrielle          #+#    #+#             */
-/*   Updated: 2022/09/29 14:31:42 by cdefonte         ###   ########.fr       */
+/*   Updated: 2022/10/13 14:26:08 by mbraets          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ int	main_bonus(t_game *game)
 {
 	if (!init_sprites_text(game))
 		return (ft_exit(game), 1);
-	LEAK && mlx_mouse_hide(game->mlx_ptr, game->win);
+	if (LEAK)
+		mlx_mouse_hide(game->mlx_ptr, game->win);
 	mlx_hook(game->win, KeyPress, KeyPressMask, &press_hook, game);
 	mlx_hook(game->win, KeyRelease, KeyReleaseMask, &release_hook, game);
 	mlx_hook(game->win, FocusIn, FocusChangeMask, &in_hook, game);
@@ -82,7 +83,8 @@ int	main(int argc, char **argv)
 	mlx_key_hook(game.win, key_hook, &game);
 	mlx_hook(game.win, DestroyNotify, 0, &ft_exit, &game);
 	mlx_hook(game.win, KeyPress, 1L << 0, &key_hook, &game);
-	BONUS && main_bonus(&game);
+	if (BONUS)
+		main_bonus(&game);
 	refresh_game(&game);
 	mlx_loop(game.mlx_ptr);
 	ft_exit(&game);

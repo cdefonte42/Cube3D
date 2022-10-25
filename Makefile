@@ -6,7 +6,7 @@
 #    By: mbraets <mbraets@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/18 12:15:17 by cdefonte          #+#    #+#              #
-#    Updated: 2022/09/29 14:33:32 by cdefonte         ###   ########.fr        #
+#    Updated: 2022/10/13 14:26:33 by mbraets          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ LIBFT		=	$(LIBFT_DIR)libft.a
 
 CC			=	cc
 # CFLAGS		=	-Werror -Wall -Wextra -g3 -MMD -MP -fsanitize=address
+#CFLAGS		=	-Werror -Wall -Wextra -g3 -MMD -MP
 CFLAGS		=	-Werror -Wall -Wextra -g3 -MMD -MP
 
 ifeq ($(shell uname), Linux)
@@ -52,6 +53,9 @@ ifeq ($(BONUS),true)
 					hook_bonus.c socket_bonus.c socket_init_bonus.c \
 					init_bonus.c loop_bonus.c \
 					door_bonus.c socket_door_bonus.c)
+endif
+ifeq ($(LEAK),true)
+	CFLAGS		+=	-DLEAK
 endif
 
 OBJS		=	$(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRCS))
@@ -87,7 +91,9 @@ re			:	fclean
 
 bonus		:
 				$(MAKE) BONUS=true
+leak		:
+				$(MAKE) BONUS=true LEAK=true
 
 -include $(DEPS)
 
-.PHONY: all clean run fclean bonus
+.PHONY: all clean run fclean bonus leak
